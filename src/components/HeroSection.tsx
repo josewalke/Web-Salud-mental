@@ -7,7 +7,7 @@ import { useCallback } from "react";
 import { useMobileOptimization } from "../hooks/useMobileOptimization";
 
 export function HeroSection() {
-  const { isMobile, isLowEndDevice, getMobileAnimationSettings, shouldDisableSmoothScroll } = useMobileOptimization();
+  const { isLowEndDevice, shouldDisableSmoothScroll } = useMobileOptimization();
   
   const scrollToServices = useCallback(() => {
     const element = document.getElementById('servicios');

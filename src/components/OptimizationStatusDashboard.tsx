@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { CheckCircle, XCircle, AlertCircle, Info, Zap, Smartphone, Monitor, Settings } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, Info, Zap, Smartphone, Monitor } from 'lucide-react';
 
 interface OptimizationStatus {
   name: string;
@@ -12,7 +12,7 @@ interface OptimizationStatus {
 
 export function OptimizationStatusDashboard() {
   const [isVisible, setIsVisible] = useState(false);
-  const [optimizations, setOptimizations] = useState<OptimizationStatus[]>([
+  const [optimizations] = useState<OptimizationStatus[]>([
     {
       name: "Hardware Acceleration",
       description: "Aceleración GPU para mejor rendimiento",
@@ -84,14 +84,15 @@ export function OptimizationStatusDashboard() {
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active': return 'text-green-600';
-      case 'inactive': return 'text-red-600';
-      case 'warning': return 'text-yellow-600';
-      default: return 'text-blue-600';
-    }
-  };
+  // Función de color de estado (no utilizada actualmente pero disponible para futuras implementaciones)
+  // const getStatusColor = (status: string) => {
+  //   switch (status) {
+  //     case 'active': return 'text-green-600';
+  //     case 'inactive': return 'text-red-600';
+  //     case 'warning': return 'text-yellow-600';
+  //     default: return 'text-blue-600';
+  //   }
+  // };
 
   const toggleVisibility = () => {
     setIsVisible(!isVisible);

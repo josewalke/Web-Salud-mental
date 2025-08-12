@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Activity, Smartphone, Zap, Clock, BarChart3, Wifi, Battery, Cpu } from 'lucide-react';
+import { Activity, Smartphone, Zap, Clock, BarChart3, Cpu } from 'lucide-react';
 
 interface PerformanceData {
   fps: number;
