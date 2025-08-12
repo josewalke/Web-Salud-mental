@@ -4,15 +4,32 @@ import { ArrowRight, Shield, Brain, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { FloatingElement } from "./FloatingElement";
 import { useCallback } from "react";
+import { useMobileOptimization } from "../hooks/useMobileOptimization";
 
 export function HeroSection() {
+  const { isMobile, isLowEndDevice, getMobileAnimationSettings, shouldDisableSmoothScroll } = useMobileOptimization();
+  
   const scrollToServices = useCallback(() => {
-    document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+    const element = document.getElementById('servicios');
+    if (element) {
+      if (shouldDisableSmoothScroll) {
+        element.scrollIntoView();
+      } else {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [shouldDisableSmoothScroll]);
 
   const scrollToContact = useCallback(() => {
-    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+    const element = document.getElementById('contacto');
+    if (element) {
+      if (shouldDisableSmoothScroll) {
+        element.scrollIntoView();
+      } else {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [shouldDisableSmoothScroll]);
 
   const features = [
     { icon: Shield, text: "Seguro y confidencial" },
@@ -25,14 +42,14 @@ export function HeroSection() {
       {/* Subtle gradient overlay for better text readability */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-br from-white/60 via-blue-50/40 to-white/60"
-        animate={{
+        animate={isLowEndDevice ? {} : {
           background: [
             "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
             "linear-gradient(225deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
             "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
           ]
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        transition={isLowEndDevice ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="container mx-auto px-4 relative z-10">

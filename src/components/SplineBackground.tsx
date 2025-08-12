@@ -94,20 +94,33 @@ export function SplineBackground() {
         </div>
       )}
       
-      {/* Spline container */}
+      {/* Spline container - Disabled on mobile for better performance */}
       <div className="w-full h-full relative">
-        <Spline
-          scene="https://prod.spline.design/Qi1xNMPOy3Jd6AVi/scene.splinecode"
-          onLoad={handleLoad}
-          onError={handleError}
-          style={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          }}
-        />
+        {/* Show Spline only on desktop for better mobile performance */}
+        <div className="hidden md:block">
+          <Spline
+            scene="https://prod.spline.design/Qi1xNMPOy3Jd6AVi/scene.splinecode"
+            onLoad={handleLoad}
+            onError={handleError}
+            style={{
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+            }}
+          />
+        </div>
+        
+        {/* Mobile-optimized background */}
+        <div className="md:hidden">
+          <div className="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-100 -z-10">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-400/5 to-blue-600/5" />
+            {/* Minimal animated elements for mobile */}
+            <div className="absolute top-20 left-10 w-16 h-16 bg-blue-200/20 rounded-full blur-lg animate-pulse" />
+            <div className="absolute bottom-20 right-10 w-12 h-12 bg-blue-300/15 rounded-full blur-md animate-pulse" />
+          </div>
+        </div>
       </div>
     </div>
   );
