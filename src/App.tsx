@@ -7,7 +7,7 @@ import { SplineBackground } from './components/SplineBackground';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { initializePerformanceOptimizations, logPerformanceMetrics } from './utils/performanceOptimizations';
-import userTrackingSystem from './utils/userTrackingSystem';
+import completeTrackingSystem from './utils/completeTrackingSystem';
 import { QuestionnairePage } from './pages/QuestionnairePage';
 import { PersonalityQuestionnairePage } from './pages/PersonalityQuestionnairePage';
 import UserActionsDashboard from './components/UserActionsDashboard';
@@ -29,20 +29,20 @@ const SectionLoader = () => (
 function HomePage() {
   const [showPerformanceMonitor, setShowPerformanceMonitor] = useState(false);
 
-  // Initialize performance optimizations and user tracking
-  useEffect(() => {
-    initializePerformanceOptimizations();
-    
-    // Initialize user tracking system
-    userTrackingSystem.init();
-
-    // Log performance metrics after a delay
-    const timer = setTimeout(() => {
-      logPerformanceMetrics();
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
+          // Initialize performance optimizations and complete tracking system
+        useEffect(() => {
+          initializePerformanceOptimizations();
+          
+          // Initialize complete tracking system
+          completeTrackingSystem.init();
+        
+          // Log performance metrics after a delay
+          const timer = setTimeout(() => {
+            logPerformanceMetrics();
+          }, 2000);
+        
+          return () => clearTimeout(timer);
+        }, []);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
