@@ -11,6 +11,17 @@ export function HeroSection() {
   const { isLowEndDevice, shouldDisableSmoothScroll } = useMobileOptimization();
   const { useInView, optimizedAnimation } = usePerformanceOptimization();
   
+  // Usar useInView para optimizar secciones
+  const heroRef = useInView((isVisible: boolean) => {
+    if (isVisible) {
+      // Sección visible - activar optimizaciones
+      document.body.classList.add('hero-visible');
+    } else {
+      // Sección no visible - desactivar optimizaciones
+      document.body.classList.remove('hero-visible');
+    }
+  });
+  
   const scrollToServices = useCallback(() => {
     const element = document.getElementById('servicios');
     if (element) {
@@ -40,7 +51,11 @@ export function HeroSection() {
   ];
 
   return (
-    <section id="inicio" className="relative min-h-screen py-20 overflow-hidden lazy-section stable-layout">
+    <section 
+      ref={heroRef}
+      id="inicio" 
+      className="relative min-h-screen py-20 overflow-hidden lazy-section stable-layout"
+    >
       {/* Subtle gradient overlay for better text readability */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-br from-white/60 via-blue-50/40 to-white/60"
@@ -103,6 +118,9 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
+              onAnimationStart={() => optimizedAnimation(() => {
+                // Animación optimizada con requestAnimationFrame
+              })}
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
