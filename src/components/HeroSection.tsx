@@ -71,18 +71,18 @@ export function HeroSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
-          <motion.div
-            className="space-y-8 animate-optimized"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
+                      <motion.div
+              className="space-y-8 animate-optimized"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
             <div className="space-y-6">
               <motion.h1
                 className="text-4xl lg:text-6xl text-gray-900 leading-tight"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
+                transition={{ delay: 0.2, duration: 0.28, ease: "easeOut" }}
                 style={{ textShadow: '0 2px 4px rgba(255, 255, 255, 0.5)' }}
               >
                 El cerebro también se puede
@@ -104,7 +104,7 @@ export function HeroSection() {
                 className="text-xl text-gray-700 leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
+                transition={{ delay: 0.4, duration: 0.28, ease: "easeOut" }}
                 style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}
               >
                 Estamos encantados de que quieras trabajar en tu crecimiento personal. 
@@ -117,7 +117,7 @@ export function HeroSection() {
               className="flex flex-col sm:flex-row gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              transition={{ delay: 0.6, duration: 0.28, ease: "easeOut" }}
               onAnimationStart={() => optimizedAnimation(() => {
                 // Animación optimizada con requestAnimationFrame
               })}

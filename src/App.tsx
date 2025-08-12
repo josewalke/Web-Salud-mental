@@ -1,7 +1,7 @@
 import React, { useState, Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { motion } from 'motion/react';
+import { LazyMotion, domAnimation, m as motion, MotionConfig } from 'framer-motion';
 import { Heart, Brain } from 'lucide-react';
 import { SplineBackground } from './components/SplineBackground';
 import { Header } from './components/Header';
@@ -186,24 +186,31 @@ function HomePage() {
 function App() {
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Ruta principal */}
-          <Route path="/" element={<HomePage />} />
+      <LazyMotion features={domAnimation}>
+        <MotionConfig 
+          reducedMotion="user" 
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        >
+          <BrowserRouter>
+            <Routes>
+              {/* Ruta principal */}
+              <Route path="/" element={<HomePage />} />
 
-                            {/* Ruta del cuestionario de compatibilidad */}
-                  <Route path="/cuestionario" element={<QuestionnairePage />} />
-                  
-                  {/* Ruta del cuestionario de personalidad */}
-                  <Route path="/cuestionario-personalidad" element={<PersonalityQuestionnairePage />} />
-                  
-                  {/* Ruta del dashboard de acciones del usuario */}
-                  <Route path="/user-tracking" element={<UserActionsDashboard />} />
+              {/* Ruta del cuestionario de compatibilidad */}
+              <Route path="/cuestionario" element={<QuestionnairePage />} />
+              
+              {/* Ruta del cuestionario de personalidad */}
+              <Route path="/cuestionario-personalidad" element={<PersonalityQuestionnairePage />} />
+              
+              {/* Ruta del dashboard de acciones del usuario */}
+              <Route path="/user-tracking" element={<UserActionsDashboard />} />
 
-          {/* Redirección por defecto */}
-          <Route path="*" element={<div>Página no encontrada</div>} />
-        </Routes>
-      </BrowserRouter>
+              {/* Redirección por defecto */}
+              <Route path="*" element={<div>Página no encontrada</div>} />
+            </Routes>
+          </BrowserRouter>
+        </MotionConfig>
+      </LazyMotion>
     </HelmetProvider>
   );
 }
