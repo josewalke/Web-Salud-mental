@@ -2,10 +2,12 @@
  * Cliente para conectar con el backend de métricas y analytics
  */
 
+import backendConfig from '../config/backend.js';
+
 // Configuración directa para pruebas
 const getBackendUrl = () => {
   // Para pruebas: usar localhost
-  return 'http://localhost:5001';
+  return backendConfig.backendUrl;
 };
 
 const BACKEND_URL = getBackendUrl();
