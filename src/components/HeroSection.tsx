@@ -5,9 +5,11 @@ import { motion } from "motion/react";
 import { FloatingElement } from "./FloatingElement";
 import { useCallback } from "react";
 import { useMobileOptimization } from "../hooks/useMobileOptimization";
+import { usePerformanceOptimization } from "../hooks/usePerformanceOptimization";
 
 export function HeroSection() {
   const { isLowEndDevice, shouldDisableSmoothScroll } = useMobileOptimization();
+  const { useInView, optimizedAnimation } = usePerformanceOptimization();
   
   const scrollToServices = useCallback(() => {
     const element = document.getElementById('servicios');
@@ -38,7 +40,7 @@ export function HeroSection() {
   ];
 
   return (
-    <section id="inicio" className="relative min-h-screen py-20 overflow-hidden">
+    <section id="inicio" className="relative min-h-screen py-20 overflow-hidden lazy-section stable-layout">
       {/* Subtle gradient overlay for better text readability */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-br from-white/60 via-blue-50/40 to-white/60"
@@ -55,7 +57,7 @@ export function HeroSection() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
           <motion.div
-            className="space-y-8"
+            className="space-y-8 animate-optimized"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}

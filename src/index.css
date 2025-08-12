@@ -199,6 +199,63 @@ body {
   pointer-events: none !important;
 }
 
+/* CHATGPT RECOMMENDED OPTIMIZATIONS */
+/* High-impact performance improvements */
+
+/* 1. Content-visibility for off-screen sections */
+.lazy-section {
+  content-visibility: auto;
+  contain: layout paint;
+}
+
+/* 2. Optimize animations - only animate transform and opacity */
+.animate-optimized {
+  will-change: transform, opacity;
+}
+
+/* 3. Reduce layout thrashing */
+.stable-layout {
+  contain: layout style paint;
+}
+
+/* 4. Optimize for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .heavy-anim {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .webgl-canvas {
+    display: none !important;
+  }
+  
+  /* Show static poster instead */
+  .webgl-poster {
+    display: block !important;
+  }
+}
+
+/* 5. Hardware acceleration for critical animations */
+.hardware-accelerated {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* 6. Optimize paint operations */
+.paint-optimized {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 7. Reduce repaints during scroll */
+.scroll-optimized {
+  contain: layout style;
+}
+
 /* Optimized typography - reduced redundancy */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
