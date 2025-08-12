@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Spline from '@splinetool/react-spline';
+import { useDeviceOptimization } from '../hooks/useDeviceOptimization';
+import { SimpleMobileBackground } from './SimpleMobileBackground';
 
 export function SplineBackground() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const { shouldDisableSpline, isMobile, isLowEnd } = useDeviceOptimization();
 
   const handleLoad = useCallback(() => {
             // console.log('Spline loaded successfully');
@@ -66,6 +69,11 @@ export function SplineBackground() {
 
     return () => clearTimeout(timeout);
   }, [isLoading]);
+
+  // Renderizado condicional según dispositivo
+  if (shouldDisableSpline || isMobile || isLowEnd) {
+    return <SimpleMobileBackground />;
+  }
 
   // Optimized fallback background when Spline fails
   if (hasError) {

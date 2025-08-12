@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { LazyMotion, domAnimation, m as motion, MotionConfig } from 'framer-motion';
@@ -6,13 +6,11 @@ import { Heart, Brain } from 'lucide-react';
 import { SplineBackground } from './components/SplineBackground';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
-import { initializePerformanceOptimizations, logPerformanceMetrics } from './utils/performanceOptimizations';
-import completeTrackingSystem from './utils/completeTrackingSystem';
+
+
 import { QuestionnairePage } from './pages/QuestionnairePage';
 import { PersonalityQuestionnairePage } from './pages/PersonalityQuestionnairePage';
-import UserActionsDashboard from './components/UserActionsDashboard';
-import { MobilePerformanceMonitor } from './components/MobilePerformanceMonitor';
-import { OptimizationStatusDashboard } from './components/OptimizationStatusDashboard';
+
 
 // Lazy load non-critical components for better performance
 const ProblemSection = lazy(() => import('./components/ProblemSection').then(module => ({ default: module.ProblemSection })));
@@ -29,22 +27,8 @@ const SectionLoader = () => (
 
 // Componente de la página principal
 function HomePage() {
-  const [showPerformanceMonitor, setShowPerformanceMonitor] = useState(false);
 
-          // Initialize performance optimizations and complete tracking system
-        useEffect(() => {
-          initializePerformanceOptimizations();
-          
-          // Initialize complete tracking system
-          completeTrackingSystem.init();
-        
-          // Log performance metrics after a delay
-          const timer = setTimeout(() => {
-            logPerformanceMetrics();
-          }, 2000);
-        
-          return () => clearTimeout(timer);
-        }, []);
+
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -76,20 +60,7 @@ function HomePage() {
         </Suspense>
       </div>
 
-      {/* Performance Monitor Toggle Button */}
-      <button
-        onClick={() => setShowPerformanceMonitor(!showPerformanceMonitor)}
-        className="fixed bottom-4 left-4 z-50 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-        title="Monitor de Performance"
-      >
-        📊
-      </button>
 
-      {/* Mobile Performance Monitor */}
-      <MobilePerformanceMonitor />
-
-      {/* Optimization Status Dashboard */}
-      <OptimizationStatusDashboard />
 
       {/* Caja Elegante con Botones de Cuestionarios */}
       <motion.div 
@@ -121,64 +92,11 @@ function HomePage() {
             <Brain className="w-6 h-6" />
           </motion.button>
 
-          {/* Botón Dashboard de Tracking */}
-          <motion.button
-            onClick={() => window.location.href = '/user-tracking'}
-            className="bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300"
-            title="Dashboard de Tracking de Usuario"
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            📊
-          </motion.button>
+
         </div>
       </motion.div>
 
-      {/* Performance Monitor Component - Updated with Fase 2 optimizations */}
-      {showPerformanceMonitor && (
-        <div className="fixed top-4 right-4 w-96 max-h-[80vh] bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden z-50">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">📊 Monitor de Performance</h3>
-              <button
-                onClick={() => setShowPerformanceMonitor(false)}
-                className="text-white hover:text-gray-200 transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-          <div className="p-4">
-            <p className="text-gray-600">Monitor de performance optimizado - Fase 2 implementada</p>
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-2">✅ Optimizaciones Implementadas:</h4>
-              <ul className="text-sm text-blue-700 space-y-1">
-                <li>• Spline timeout reducido a 5s</li>
-                <li>• Lazy loading de componentes</li>
-                <li>• CSS optimizado</li>
-                <li>• Resource hints implementados</li>
-                <li>• Bundle size optimizado</li>
-                <li>• <strong>Fase 2:</strong> Image optimization avanzada</li>
-                <li>• <strong>Fase 2:</strong> Code splitting avanzado</li>
-                <li>• <strong>Fase 2:</strong> Service worker para caching</li>
-                <li>• <strong>Fase 2:</strong> Performance monitoring real-time</li>
-                <li>• <strong>Empresa:</strong> Love on the Brain - El cerebro también se puede acariciar</li>
-              </ul>
-            </div>
-            <div className="mt-4 p-3 bg-green-50 rounded-lg">
-              <h4 className="font-semibold text-green-800 mb-2">🚀 Nuevas Funcionalidades:</h4>
-              <ul className="text-sm text-green-700 space-y-1">
-                <li>• WebP support automático</li>
-                <li>• Lazy loading nativo de imágenes</li>
-                <li>• Route-based code splitting</li>
-                <li>• Vendor chunk optimization</li>
-                <li>• Offline support con service worker</li>
-                <li>• Real-time performance monitoring</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
@@ -202,8 +120,7 @@ function App() {
               {/* Ruta del cuestionario de personalidad */}
               <Route path="/cuestionario-personalidad" element={<PersonalityQuestionnairePage />} />
               
-              {/* Ruta del dashboard de acciones del usuario */}
-              <Route path="/user-tracking" element={<UserActionsDashboard />} />
+
 
               {/* Redirección por defecto */}
               <Route path="*" element={<div>Página no encontrada</div>} />

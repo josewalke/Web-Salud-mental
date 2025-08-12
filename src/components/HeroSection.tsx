@@ -1,48 +1,38 @@
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ArrowRight, Shield, Brain, Sparkles } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { FloatingElement } from "./FloatingElement";
 import { useCallback } from "react";
-import { useMobileOptimization } from "../hooks/useMobileOptimization";
-import { usePerformanceOptimization } from "../hooks/usePerformanceOptimization";
+import { useDeviceOptimization } from "../hooks/useDeviceOptimization";
 
 export function HeroSection() {
-  const { isLowEndDevice, shouldDisableSmoothScroll } = useMobileOptimization();
-  const { useInView, optimizedAnimation } = usePerformanceOptimization();
+  const { optimizationLevel, getAnimationConfig, isMobile, isLowEnd } = useDeviceOptimization();
+  const animationConfig = getAnimationConfig();
   
-  // Usar useInView para optimizar secciones
-  const heroRef = useInView((isVisible: boolean) => {
-    if (isVisible) {
-      // Sección visible - activar optimizaciones
-      document.body.classList.add('hero-visible');
-    } else {
-      // Sección no visible - desactivar optimizaciones
-      document.body.classList.remove('hero-visible');
-    }
-  });
+
   
   const scrollToServices = useCallback(() => {
     const element = document.getElementById('servicios');
     if (element) {
-      if (shouldDisableSmoothScroll) {
+      if (isMobile || isLowEnd) {
         element.scrollIntoView();
       } else {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  }, [shouldDisableSmoothScroll]);
+  }, [isMobile, isLowEnd]);
 
   const scrollToContact = useCallback(() => {
     const element = document.getElementById('contacto');
     if (element) {
-      if (shouldDisableSmoothScroll) {
+      if (isMobile || isLowEnd) {
         element.scrollIntoView();
       } else {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  }, [shouldDisableSmoothScroll]);
+  }, [isMobile, isLowEnd]);
 
   const features = [
     { icon: Shield, text: "Seguro y confidencial" },
@@ -52,21 +42,20 @@ export function HeroSection() {
 
   return (
     <section 
-      ref={heroRef}
       id="inicio" 
       className="relative min-h-screen py-20 overflow-hidden lazy-section stable-layout"
     >
       {/* Subtle gradient overlay for better text readability */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-br from-white/60 via-blue-50/40 to-white/60"
-        animate={isLowEndDevice ? {} : {
+        animate={isMobile || isLowEnd ? {} : {
           background: [
             "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
             "linear-gradient(225deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
             "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
           ]
         }}
-        transition={isLowEndDevice ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        transition={isMobile || isLowEnd ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="container mx-auto px-4 relative z-10">
@@ -118,9 +107,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.28, ease: "easeOut" }}
-              onAnimationStart={() => optimizedAnimation(() => {
-                // Animación optimizada con requestAnimationFrame
-              })}
+
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
