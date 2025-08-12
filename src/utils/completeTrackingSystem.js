@@ -8,7 +8,7 @@ class CompleteTrackingSystem {
     this.sessionId = this.generateSessionId();
     this.startTime = Date.now();
     this.isTracking = false;
-    this.backendUrl = 'http://92.186.17.227:5001';
+    this.backendUrl = 'backendConfig.backendUrl';
     
     // Métricas de rendimiento
     this.performanceMetrics = {
