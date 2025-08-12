@@ -11,6 +11,8 @@ import completeTrackingSystem from './utils/completeTrackingSystem';
 import { QuestionnairePage } from './pages/QuestionnairePage';
 import { PersonalityQuestionnairePage } from './pages/PersonalityQuestionnairePage';
 import UserActionsDashboard from './components/UserActionsDashboard';
+import { MobilePerformanceMonitor } from './components/MobilePerformanceMonitor';
+import { OptimizationStatusDashboard } from './components/OptimizationStatusDashboard';
 
 // Lazy load non-critical components for better performance
 const ProblemSection = lazy(() => import('./components/ProblemSection').then(module => ({ default: module.ProblemSection })));
@@ -82,6 +84,12 @@ function HomePage() {
       >
         📊
       </button>
+
+      {/* Mobile Performance Monitor */}
+      <MobilePerformanceMonitor />
+
+      {/* Optimization Status Dashboard */}
+      <OptimizationStatusDashboard />
 
       {/* Caja Elegante con Botones de Cuestionarios */}
       <motion.div 
