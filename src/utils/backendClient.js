@@ -4,8 +4,8 @@
 
 // Configuración directa para pruebas
 const getBackendUrl = () => {
-  // Para pruebas: usar tu IP pública directamente
-  return 'http://92.186.17.227:5001';
+  // Para pruebas: usar localhost
+  return 'http://localhost:5001';
 };
 
 const BACKEND_URL = getBackendUrl();
