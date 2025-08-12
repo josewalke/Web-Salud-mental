@@ -1,6 +1,6 @@
 /**
- * SISTEMA DE TRACKING ULTRA-COMPLETO
- * Captura ABSOLUTAMENTE TODO lo que pasa en la página web
+ * SISTEMA DE TRACKING COMPLETO
+ * Captura scroll, clicks, rendimiento y más
  */
 
 class CompleteTrackingSystem {
@@ -8,14 +8,12 @@ class CompleteTrackingSystem {
     this.sessionId = this.generateSessionId();
     this.startTime = Date.now();
     this.isTracking = false;
-    this.backendUrl = 'http://92.186.17.227:5001'\;
+    this.backendUrl = 'http://92.186.17.227:5001';
     
     // Métricas de rendimiento
     this.performanceMetrics = {
       fps: [],
       memory: [],
-      cpu: [],
-      network: [],
       scroll: [],
       interactions: []
     };
@@ -28,8 +26,7 @@ class CompleteTrackingSystem {
       mouseMoves: 0,
       touches: 0,
       formInteractions: 0,
-      errors: 0,
-      apiCalls: 0
+      errors: 0
     };
     
     // Timestamps
@@ -50,7 +47,7 @@ class CompleteTrackingSystem {
   init() {
     if (this.isTracking) return;
     
-    console.log('🚀 Iniciando sistema de tracking ultra-completo...');
+    console.log('🚀 Iniciando sistema de tracking completo...');
     this.isTracking = true;
     
     // 1. TRACKING DE RENDIMIENTO
@@ -62,61 +59,22 @@ class CompleteTrackingSystem {
     // 3. TRACKING DE SCROLL
     this.initScrollTracking();
     
-    // 4. TRACKING DE MEMORIA Y CPU
-    this.initResourceTracking();
+    // 4. TRACKING DE MEMORIA
+    this.initMemoryTracking();
     
-    // 5. TRACKING DE RED
-    this.initNetworkTracking();
-    
-    // 6. TRACKING DE ERRORES
+    // 5. TRACKING DE ERRORES
     this.initErrorTracking();
     
-    // 7. TRACKING DE FORMULARIOS
+    // 6. TRACKING DE FORMULARIOS
     this.initFormTracking();
     
-    // 8. TRACKING DE NAVEGACIÓN
+    // 7. TRACKING DE NAVEGACIÓN
     this.initNavigationTracking();
-    
-    // 9. TRACKING DE VISIBILIDAD
-    this.initVisibilityTracking();
-    
-    // 10. TRACKING DE ORIENTACIÓN
-    this.initOrientationTracking();
-    
-    // 11. TRACKING DE BATTERÍA
-    this.initBatteryTracking();
-    
-    // 12. TRACKING DE CONECTIVIDAD
-    this.initConnectivityTracking();
-    
-    // 13. TRACKING DE GEOLOCALIZACIÓN
-    this.initGeolocationTracking();
-    
-    // 14. TRACKING DE ACCELERÓMETRO
-    this.initAccelerometerTracking();
-    
-    // 15. TRACKING DE GYROSCOPIO
-    this.initGyroscopeTracking();
-    
-    // 16. TRACKING DE MICRÓFONO
-    this.initMicrophoneTracking();
-    
-    // 17. TRACKING DE CÁMARA
-    this.initCameraTracking();
-    
-    // 18. TRACKING DE NOTIFICACIONES
-    this.initNotificationTracking();
-    
-    // 19. TRACKING DE PERMISOS
-    this.initPermissionTracking();
-    
-    // 20. TRACKING DE STORAGE
-    this.initStorageTracking();
     
     // Enviar datos cada 5 segundos
     this.startPeriodicSending();
     
-    console.log('✅ Sistema de tracking ultra-completo iniciado');
+    console.log('✅ Sistema de tracking completo iniciado');
   }
 
   // 1. TRACKING DE RENDIMIENTO
@@ -314,8 +272,8 @@ class CompleteTrackingSystem {
     });
   }
 
-  // 4. TRACKING DE RECURSOS
-  initResourceTracking() {
+  // 4. TRACKING DE MEMORIA
+  initMemoryTracking() {
     // Memory usage
     if ('memory' in performance) {
       setInterval(() => {
@@ -328,62 +286,9 @@ class CompleteTrackingSystem {
         });
       }, 5000);
     }
-    
-    // CPU usage (aproximado)
-    let lastTime = performance.now();
-    let lastFrameTime = performance.now();
-    
-    const measureCPU = () => {
-      const currentTime = performance.now();
-      const frameTime = currentTime - lastFrameTime;
-      const totalTime = currentTime - lastTime;
-      
-      if (totalTime >= 1000) {
-        const cpuUsage = (frameTime / totalTime) * 100;
-        this.performanceMetrics.cpu.push({
-          usage: cpuUsage,
-          frameTime: frameTime,
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-        
-        lastTime = currentTime;
-      }
-      
-      lastFrameTime = currentTime;
-      requestAnimationFrame(measureCPU);
-    };
-    
-    requestAnimationFrame(measureCPU);
   }
 
-  // 5. TRACKING DE RED
-  initNetworkTracking() {
-    if ('connection' in navigator) {
-      const connection = navigator.connection;
-      
-      this.trackEvent('network_info', {
-        effectiveType: connection.effectiveType,
-        downlink: connection.downlink,
-        rtt: connection.rtt,
-        saveData: connection.saveData,
-        timestamp: Date.now(),
-        sessionId: this.sessionId
-      });
-      
-      connection.addEventListener('change', () => {
-        this.trackEvent('network_change', {
-          effectiveType: connection.effectiveType,
-          downlink: connection.downlink,
-          rtt: connection.rtt,
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-      });
-    }
-  }
-
-  // 6. TRACKING DE ERRORES
+  // 5. TRACKING DE ERRORES
   initErrorTracking() {
     // JavaScript errors
     window.addEventListener('error', (e) => {
@@ -408,21 +313,9 @@ class CompleteTrackingSystem {
         sessionId: this.sessionId
       });
     });
-    
-    // Resource loading errors
-    window.addEventListener('error', (e) => {
-      if (e.target !== window) {
-        this.trackEvent('resource_error', {
-          type: e.target.tagName,
-          src: e.target.src || e.target.href,
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-      }
-    }, true);
   }
 
-  // 7. TRACKING DE FORMULARIOS
+  // 6. TRACKING DE FORMULARIOS
   initFormTracking() {
     document.addEventListener('focusin', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
@@ -455,7 +348,7 @@ class CompleteTrackingSystem {
     });
   }
 
-  // 8. TRACKING DE NAVEGACIÓN
+  // 7. TRACKING DE NAVEGACIÓN
   initNavigationTracking() {
     // Page visibility
     document.addEventListener('visibilitychange', () => {
@@ -482,263 +375,6 @@ class CompleteTrackingSystem {
         sessionId: this.sessionId
       });
     });
-  }
-
-  // 9. TRACKING DE VISIBILIDAD
-  initVisibilityTracking() {
-    // Intersection Observer para elementos visibles
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          this.trackEvent('element_visibility', {
-            element: this.getElementInfo(entry.target),
-            isIntersecting: entry.isIntersecting,
-            intersectionRatio: entry.intersectionRatio,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        });
-      });
-      
-      // Observar todos los elementos
-      document.querySelectorAll('*').forEach(el => {
-        observer.observe(el);
-      });
-    }
-  }
-
-  // 10. TRACKING DE ORIENTACIÓN
-  initOrientationTracking() {
-    if ('onorientationchange' in window) {
-      window.addEventListener('orientationchange', () => {
-        this.trackEvent('orientation_change', {
-          orientation: window.orientation,
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-      });
-    }
-  }
-
-  // 11. TRACKING DE BATTERÍA
-  initBatteryTracking() {
-    if ('getBattery' in navigator) {
-      navigator.getBattery().then(battery => {
-        this.trackEvent('battery_info', {
-          level: battery.level,
-          charging: battery.charging,
-          chargingTime: battery.chargingTime,
-          dischargingTime: battery.dischargingTime,
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-        
-        battery.addEventListener('levelchange', () => {
-          this.trackEvent('battery_level_change', {
-            level: battery.level,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        });
-        
-        battery.addEventListener('chargingchange', () => {
-          this.trackEvent('battery_charging_change', {
-            charging: battery.charging,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        });
-      });
-    }
-  }
-
-  // 12. TRACKING DE CONECTIVIDAD
-  initConnectivityTracking() {
-    if ('onLine' in navigator) {
-      this.trackEvent('connectivity_status', {
-        online: navigator.onLine,
-        timestamp: Date.now(),
-        sessionId: this.sessionId
-      });
-      
-      window.addEventListener('online', () => {
-        this.trackEvent('connectivity_online', {
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-      });
-      
-      window.addEventListener('offline', () => {
-        this.trackEvent('connectivity_offline', {
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-      });
-    }
-  }
-
-  // 13. TRACKING DE GEOLOCALIZACIÓN
-  initGeolocationTracking() {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.trackEvent('geolocation_success', {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-      }, (error) => {
-        this.trackEvent('geolocation_error', {
-          error: error.message,
-          timestamp: Date.now(),
-          sessionId: this.sessionId
-        });
-      });
-    }
-  }
-
-  // 14. TRACKING DE ACCELERÓMETRO
-  initAccelerometerTracking() {
-    if ('Accelerometer' in window) {
-      try {
-        const accelerometer = new Accelerometer({ frequency: 60 });
-        accelerometer.addEventListener('reading', () => {
-          this.trackEvent('accelerometer_reading', {
-            x: accelerometer.x,
-            y: accelerometer.y,
-            z: accelerometer.z,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        });
-        accelerometer.start();
-      } catch (error) {
-        // No disponible
-      }
-    }
-  }
-
-  // 15. TRACKING DE GYROSCOPIO
-  initGyroscopeTracking() {
-    if ('Gyroscope' in window) {
-      try {
-        const gyroscope = new Gyroscope({ frequency: 60 });
-        gyroscope.addEventListener('reading', () => {
-          this.trackEvent('gyroscope_reading', {
-            x: gyroscope.x,
-            y: gyroscope.y,
-            z: gyroscope.z,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        });
-        gyroscope.start();
-      } catch (error) {
-        // No disponible
-      }
-    }
-  }
-
-  // 16. TRACKING DE MICRÓFONO
-  initMicrophoneTracking() {
-    if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-          this.trackEvent('microphone_access', {
-            granted: true,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-      });
-        })
-        .catch(error => {
-          this.trackEvent('microphone_access', {
-            granted: false,
-            error: error.message,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        });
-    }
-  }
-
-  // 17. TRACKING DE CÁMARA
-  initCameraTracking() {
-    if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
-      navigator.mediaDevices.getUserMedia({ video: true })
-        .then(stream => {
-          this.trackEvent('camera_access', {
-            granted: true,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        })
-        .catch(error => {
-          this.trackEvent('camera_access', {
-            granted: false,
-            error: error.message,
-            timestamp: Date.now(),
-            sessionId: this.sessionId
-          });
-        });
-    }
-  }
-
-  // 18. TRACKING DE NOTIFICACIONES
-  initNotificationTracking() {
-    if ('Notification' in window) {
-      this.trackEvent('notification_permission', {
-        permission: Notification.permission,
-        timestamp: Date.now(),
-        sessionId: this.sessionId
-      });
-    }
-  }
-
-  // 19. TRACKING DE PERMISOS
-  initPermissionTracking() {
-    if ('permissions' in navigator) {
-      const permissions = ['camera', 'microphone', 'geolocation', 'notifications'];
-      
-      permissions.forEach(permission => {
-        navigator.permissions.query({ name: permission })
-          .then(result => {
-            this.trackEvent('permission_status', {
-              permission,
-              state: result.state,
-              timestamp: Date.now(),
-              sessionId: this.sessionId
-            });
-          });
-      });
-    }
-  }
-
-  // 20. TRACKING DE STORAGE
-  initStorageTracking() {
-    // Local Storage
-    const originalSetItem = localStorage.setItem;
-    localStorage.setItem = function(key, value) {
-      this.trackEvent('local_storage_set', {
-        key,
-        value: value.toString().substring(0, 100),
-        timestamp: Date.now(),
-        sessionId: this.sessionId
-      });
-      originalSetItem.apply(this, arguments);
-    }.bind(this);
-    
-    // Session Storage
-    const originalSessionSetItem = sessionStorage.setItem;
-    sessionStorage.setItem = function(key, value) {
-      this.trackEvent('session_storage_set', {
-        key,
-        value: value.toString().substring(0, 100),
-        timestamp: Date.now(),
-        sessionId: this.sessionId
-      });
-      originalSessionSetItem.apply(this, arguments);
-    }.bind(this);
   }
 
   // FUNCIONES AUXILIARES
@@ -830,10 +466,10 @@ class CompleteTrackingSystem {
             height: window.innerHeight
           },
           screen: {
-            width: screen.width,
-            height: screen.height,
-            colorDepth: screen.colorDepth,
-            pixelDepth: screen.pixelDepth
+            width: window.screen.width,
+            height: window.screen.height,
+            colorDepth: window.screen.colorDepth,
+            pixelDepth: window.screen.pixelDepth
           }
         }
       };
