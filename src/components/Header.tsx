@@ -123,18 +123,18 @@ export function Header() {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.nav
-              className="md:hidden overflow-hidden"
+              className="md:hidden"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <div className="flex flex-col space-y-4 pt-4 pb-4 border-t border-blue-100 mt-4">
+              <div className="flex flex-col space-y-4 pt-4 pb-4 border-t border-blue-100 mt-4 px-4">
                 {navigationItems.map((item, index) => (
                   <motion.a
                     key={item.name}
                     href={item.href}
-                    className="text-gray-700 hover:text-blue-600 transition-colors py-2"
+                    className="text-gray-700 hover:text-blue-600 transition-colors py-2 px-2 w-full text-left"
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
