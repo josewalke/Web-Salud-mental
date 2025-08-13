@@ -1745,6 +1745,7 @@ input {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   max-width: 400px;
   width: 100%;
+  min-width: 320px; /* ANCHO MÍNIMO PARA EVITAR TEXTO VERTICAL */
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
@@ -1773,6 +1774,15 @@ input {
   overflow-wrap: break-word;
   hyphens: none;
   text-align: left;
+  /* FORZAR TEXTO HORIZONTAL */
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  direction: ltr;
+  unicode-bidi: normal;
+  display: block;
+  width: auto;
+  min-width: 0;
+  max-width: none;
 }
 
 .modal-close-rediseñado {
@@ -1836,6 +1846,7 @@ input {
   .modal-content-rediseñado {
     max-width: 95vw;
     width: 95vw;
+    min-width: 320px; /* ANCHO MÍNIMO PARA EVITAR TEXTO VERTICAL */
     margin: 0.5rem;
     max-height: 90vh;
   }
@@ -1858,6 +1869,15 @@ input {
     width: 100%;
     text-align: left;
     flex: 1;
+    /* FORZAR TEXTO HORIZONTAL EN MÓVIL */
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    direction: ltr !important;
+    unicode-bidi: normal !important;
+    display: block !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: visible !important;
   }
 
   .modal-close-rediseñado {
