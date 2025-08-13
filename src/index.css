@@ -1748,9 +1748,11 @@ input {
   min-width: 350px; /* ANCHO MÍNIMO AUMENTADO PARA EVITAR TEXTO VERTICAL */
   max-height: 80vh;
   overflow-y: auto;
+  overflow-x: hidden; /* PREVENIR SCROLL HORIZONTAL */
   position: relative;
   margin-right: 1rem;
   margin-left: auto;
+  box-sizing: border-box; /* INCLUIR PADDING Y BORDER EN EL ANCHO */
 }
 
 .modal-header-rediseñado {
@@ -1762,6 +1764,8 @@ input {
   position: relative;
   min-height: 60px;
   justify-content: space-between;
+  box-sizing: border-box; /* INCLUIR PADDING EN EL ANCHO */
+  width: 100%; /* ASEGURAR QUE OCUPE TODO EL ANCHO DISPONIBLE */
 }
 
 .modal-title-rediseñado {
@@ -1793,6 +1797,8 @@ input {
   /* FORZAR COMPORTAMIENTO HORIZONTAL */
   transform: none !important;
   transform-origin: initial !important;
+  box-sizing: border-box; /* INCLUIR PADDING EN EL ANCHO */
+  word-wrap: break-word; /* ALTERNATIVA PARA overflow-wrap */
 }
 
 .modal-close-rediseñado {
@@ -1823,6 +1829,10 @@ input {
   color: #4b5563;
   line-height: 1.6;
   font-size: 0.875rem;
+  box-sizing: border-box; /* INCLUIR PADDING EN EL ANCHO */
+  width: 100%; /* ASEGURAR QUE OCUPE TODO EL ANCHO DISPONIBLE */
+  overflow-x: hidden; /* PREVENIR SCROLL HORIZONTAL */
+  word-wrap: break-word; /* ALTERNATIVA PARA overflow-wrap */
 }
 
 /* RESPONSIVE Y ANIMACIONES */
@@ -1857,6 +1867,7 @@ input {
     justify-content: flex-end;
     align-items: flex-start;
     padding: 1rem 0.5rem 1rem 1rem;
+    overflow: hidden; /* PREVENIR SCROLL EN EL OVERLAY */
   }
 
   .modal-content-rediseñado {
@@ -1865,6 +1876,8 @@ input {
     min-width: 350px !important; /* ANCHO MÍNIMO FORZADO PARA EVITAR TEXTO VERTICAL */
     margin: 0.5rem 1rem 0.5rem auto; /* MARGEN DERECHO PARA POSICIONAR A LA DERECHA */
     max-height: 90vh;
+    overflow-x: hidden !important; /* PREVENIR SCROLL HORIZONTAL EN MÓVIL */
+    box-sizing: border-box !important; /* INCLUIR PADDING EN EL ANCHO */
   }
 
   .modal-header-rediseñado {
@@ -1874,6 +1887,8 @@ input {
     gap: 0.5rem;
     justify-content: space-between;
     min-width: 0; /* PERMITIR QUE EL HEADER SE AJUSTE */
+    box-sizing: border-box !important; /* INCLUIR PADDING EN EL ANCHO */
+    width: 100% !important; /* ASEGURAR QUE OCUPE TODO EL ANCHO DISPONIBLE */
   }
 
   .modal-title-rediseñado {
@@ -1922,6 +1937,10 @@ input {
     padding: 1rem;
     font-size: 0.875rem;
     line-height: 1.5;
+    box-sizing: border-box !important; /* INCLUIR PADDING EN EL ANCHO */
+    width: 100% !important; /* ASEGURAR QUE OCUPE TODO EL ANCHO DISPONIBLE */
+    overflow-x: hidden !important; /* PREVENIR SCROLL HORIZONTAL EN MÓVIL */
+    word-wrap: break-word !important; /* ALTERNATIVA PARA overflow-wrap */
   }
 
   /* Asegurar que el contenido del modal sea legible */
