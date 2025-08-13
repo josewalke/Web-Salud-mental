@@ -43,8 +43,8 @@ export function HeroSection() {
   return (
     <section 
       id="inicio" 
-      className="relative min-h-screen py-20 overflow-hidden lazy-section stable-layout"
-      style={{ maxWidth: '100vw', overflowX: 'hidden' }}
+      className="section relative min-h-screen py-20 overflow-hidden lazy-section stable-layout safe-area"
+      style={{ minHeight: '100svh' }}
     >
       {/* Subtle gradient overlay for better text readability */}
       <motion.div
@@ -59,22 +59,21 @@ export function HeroSection() {
         transition={isMobile || isLowEnd ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="container mx-auto px-4 relative z-10" style={{ maxWidth: '100vw', overflowX: 'hidden' }}>
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]" style={{ maxWidth: '100%', overflowX: 'hidden' }}>
+      <div className="container relative z-10">
+        <div className="hero grid items-center min-h-[80vh]">
                       <motion.div
-              className="space-y-8 animate-optimized"
+              className="prose space-y-8 animate-optimized"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
-              style={{ maxWidth: '100%', overflowX: 'hidden' }}
             >
-            <div className="space-y-6" style={{ maxWidth: '100%', overflowX: 'hidden' }}>
+            <div className="space-y-6">
               <motion.h1
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-gray-900 leading-tight break-words"
+                className="text-gray-900 leading-tight"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.28, ease: "easeOut" }}
-                style={{ textShadow: '0 2px 4px rgba(255, 255, 255, 0.5)', maxWidth: '100%', overflowX: 'hidden' }}
+                style={{ textShadow: '0 2px 4px rgba(255, 255, 255, 0.5)' }}
               >
                 El cerebro también se puede
                 <motion.span
@@ -92,11 +91,11 @@ export function HeroSection() {
               </motion.h1>
 
               <motion.p
-                className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed break-words"
+                className="text-body text-gray-700"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.28, ease: "easeOut" }}
-                style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)', maxWidth: '100%', overflowX: 'hidden', wordWrap: 'break-word' }}
+                style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}
               >
                 Estamos encantados de que quieras trabajar en tu crecimiento personal. 
                 ¡Aquí no hay juicio porque ayudamos de corazón! Love on the Brain es una 
@@ -109,7 +108,6 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.28, ease: "easeOut" }}
-              style={{ maxWidth: '100%', overflowX: 'hidden', width: '100%' }}
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -148,11 +146,10 @@ export function HeroSection() {
 
 
             <motion.div
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4"
+              className="features flex flex-col items-start gap-4 pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
-              style={{ maxWidth: '100%', overflowX: 'hidden' }}
             >
               {features.map((item, index) => (
                 <motion.div
@@ -169,7 +166,7 @@ export function HeroSection() {
                   >
                     <item.icon className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   </motion.div>
-                  <span className="text-sm text-gray-700 break-words" style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)', maxWidth: '100%', overflowX: 'hidden', wordWrap: 'break-word' }}>
+                  <span className="text-sm text-gray-700" style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}>
                     {item.text}
                   </span>
                 </motion.div>
