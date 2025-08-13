@@ -1297,3 +1297,499 @@ input {
     margin: 0.125rem !important;
   }
 }
+
+/* ===== REDISEÑO COMPLETO DEL CUESTIONARIO - CSS PURO ===== */
+
+/* RESET Y BASE DEL CUESTIONARIO */
+.cuestionario-rediseñado {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.4;
+  color: #1f2937;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+/* CONTAINER PRINCIPAL */
+.cuestionario-rediseñado .container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+  background: transparent;
+}
+
+/* HEADER DEL CUESTIONARIO */
+.cuestionario-header-rediseñado {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+}
+
+.cuestionario-header-rediseñado .icono-principal {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 0.75rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+.cuestionario-header-rediseñado .icono-principal svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.cuestionario-header-rediseñado h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cuestionario-header-rediseñado p {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+/* BARRA DE PROGRESO */
+.progress-container-rediseñado {
+  margin-bottom: 0.75rem;
+}
+
+.progress-bar-rediseñado {
+  width: 100%;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill-rediseñado {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-text-rediseñado {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* CARD PRINCIPAL DEL CUESTIONARIO */
+.cuestionario-card-rediseñado {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.cuestionario-card-header-rediseñado {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.cuestionario-card-title-rediseñado {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.cuestionario-card-subtitle-rediseñado {
+  font-size: 0.75rem;
+  color: #ef4444;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.cuestionario-card-subtitle-rediseñado::before {
+  content: "*";
+  color: #ef4444;
+  font-weight: bold;
+}
+
+/* CONTENIDO DE LA CARD */
+.cuestionario-card-content-rediseñado {
+  padding: 1.5rem;
+}
+
+/* OPCIONES DE RADIO REDISEÑADAS */
+.radio-options-container-rediseñado {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .radio-options-container-rediseñado {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .radio-options-container-rediseñado .option-odd-last {
+    grid-column: 1 / -1;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+}
+
+.radio-option-card-rediseñado {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 48px;
+}
+
+.radio-option-card-rediseñado:hover {
+  border-color: #3b82f6;
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+}
+
+.radio-option-card-rediseñado input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.radio-option-card-rediseñado input[type="radio"]:checked + label {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.radio-option-card-rediseñado label {
+  font-size: 0.875rem;
+  color: #64748b;
+  cursor: pointer;
+  flex: 1;
+  line-height: 1.4;
+  user-select: none;
+}
+
+.radio-option-card-rediseñado.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.15);
+}
+
+/* INPUTS REDISEÑADOS */
+.input-group-rediseñado {
+  margin-bottom: 1rem;
+}
+
+.input-label-rediseñado {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.input-field-rediseñado {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  min-height: 44px;
+}
+
+.input-field-rediseñado:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-field-rediseñado::placeholder {
+  color: #9ca3af;
+}
+
+.textarea-field-rediseñado {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* BOTONES REDISEÑADOS */
+.botones-container-rediseñado {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-rediseñado {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-anterior-rediseñado {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-anterior-rediseñado:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.btn-anterior-rediseñado:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-siguiente-rediseñado {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+.btn-siguiente-rediseñado:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.4);
+}
+
+.btn-enviar-rediseñado {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+}
+
+.btn-enviar-rediseñado:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.4);
+}
+
+/* BOTÓN DE INFORMACIÓN REDISEÑADO */
+.info-button-rediseñado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 1rem auto 0;
+  max-width: 200px;
+}
+
+.info-button-rediseñado:hover {
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  color: #475569;
+  transform: translateY(-1px);
+}
+
+.info-button-rediseñado svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* MODAL DE INFORMACIÓN REDISEÑADO */
+.modal-overlay-rediseñado {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content-rediseñado {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 400px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-header-rediseñado {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.modal-title-rediseñado {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.modal-close-rediseñado {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.modal-close-rediseñado:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.modal-body-rediseñado {
+  padding: 1rem 1.5rem 1.5rem;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 0.875rem;
+}
+
+/* RESPONSIVE Y ANIMACIONES */
+@media (max-width: 640px) {
+  .cuestionario-rediseñado .container {
+    padding: 0.5rem;
+  }
+  
+  .cuestionario-header-rediseñado {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .cuestionario-header-rediseñado h1 {
+    font-size: 1.25rem;
+  }
+  
+  .cuestionario-card-content-rediseñado {
+    padding: 1rem;
+  }
+  
+  .botones-container-rediseñado {
+    flex-direction: column;
+  }
+  
+  .btn-rediseñado {
+    width: 100%;
+  }
+}
+
+/* ANIMACIONES */
+.cuestionario-card-rediseñado {
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.radio-option-card-rediseñado {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ESTADOS ESPECIALES */
+.cuestionario-rediseñado.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.cuestionario-rediseñado.completed {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+/* UTILIDADES */
+.text-center-rediseñado {
+  text-align: center;
+}
+
+.text-left-rediseñado {
+  text-align: left;
+}
+
+.text-right-rediseñado {
+  text-align: right;
+}
+
+.hidden-rediseñado {
+  display: none;
+}
+
+.visible-rediseñado {
+  display: block;
+}
