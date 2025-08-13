@@ -8,8 +8,8 @@ import { SplineBackground } from './components/SplineBackground';
 import { Navigation } from './components/Navigation';
 import { HeroSection } from './components/HeroSection';
 
-import { QuestionnairePage } from './pages/QuestionnairePage';
-import { PersonalityQuestionnairePage } from './pages/PersonalityQuestionnairePage';
+import QuestionnairePage from './pages/QuestionnairePage';
+import PersonalityQuestionnairePage from './pages/PersonalityQuestionnairePage';
 
 // Lazy load non-critical components for better performance
 const ProblemSection = lazy(() => import('./components/ProblemSection').then(module => ({ default: module.ProblemSection })));

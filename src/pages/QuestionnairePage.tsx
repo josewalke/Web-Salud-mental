@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, ChevronLeft, ChevronRight, Info, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 interface Question {
   id: number;
@@ -13,7 +12,6 @@ interface Question {
 }
 
 const QuestionnairePage: React.FC = () => {
-  const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [formData, setFormData] = useState<Record<number, string>>({});
   const [showInfoModal, setShowInfoModal] = useState(false);
