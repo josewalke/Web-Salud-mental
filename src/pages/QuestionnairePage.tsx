@@ -648,64 +648,64 @@ export function QuestionnairePage() {
             onClick={() => setShowInfoModal(false)}
           >
             <motion.div
-              className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] sm:max-h-[80vh] overflow-y-auto"
+              className="bg-white rounded-2xl shadow-2xl w-[95vw] sm:w-full max-w-2xl max-h-[95vh] sm:max-h-[80vh] overflow-y-auto mx-2"
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header del modal */}
-              <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center">
-                  <Info className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-2 sm:mr-3" />
-                  Información del Cuestionario
+              <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 border-b border-gray-200">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 flex items-center flex-wrap">
+                  <Info className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-2 sm:mr-3 flex-shrink-0" />
+                  <span className="whitespace-normal">Información del Cuestionario</span>
                 </h2>
                 <button
                   onClick={() => setShowInfoModal(false)}
-                  className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+                  className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-2"
                 >
                   <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
                 </button>
               </div>
               
               {/* Contenido del modal */}
-              <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
                 <div>
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3 text-center sm:text-left">
                     ¿Por qué elegir nuestro Test de Compatibilidad de Pareja?
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center sm:text-left">
                     Nuestro <strong>cuestionario de compatibilidad</strong> está diseñado por psicólogos expertos 
                     para ayudarte a encontrar a tu pareja ideal. Utilizamos metodologías científicas probadas 
                     que analizan múltiples dimensiones de la personalidad y las relaciones.
                   </p>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="flex items-start space-x-2 sm:space-x-3">
+                <div className="grid grid-cols-1 gap-3 sm:gap-4">
+                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
                     <Brain className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mt-1 flex-shrink-0" />
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Científicamente Probado</h4>
                       <p className="text-xs sm:text-sm text-gray-600">Metodología avalada por psicólogos expertos</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 sm:space-x-3">
+                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
                     <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mt-1 flex-shrink-0" />
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Compatibilidad Real</h4>
                       <p className="text-xs sm:text-sm text-gray-600">Encuentra a alguien que realmente te entienda</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 sm:space-x-3">
+                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
                     <Users className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Resultados Garantizados</h4>
                       <p className="text-xs sm:text-sm text-gray-600">Resultados precisos o tu dinero de vuelta</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 sm:space-x-3">
+                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
                     <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mt-1 flex-shrink-0" />
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">100% Confidencial</h4>
                       <p className="text-xs sm:text-sm text-gray-600">Tu privacidad es nuestra prioridad</p>
                     </div>
@@ -713,10 +713,10 @@ export function QuestionnairePage() {
                 </div>
                 
                 <div className="bg-blue-50 rounded-xl p-3 sm:p-4">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base">
+                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base text-center sm:text-left">
                     Test de Compatibilidad: ¿Cómo Funciona?
                   </h4>
-                  <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-gray-700">
+                  <div className="space-y-2 text-xs sm:text-sm text-gray-700">
                     <p><strong>🔍 Análisis Profundo:</strong> Evaluamos 18 aspectos clave de tu personalidad</p>
                     <p><strong>🧠 Base Científica:</strong> Metodología validada por expertos</p>
                     <p><strong>💝 Resultados Personalizados:</strong> Análisis detallado de tu perfil</p>
@@ -724,8 +724,6 @@ export function QuestionnairePage() {
                   </div>
                 </div>
               </div>
-              
-
             </motion.div>
           </motion.div>
         )}
