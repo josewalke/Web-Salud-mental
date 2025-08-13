@@ -8,8 +8,6 @@ import { SplineBackground } from './components/SplineBackground';
 import { Navigation } from './components/Navigation';
 import { HeroSection } from './components/HeroSection';
 
-// ELIMINADO: import { UserActionsDashboard } from './components/UserActionsDashboard';
-
 import { QuestionnairePage } from './pages/QuestionnairePage';
 import { PersonalityQuestionnairePage } from './pages/PersonalityQuestionnairePage';
 
@@ -111,7 +109,9 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/cuestionario" element={<QuestionnairePage />} />
               <Route path="/cuestionario-personalidad" element={<PersonalityQuestionnairePage />} />
-              {/* ELIMINADO: Ruta del dashboard de tracking */}
+              
+              {/* Redirección por defecto */}
+              <Route path="*" element={<div>Página no encontrada</div>} />
             </Routes>
           </BrowserRouter>
         </MotionConfig>

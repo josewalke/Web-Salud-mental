@@ -1,25 +1,39 @@
 import React from 'react';
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { motion } from 'framer-motion';
-import { ArrowRight, Shield, Brain, Star } from 'lucide-react';
+import { ArrowRight, Shield, Brain, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import { FloatingElement } from "./FloatingElement";
 import { useCallback } from "react";
+import { useDeviceOptimization } from "../hooks/useDeviceOptimization";
 
 export function HeroSection() {
-  const scrollToSection = useCallback(() => {
+  const { optimizationLevel, getAnimationConfig, isMobile, isLowEnd } = useDeviceOptimization();
+  const animationConfig = getAnimationConfig();
+  
+
+  
+  const scrollToServices = useCallback(() => {
     const element = document.getElementById('servicios');
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      if (isMobile || isLowEnd) {
+        element.scrollIntoView();
+      } else {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
-  }, []);
+  }, [isMobile, isLowEnd]);
 
   const scrollToContact = useCallback(() => {
     const element = document.getElementById('contacto');
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      if (isMobile || isLowEnd) {
+        element.scrollIntoView();
+      } else {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
-  }, []);
+  }, [isMobile, isLowEnd]);
 
   const features = [
     {
@@ -33,27 +47,42 @@ export function HeroSection() {
       description: "Profesionales certificados en salud mental"
     },
     {
-      icon: Star,
+      icon: Sparkles,
       title: "Científicamente probado",
       description: "Métodos basados en evidencia científica"
     }
   ];
 
   return (
-    <section id="hero" className="hero grid items-center min-h-[80vh] relative overflow-hidden">
+    <section 
+      id="inicio" 
+      className="section relative min-h-screen py-20 overflow-hidden lazy-section stable-layout safe-area"
+      style={{ minHeight: '100svh' }}
+    >
+      {/* Subtle gradient overlay for better text readability */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-br from-white/60 via-blue-50/40 to-white/60"
+        animate={isMobile || isLowEnd ? {} : {
+          background: [
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
+            "linear-gradient(225deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
+          ]
+        }}
+        transition={isMobile || isLowEnd ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
-          <motion.div
-            className="space-y-8 animate-optimized"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.28, ease: "easeOut" }}
-          >
+      <div className="container relative z-10">
+        <div className="hero grid items-center min-h-[80vh]">
+                      <motion.div
+              className="prose space-y-8 animate-optimized"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
             <div className="space-y-6">
               <motion.h1
-                className="text-4xl lg:text-6xl text-gray-900 leading-tight text-center sm:text-left"
+                className="text-gray-900 leading-tight"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.28, ease: "easeOut" }}
@@ -75,7 +104,7 @@ export function HeroSection() {
               </motion.h1>
 
               <motion.p
-                className="text-xl text-gray-700 leading-relaxed text-center sm:text-left"
+                className="text-body text-gray-700"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.28, ease: "easeOut" }}
@@ -88,7 +117,7 @@ export function HeroSection() {
             </div>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center sm:justify-start"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.28, ease: "easeOut" }}
@@ -99,8 +128,8 @@ export function HeroSection() {
               >
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 backdrop-blur-sm"
-                  onClick={scrollToSection}
+                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 backdrop-blur-sm text-sm sm:text-base"
+                  onClick={scrollToServices}
                 >
                   Explorar packs
                   <motion.div
@@ -119,7 +148,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 border-solid border-red-500 text-blue-600 hover:bg-blue-50 hover:shadow-lg hover:shadow-blue-100/50 transition-all duration-300"
+                  className="w-full sm:w-auto border-blue-600 text-blue-600 hover:bg-blue-50 hover:shadow-lg hover:shadow-blue-100/50 transition-all duration-300 bg-white/80 backdrop-blur-sm text-sm sm:text-base"
                   onClick={scrollToContact}
                 >
                   Contactar
@@ -130,7 +159,7 @@ export function HeroSection() {
 
 
             <motion.div
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 pt-4"
+              className="features flex flex-col items-start gap-4 pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
@@ -138,12 +167,8 @@ export function HeroSection() {
               {features.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left space-y-2 sm:space-y-0 sm:space-x-2 p-4 rounded-xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all duration-300"
-                  whileHover={{ 
-                    scale: 1.05, 
-                    y: -5,
-                    transition: { duration: 0.15 }
-                  }}
+                  className="flex items-center space-x-2 w-full sm:w-auto"
+                  whileHover={{ scale: 1.05, y: -2 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ 
@@ -159,7 +184,7 @@ export function HeroSection() {
                       transition: { duration: 0.2 }
                     }}
                   >
-                    <item.icon className="w-6 h-6 text-blue-600" />
+                    <item.icon className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   </motion.div>
                   <div className="flex flex-col">
                     <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
