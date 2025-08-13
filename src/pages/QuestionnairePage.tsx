@@ -458,7 +458,6 @@ export function QuestionnairePage() {
               </Button>
               
               <div className="flex items-center space-x-2 sm:space-x-4">
-                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">Love on the Brain</h1>
               </div>
             </div>
           </div>
