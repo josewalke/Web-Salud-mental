@@ -6,6 +6,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
+  /* RESPONSIVE DESIGN MODERNO - Base sólida */
+  --step-0: clamp(1rem, 0.9rem + 1vw, 1.25rem);
+  --step-1: clamp(1.125rem, 1rem + 1.5vw, 1.5rem);
+  --step-2: clamp(1.25rem, 1.125rem + 2vw, 1.875rem);
+  --step-3: clamp(1.5rem, 1.25rem + 3vw, 2.25rem);
+  --step-4: clamp(1.875rem, 1.5rem + 4vw, 3rem);
+  --step-5: clamp(2.25rem, 1.875rem + 5vw, 3.75rem);
+  
+  /* Espaciados fluidos */
+  --space-xs: clamp(0.5rem, 0.25rem + 1vw, 0.75rem);
+  --space-sm: clamp(0.75rem, 0.5rem + 1vw, 1rem);
+  --space-md: clamp(1rem, 0.75rem + 1.5vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 1rem + 2vw, 2rem);
+  --space-xl: clamp(2rem, 1.5rem + 3vw, 3rem);
+  
+  /* Container queries */
+  --container-padding: clamp(1rem, 2vw, 2rem);
+  --container-max-width: 1100px;
+  
+  /* Variables existentes de Tailwind */
   --font-size: 14px;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
@@ -202,27 +222,7 @@ body {
 /* CHATGPT RECOMMENDED OPTIMIZATIONS */
 /* High-impact performance improvements */
 
-/* RESPONSIVE DESIGN MODERNO - Base sólida */
-:root {
-  /* Escala fluida de tipografía */
-  --step-0: clamp(1rem, 0.9rem + 1vw, 1.25rem);
-  --step-1: clamp(1.125rem, 1rem + 1.5vw, 1.5rem);
-  --step-2: clamp(1.25rem, 1.125rem + 2vw, 1.875rem);
-  --step-3: clamp(1.5rem, 1.25rem + 3vw, 2.25rem);
-  --step-4: clamp(1.875rem, 1.5rem + 4vw, 3rem);
-  --step-5: clamp(2.25rem, 1.875rem + 5vw, 3.75rem);
-  
-  /* Espaciados fluidos */
-  --space-xs: clamp(0.5rem, 0.25rem + 1vw, 0.75rem);
-  --space-sm: clamp(0.75rem, 0.5rem + 1vw, 1rem);
-  --space-md: clamp(1rem, 0.75rem + 1.5vw, 1.5rem);
-  --space-lg: clamp(1.5rem, 1rem + 2vw, 2rem);
-  --space-xl: clamp(2rem, 1.5rem + 3vw, 3rem);
-  
-  /* Container queries */
-  --container-padding: clamp(1rem, 2vw, 2rem);
-  --container-max-width: 1100px;
-}
+
 
 /* CRÍTICO: FIXES RESPONSIVE PARA MÓVIL */
 @media (max-width: 768px) {
