@@ -895,3 +895,166 @@ input {
   cursor: pointer;
   line-height: 1.4;
 }
+
+/* CUESTIONARIO COMPACTO - TODO MÁS PEQUEÑO */
+.cuestionario-compacto {
+  /* Header más compacto */
+  .cuestionario-header {
+    padding: 1rem 0 !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  .cuestionario-header h1 {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .cuestionario-header p {
+    font-size: 0.875rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .cuestionario-header .icono-principal {
+    width: 3rem !important;
+    height: 3rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .cuestionario-header .icono-principal svg {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+  
+  /* Progress bar más pequeño */
+  .cuestionario-header .progress-bar {
+    height: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .cuestionario-header .progress-text {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Card del cuestionario más compacta */
+  .cuestionario-card {
+    min-height: 300px !important;
+    padding: 1rem !important;
+  }
+  
+  .cuestionario-card .card-header {
+    padding-bottom: 1rem !important;
+  }
+  
+  .cuestionario-card .card-title {
+    font-size: 1.125rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .cuestionario-card .card-content {
+    padding: 1rem !important;
+    min-height: 150px !important;
+  }
+  
+  /* Botones más pequeños */
+  .cuestionario-botones button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  .cuestionario-botones .boton-enviar {
+    padding: 0.5rem 1.5rem !important;
+  }
+  
+  /* Opciones de radio más compactas */
+  .cuestionario-opciones .radio-option-card {
+    padding: 0.5rem !important;
+    min-height: 2.5rem !important;
+  }
+  
+  .cuestionario-opciones .radio-option-card input[type="radio"] {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+  
+  .cuestionario-opciones .radio-option-card label {
+    font-size: 0.875rem !important;
+  }
+  
+  /* Inputs más pequeños */
+  .cuestionario-inputs input,
+  .cuestionario-inputs textarea {
+    padding: 0.5rem !important;
+    font-size: 0.875rem !important;
+    min-height: 2.5rem !important;
+  }
+  
+  .cuestionario-inputs textarea {
+    min-height: 4rem !important;
+  }
+  
+  /* Botón de información más pequeño */
+  .cuestionario-info-button {
+    padding: 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  .cuestionario-info-button svg {
+    width: 0.875rem !important;
+    height: 0.875rem !important;
+  }
+}
+
+/* Versión ultra-compacta */
+.cuestionario-ultra-compacto {
+  .cuestionario-header {
+    padding: 0.75rem 0 !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .cuestionario-header h1 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .cuestionario-header p {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .cuestionario-header .icono-principal {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  .cuestionario-header .icono-principal svg {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+  
+  .cuestionario-card {
+    min-height: 250px !important;
+    padding: 0.75rem !important;
+  }
+  
+  .cuestionario-card .card-content {
+    padding: 0.75rem !important;
+    min-height: 120px !important;
+  }
+  
+  .cuestionario-opciones .radio-option-card {
+    padding: 0.375rem !important;
+    min-height: 2rem !important;
+  }
+  
+  .cuestionario-inputs input,
+  .cuestionario-inputs textarea {
+    padding: 0.375rem !important;
+    font-size: 0.75rem !important;
+    min-height: 2rem !important;
+  }
+  
+  .cuestionario-inputs textarea {
+    min-height: 3rem !important;
+  }
+}

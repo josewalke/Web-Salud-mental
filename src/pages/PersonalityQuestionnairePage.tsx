@@ -716,16 +716,16 @@ export function PersonalityQuestionnairePage() {
           </div>
         </motion.header>
 
-        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10">
+        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10 cuestionario-compacto">
           {/* Header del Cuestionario */}
           <motion.div
-            className="text-center mb-8 sm:mb-12"
+            className="text-center mb-8 sm:mb-12 cuestionario-header"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full mb-6 sm:mb-8 shadow-2xl"
+              className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full mb-6 sm:mb-8 shadow-2xl icono-principal"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -754,7 +754,7 @@ export function PersonalityQuestionnairePage() {
             </motion.p>
 
             {/* Progress bar */}
-            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-3 sm:h-4 mb-4 sm:mb-6">
+            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-3 sm:h-4 mb-4 sm:mb-6 progress-bar">
               <motion.div
                 className="bg-gradient-to-r from-blue-500 to-blue-700 h-3 sm:h-4 rounded-full"
                 initial={{ width: 0 }}
@@ -763,7 +763,7 @@ export function PersonalityQuestionnairePage() {
               />
             </div>
             
-            <p className="text-sm sm:text-base text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600 progress-text">
               Pregunta {currentStep + 1} de {questions.length}
             </p>
           </motion.div>
@@ -793,8 +793,8 @@ export function PersonalityQuestionnairePage() {
                 {/* Efecto de sombra interna para profundidad */}
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/5 pointer-events-none" />
                 
-                <CardHeader className="text-center pb-4 sm:pb-6">
-                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl text-gray-900 mb-3 sm:mb-4 text-center">
+                <CardHeader className="text-center pb-4 sm:pb-6 card-header">
+                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl text-gray-900 mb-3 sm:mb-4 text-center card-title">
                     {questions[currentStep].text}
                   </CardTitle>
                   {questions[currentStep].required && (
@@ -804,13 +804,13 @@ export function PersonalityQuestionnairePage() {
                   )}
                 </CardHeader>
                 
-                <CardContent className="space-y-4 sm:space-y-6">
-                  <div className="min-h-[200px] sm:min-h-[280px] flex flex-col justify-center">
+                <CardContent className="space-y-4 sm:space-y-6 card-content">
+                  <div className="min-h-[200px] sm:min-h-[280px] flex flex-col justify-center cuestionario-opciones">
                     {renderQuestion(questions[currentStep])}
                   </div>
 
                   {/* Navigation buttons */}
-                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 pt-4 sm:pt-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 pt-4 sm:pt-6 cuestionario-botones">
                     <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
@@ -838,7 +838,7 @@ export function PersonalityQuestionnairePage() {
                         <Button
                           onClick={handleSubmit}
                           size="lg"
-                          className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-[0_20px_25px_-5px_rgba(59,130,246,0.4)] transition-all duration-300 transform hover:-translate-y-1"
+                          className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-[0_20px_25px_-5px_rgba(59,130,246,0.4)] transition-all duration-300 transform hover:-translate-y-1 boton-enviar"
                         >
                           <Send className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                           Enviar Cuestionario
@@ -867,7 +867,7 @@ export function PersonalityQuestionnairePage() {
                 <div className="text-center pt-4 pb-2">
                   <motion.button
                     onClick={() => setShowInfoModal(true)}
-                    className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-300 hover:underline"
+                    className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-300 hover:underline cuestionario-info-button"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >

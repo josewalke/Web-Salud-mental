@@ -463,16 +463,16 @@ export function QuestionnairePage() {
           </div>
         </motion.header>
 
-        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10">
+        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10 cuestionario-compacto">
           {/* Header del Cuestionario */}
           <motion.div
-            className="text-center mb-8 sm:mb-12"
+            className="text-center mb-8 sm:mb-12 cuestionario-header"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full mb-6 sm:mb-8 shadow-2xl"
+              className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full mb-6 sm:mb-8 shadow-2xl icono-principal"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -486,7 +486,7 @@ export function QuestionnairePage() {
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               Cuestionario de
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700"> Compatibilidad de Pareja</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-pink-700"> Compatibilidad</span>
             </motion.h1>
             
             <motion.p
@@ -495,62 +495,53 @@ export function QuestionnairePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              Descubre tu compatibilidad emocional y encuentra a tu pareja ideal con nuestro 
-              <strong>test de compatibilidad científicamente diseñado</strong> por expertos en psicología. 
-              Este cuestionario de pareja te ayudará a entender mejor tus necesidades emocionales y 
-              encontrar a alguien que realmente te complemente.
+              Descubre tu <strong>compatibilidad de pareja ideal</strong> con nuestro cuestionario 
+              diseñado por psicólogos expertos. Este test de 18 preguntas te ayudará a encontrar 
+              a alguien que realmente te entienda y complemente.
             </motion.p>
 
             {/* Progress bar */}
-            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-3 sm:h-4 mb-4 sm:mb-6">
+            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-3 sm:h-4 mb-4 sm:mb-6 progress-bar">
               <motion.div
-                className="bg-gradient-to-r from-blue-500 to-blue-700 h-3 sm:h-4 rounded-full"
+                className="bg-gradient-to-r from-pink-500 to-pink-700 h-3 sm:h-4 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5 }}
               />
             </div>
             
-            <p className="text-lg sm:text-xl text-gray-600 font-medium">
+            <p className="text-sm sm:text-base text-gray-600 progress-text">
               Pregunta {currentStep + 1} de {questions.length}
             </p>
           </motion.div>
 
-          {/* Question Card */}
+          {/* Cuestionario */}
           <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, x: 50, rotateY: -15, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, rotateY: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -50, rotateY: 15, scale: 0.9 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-5xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="transform-style-preserve-3d"
-              whileHover={{ 
-                rotateY: 2, 
-                rotateX: 1, 
-                scale: 1.02,
-                z: 20
-              }}
-              transition={{ 
-                type: "spring", 
-                stiffness: 300, 
-                damping: 20 
-              }}
+              className="relative"
+              key={currentStep}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
             >
-              <Card className="bg-white/90 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(59,130,246,0.25),0_0_0_1px_rgba(255,255,255,0.1)] border border-white/30 relative overflow-hidden min-h-[400px] sm:min-h-[450px] questionnaire-card">
+              <Card className="bg-white/90 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(236,72,153,0.25),0_0_0_1px_rgba(255,255,255,0.1)] border border-white/30 relative overflow-hidden min-h-[400px] sm:min-h-[450px] questionnaire-card">
                 {/* Efecto de brillo en la parte superior */}
                 <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-transparent pointer-events-none" />
                 
                 {/* Borde superior con gradiente */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600" />
                 
                 {/* Efecto de sombra interna para profundidad */}
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/5 pointer-events-none" />
                 
-                <CardHeader className="text-center pb-4 sm:pb-6">
-                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl text-gray-900 mb-3 sm:mb-4 text-center">
+                <CardHeader className="text-center pb-4 sm:pb-6 card-header">
+                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl text-gray-900 mb-3 sm:mb-4 text-center card-title">
                     {questions[currentStep].text}
                   </CardTitle>
                   {questions[currentStep].required && (
@@ -560,13 +551,13 @@ export function QuestionnairePage() {
                   )}
                 </CardHeader>
                 
-                <CardContent className="space-y-4 sm:space-y-6">
-                  <div className="min-h-[200px] sm:min-h-[280px] flex flex-col justify-center">
+                <CardContent className="space-y-4 sm:space-y-6 card-content">
+                  <div className="min-h-[200px] sm:min-h-[280px] flex flex-col justify-center cuestionario-opciones">
                     {renderQuestion(questions[currentStep])}
                   </div>
 
                   {/* Navigation buttons */}
-                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 pt-4 sm:pt-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 pt-4 sm:pt-6 cuestionario-botones">
                     <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
@@ -578,7 +569,7 @@ export function QuestionnairePage() {
                         disabled={currentStep === 0}
                         variant="outline"
                         size="lg"
-                        className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 disabled:opacity-50 border-2 border-blue-200 hover:border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
+                        className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 disabled:opacity-50 border-2 border-pink-200 hover:border-pink-300 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
                       >
                         Anterior
                       </Button>
@@ -594,7 +585,7 @@ export function QuestionnairePage() {
                         <Button
                           onClick={handleSubmit}
                           size="lg"
-                          className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-[0_20px_25px_-5px_rgba(59,130,246,0.4)] transition-all duration-300 transform hover:-translate-y-1"
+                          className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-700 hover:from-pink-600 hover:to-pink-800 px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-[0_20px_25px_-5px_rgba(236,72,153,0.4)] transition-all duration-300 transform hover:-translate-y-1 boton-enviar"
                         >
                           <Send className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                           Enviar Cuestionario
@@ -610,7 +601,7 @@ export function QuestionnairePage() {
                         <Button
                           onClick={handleNext}
                           size="lg"
-                          className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+                          className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                         >
                           Siguiente
                         </Button>
@@ -620,22 +611,20 @@ export function QuestionnairePage() {
                 </CardContent>
 
                 {/* Botón de información discreto */}
-                <div className="text-center pt-3 sm:pt-4 pb-2">
+                <div className="text-center pt-4 pb-2">
                   <motion.button
                     onClick={() => setShowInfoModal(true)}
-                    className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-300 hover:underline"
+                    className="inline-flex items-center space-x-2 text-pink-600 hover:text-pink-700 text-sm font-medium transition-colors duration-300 hover:underline cuestionario-info-button"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <Info className="w-4 h-4" />
-                    <span className="text-xs sm:text-sm">Información sobre el cuestionario</span>
+                    <span>Información sobre el cuestionario</span>
                   </motion.button>
                 </div>
               </Card>
             </motion.div>
           </motion.div>
-
-
         </div>
         
         {/* Modal de Información */}
