@@ -16,6 +16,7 @@ const PersonalityQuestionnairePage: React.FC = () => {
   const [formData, setFormData] = useState<Record<number, string>>({});
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [currentInfo, setCurrentInfo] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const questions: Question[] = [
     {
@@ -553,8 +554,20 @@ const PersonalityQuestionnairePage: React.FC = () => {
   const handleAnswer = (answer: string) => {
     setFormData(prev => ({
       ...prev,
-      [currentQuestionIndex]: answer
+      [currentQuestion.id]: answer
     }));
+
+    // Si es una pregunta de opciones (radio), avanzar automáticamente
+    if (currentQuestion.type === 'radio') {
+      setIsProcessing(true);
+      // Pequeño delay para que el usuario vea su selección
+      setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+        setIsProcessing(false);
+      }, 800); // 800ms de delay para mejor experiencia visual
+    }
   };
 
   const handleNext = () => {
@@ -660,7 +673,7 @@ const PersonalityQuestionnairePage: React.FC = () => {
   const canProceed = hasAnswer || !currentQuestion.required;
 
   return (
-    <div className="cuestionario-rediseñado">
+    <div className={`cuestionario-rediseñado ${isProcessing ? 'processing' : ''}`}>
       <div className="container">
         {/* Header del Cuestionario */}
         <motion.div className="cuestionario-header-rediseñado">
@@ -693,6 +706,11 @@ const PersonalityQuestionnairePage: React.FC = () => {
             </div>
             <div className="progress-text-rediseñado">
               Pregunta {currentQuestionIndex + 1} de {questions.length}
+              {isProcessing && (
+                <span style={{ color: '#3b82f6', fontWeight: '600', marginLeft: '0.5rem' }}>
+                  Avanzando...
+                </span>
+              )}
             </div>
           </div>
         </motion.div>
@@ -728,7 +746,7 @@ const PersonalityQuestionnairePage: React.FC = () => {
                     <div
                       key={index}
                       className={`radio-option-card-rediseñado ${isLastOdd ? 'option-odd-last' : ''} ${
-                        formData[currentQuestionIndex] === option ? 'selected' : ''
+                        formData[currentQuestion.id] === option ? 'selected' : ''
                       }`}
                       onClick={() => handleAnswer(option)}
                     >
@@ -737,10 +755,10 @@ const PersonalityQuestionnairePage: React.FC = () => {
                         id={`option-${index}`}
                         name={`question-${currentQuestion.id}`}
                         value={option}
-                        checked={formData[currentQuestionIndex] === option}
+                        checked={formData[currentQuestion.id] === option}
                         onChange={() => handleAnswer(option)}
                       />
-                      <label htmlFor={`option-${index}`}>
+                      <label htmlFor={`option-${index}`} className="radio-option-text">
                         {option}
                       </label>
                     </div>
@@ -758,7 +776,7 @@ const PersonalityQuestionnairePage: React.FC = () => {
                   type="text"
                   className="input-field-rediseñado"
                   placeholder="Escribe tu respuesta aquí..."
-                  value={formData[currentQuestionIndex] || ''}
+                  value={formData[currentQuestion.id] || ''}
                   onChange={(e) => handleAnswer(e.target.value)}
                 />
               </div>
@@ -772,7 +790,7 @@ const PersonalityQuestionnairePage: React.FC = () => {
                 <textarea
                   className="input-field-rediseñado textarea-field-rediseñado"
                   placeholder="Escribe tu respuesta detallada aquí..."
-                  value={formData[currentQuestionIndex] || ''}
+                  value={formData[currentQuestion.id] || ''}
                   onChange={(e) => handleAnswer(e.target.value)}
                 />
               </div>
