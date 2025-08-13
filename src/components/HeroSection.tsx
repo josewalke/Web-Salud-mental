@@ -8,7 +8,8 @@ import { useCallback } from "react";
 import { useDeviceOptimization } from "../hooks/useDeviceOptimization";
 
 export function HeroSection() {
-  const { isMobile, isLowEnd } = useDeviceOptimization();
+  const { optimizationLevel, getAnimationConfig, isMobile, isLowEnd } = useDeviceOptimization();
+  const animationConfig = getAnimationConfig();
   
 
   
