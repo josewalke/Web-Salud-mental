@@ -883,84 +883,84 @@ export function PersonalityQuestionnairePage() {
         {/* Modal de Información */}
         {showInfoModal && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowInfoModal(false)}
           >
             <motion.div
-              className="bg-white rounded-2xl shadow-2xl w-[95vw] sm:w-full max-w-2xl max-h-[95vh] sm:max-h-[80vh] overflow-y-auto mx-2 modal-content"
+              className="bg-white rounded-xl shadow-2xl w-[95vw] sm:w-full max-w-lg max-h-[90vh] overflow-y-auto mx-2 modal-content"
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header del modal */}
-              <div className="flex items-start justify-between p-3 sm:p-4 md:p-6 border-b border-gray-200 modal-header">
-                <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
-                  <Info className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mt-1 flex-shrink-0" />
-                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 leading-tight modal-title">
+              <div className="flex items-start justify-between p-3 border-b border-gray-200 modal-header">
+                <div className="flex items-start space-x-2 flex-1 min-w-0">
+                  <Info className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
+                  <h2 className="text-lg font-bold text-gray-800 leading-tight modal-title">
                     Información del Cuestionario
                   </h2>
                 </div>
                 <button
                   onClick={() => setShowInfoModal(false)}
-                  className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-2"
+                  className="w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-2"
                 >
-                  <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                  <X className="w-4 h-4 text-gray-600" />
                 </button>
               </div>
               
               {/* Contenido del modal */}
-              <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+              <div className="p-3 space-y-3">
                 <div>
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3 text-center sm:text-left">
+                  <h3 className="text-base font-semibold text-gray-800 mb-2 text-center sm:text-left">
                     ¿Por qué elegir nuestro Test de Personalidad?
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center sm:text-left">
+                  <p className="text-sm text-gray-600 leading-relaxed text-center sm:text-left">
                     Nuestro <strong>cuestionario de personalidad</strong> está basado en la teoría de Carl Jung, 
                     uno de los psicólogos más influyentes del siglo XX. Utilizamos metodologías científicas probadas 
                     que analizan múltiples dimensiones de tu personalidad.
                   </p>
                 </div>
                 
-                <div className="grid grid-cols-1 gap-3 sm:gap-4">
-                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
-                    <Brain className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mt-1 flex-shrink-0" />
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
+                    <Brain className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Basado en Carl Jung</h4>
-                      <p className="text-xs sm:text-sm text-gray-600">Teoría psicológica validada científicamente</p>
+                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">Basado en Carl Jung</h4>
+                      <p className="text-xs text-gray-600">Teoría psicológica validada científicamente</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
-                    <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
+                    <Heart className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">66 Preguntas Clave</h4>
-                      <p className="text-xs sm:text-sm text-gray-600">Análisis profundo de tu personalidad</p>
+                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">66 Preguntas Clave</h4>
+                      <p className="text-xs text-gray-600">Análisis profundo de tu personalidad</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
-                    <Users className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mt-1 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
+                    <Users className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Resultados Detallados</h4>
-                      <p className="text-xs sm:text-sm text-gray-600">Perfil completo de personalidad</p>
+                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">Resultados Detallados</h4>
+                      <p className="text-xs text-gray-600">Perfil completo de personalidad</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-3 bg-gray-50 rounded-lg">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mt-1 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
+                    <CheckCircle className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">100% Confidencial</h4>
-                      <p className="text-xs sm:text-sm text-gray-600">Tu privacidad es nuestra prioridad</p>
+                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">100% Confidencial</h4>
+                      <p className="text-xs text-gray-600">Tu privacidad es nuestra prioridad</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-blue-50 rounded-xl p-3 sm:p-4">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm sm:text-base text-center sm:text-left">
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <h4 className="font-semibold text-gray-800 mb-2 text-sm text-center sm:text-left">
                     Test de Personalidad: ¿Cómo Funciona?
                   </h4>
-                  <div className="space-y-2 text-xs sm:text-sm text-gray-700">
+                  <div className="space-y-1 text-xs text-gray-700">
                     <p><strong>🔍 Análisis Profundo:</strong> Evaluamos 66 aspectos clave de tu personalidad</p>
                     <p><strong>🧠 Base Científica:</strong> Teoría de Carl Jung validada por expertos</p>
                     <p><strong>💝 Resultados Personalizados:</strong> Perfil detallado de tu personalidad</p>
