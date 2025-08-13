@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export function useDeviceOptimization() {
   const [isMobile, setIsMobile] = useState(false);
@@ -102,7 +102,7 @@ export function useDeviceOptimization() {
   };
 
   // Aplicar CSS optimizado para dispositivos de gama baja
-  const applyOptimizedCSS = () => {
+  const applyOptimizedCSS = useCallback(() => {
     if (optimizationLevel === 'ultra-light') {
       const style = document.createElement('style');
       style.textContent = `
@@ -133,11 +133,11 @@ export function useDeviceOptimization() {
       `;
       document.head.appendChild(style);
     }
-  };
+  }, [optimizationLevel]);
 
   useEffect(() => {
     applyOptimizedCSS();
-  }, [optimizationLevel]);
+  }, [applyOptimizedCSS]);
 
   return {
     isMobile,
