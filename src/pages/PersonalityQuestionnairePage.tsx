@@ -552,7 +552,7 @@ export function PersonalityQuestionnairePage() {
         const lastOptionIndex = question.options.length - 1;
         
         return (
-          <div className="grid grid-cols-1 gap-3 sm:gap-4">
+          <div className="radio-options-concourse">
             {question.options.map((option, index) => {
               const isLastOption = index === lastOptionIndex;
               const shouldCenter = isOddOptions && isLastOption;
@@ -560,8 +560,8 @@ export function PersonalityQuestionnairePage() {
               return (
                 <motion.div
                   key={index}
-                  className={`flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-xl border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 cursor-pointer min-h-[3.5rem] sm:min-h-[4rem] ${
-                    shouldCenter ? 'max-w-md mx-auto' : ''
+                  className={`radio-option-card ${
+                    shouldCenter ? 'option-odd-last' : ''
                   }`}
                   whileHover={{ scale: 1.02, backgroundColor: 'rgba(59, 130, 246, 0.05)' }}
                   whileTap={{ scale: 0.98 }}

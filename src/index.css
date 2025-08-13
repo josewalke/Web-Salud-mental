@@ -765,3 +765,74 @@ input {
     hyphens: none;
   }
 }
+
+/* ESTILOS PARA OPCIONES DE RADIO EN MODO CONCURSO */
+.radio-options-concourse {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .radio-options-concourse {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  /* Opción impar centrada en escritorio */
+  .radio-options-concourse .option-odd-last {
+    grid-column: 1 / -1;
+    max-width: 28rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Estilo de tarjeta para opciones de radio */
+.radio-option-card {
+  border: 2px solid #dbeafe;
+  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.radio-option-card:hover {
+  border-color: #93c5fd;
+  background-color: rgba(59, 130, 246, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+}
+
+.radio-option-card:active {
+  transform: translateY(0);
+}
+
+/* Input de radio personalizado */
+.radio-option-card input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #93c5fd;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.radio-option-card input[type="radio"]:checked {
+  border-color: #2563eb;
+  background-color: #2563eb;
+  background-image: radial-gradient(circle, white 30%, transparent 30%);
+}
+
+/* Label de la opción */
+.radio-option-card label {
+  flex: 1;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  line-height: 1.4;
+}
