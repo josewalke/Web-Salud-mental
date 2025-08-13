@@ -890,7 +890,7 @@ export function PersonalityQuestionnairePage() {
             onClick={() => setShowInfoModal(false)}
           >
             <motion.div
-              className="bg-white rounded-lg shadow-2xl w-[95vw] sm:w-full max-w-md max-h-[85vh] overflow-y-auto mx-1 modal-content"
+              className="bg-white rounded-lg shadow-2xl w-[95vw] sm:w-full max-w-sm max-h-[85vh] overflow-y-auto mx-1 modal-content"
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
@@ -900,13 +900,13 @@ export function PersonalityQuestionnairePage() {
               <div className="flex items-start justify-between p-2 border-b border-gray-200 modal-header">
                 <div className="flex items-start space-x-2 flex-1 min-w-0">
                   <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <h2 className="text-base font-bold text-gray-800 leading-tight modal-title">
+                  <h2 className="text-sm font-bold text-gray-800 leading-tight modal-title">
                     Información del Cuestionario
                   </h2>
                 </div>
                 <button
                   onClick={() => setShowInfoModal(false)}
-                  className="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-1"
+                  className="w-5 h-5 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-1"
                 >
                   <X className="w-3 h-3 text-gray-600" />
                 </button>
@@ -915,7 +915,7 @@ export function PersonalityQuestionnairePage() {
               {/* Contenido del modal */}
               <div className="p-2 space-y-2">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-1 text-center sm:text-left">
+                  <h3 className="text-xs font-semibold text-gray-800 mb-1 text-center sm:text-left">
                     ¿Por qué elegir nuestro Test de Personalidad?
                   </h3>
                   <p className="text-xs text-gray-600 leading-relaxed text-center sm:text-left">
@@ -926,29 +926,29 @@ export function PersonalityQuestionnairePage() {
                 </div>
                 
                 <div className="grid grid-cols-1 gap-1">
-                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
-                    <Brain className="w-3.5 h-3.5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-1 bg-gray-50 rounded-md">
+                    <Brain className="w-3 h-3 text-blue-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">Basado en Carl Jung</h4>
                       <p className="text-xs text-gray-600">Teoría psicológica validada científicamente</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
-                    <Heart className="w-3.5 h-3.5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-1 bg-gray-50 rounded-md">
+                    <Heart className="w-3 h-3 text-blue-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">66 Preguntas Clave</h4>
                       <p className="text-xs text-gray-600">Análisis profundo de tu personalidad</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
-                    <Users className="w-3.5 h-3.5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-1 bg-gray-50 rounded-md">
+                    <Users className="w-3 h-3 text-green-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">Resultados Detallados</h4>
                       <p className="text-xs text-gray-600">Perfil completo de personalidad</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
-                    <CheckCircle className="w-3.5 h-3.5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-1 bg-gray-50 rounded-md">
+                    <CheckCircle className="w-3 h-3 text-green-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
                       <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">100% Confidencial</h4>
                       <p className="text-xs text-gray-600">Tu privacidad es nuestra prioridad</p>
