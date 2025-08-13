@@ -463,7 +463,7 @@ export function QuestionnairePage() {
           </div>
         </motion.header>
 
-        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10 cuestionario-compacto">
+        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10 cuestionario-ultra-compacto">
           {/* Header del Cuestionario */}
           <motion.div
             className="text-center mb-8 sm:mb-12 cuestionario-header"
