@@ -1734,7 +1734,7 @@ input {
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   z-index: 1000;
   padding: 1rem;
 }
@@ -1749,6 +1749,8 @@ input {
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
+  margin-right: 1rem;
+  margin-left: auto;
 }
 
 .modal-header-rediseñado {
@@ -1851,11 +1853,17 @@ input {
   }
 
   /* MODAL RESPONSIVE PARA MÓVIL */
+  .modal-overlay-rediseñado {
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 1rem 0.5rem 1rem 1rem;
+  }
+
   .modal-content-rediseñado {
     max-width: 95vw;
     width: 95vw;
     min-width: 350px !important; /* ANCHO MÍNIMO FORZADO PARA EVITAR TEXTO VERTICAL */
-    margin: 0.5rem;
+    margin: 0.5rem 1rem 0.5rem auto; /* MARGEN DERECHO PARA POSICIONAR A LA DERECHA */
     max-height: 90vh;
   }
 
