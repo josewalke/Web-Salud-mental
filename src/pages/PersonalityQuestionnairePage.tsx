@@ -890,18 +890,20 @@ export function PersonalityQuestionnairePage() {
             onClick={() => setShowInfoModal(false)}
           >
             <motion.div
-              className="bg-white rounded-2xl shadow-2xl w-[95vw] sm:w-full max-w-2xl max-h-[95vh] sm:max-h-[80vh] overflow-y-auto mx-2"
+              className="bg-white rounded-2xl shadow-2xl w-[95vw] sm:w-full max-w-2xl max-h-[95vh] sm:max-h-[80vh] overflow-y-auto mx-2 modal-content"
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header del modal */}
-              <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 border-b border-gray-200">
-                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 flex items-center flex-wrap">
-                  <Info className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-2 sm:mr-3 flex-shrink-0" />
-                  <span className="whitespace-normal">Información del Cuestionario</span>
-                </h2>
+              <div className="flex items-start justify-between p-3 sm:p-4 md:p-6 border-b border-gray-200 modal-header">
+                <div className="flex items-start space-x-2 sm:space-x-3 flex-1 min-w-0">
+                  <Info className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mt-1 flex-shrink-0" />
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 leading-tight modal-title">
+                    Información del Cuestionario
+                  </h2>
+                </div>
                 <button
                   onClick={() => setShowInfoModal(false)}
                   className="w-7 h-7 sm:w-8 sm:h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-2"

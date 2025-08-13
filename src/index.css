@@ -725,3 +725,43 @@ input {
     box-sizing: border-box;
   }
 }
+
+/* ESTILOS ESPECÍFICOS PARA MODALES */
+.modal-header {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+.modal-title {
+  line-height: 1.2;
+  word-spacing: normal;
+  letter-spacing: normal;
+}
+
+/* Asegurar que los modales no tengan scroll horizontal */
+.modal-content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Responsive para modales en móvil */
+@media (max-width: 640px) {
+  .modal-content {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .modal-header {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  /* Forzar que el título no se corte */
+  .modal-title {
+    white-space: normal;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+  }
+}
