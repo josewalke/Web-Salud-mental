@@ -768,13 +768,25 @@ input {
 
 /* MODAL ULTRA-ESTRECHO CON CSS PERSONALIZADO */
 .modal-ultra-estrecho {
-  max-width: 280px !important;
+  max-width: 320px !important;
   width: 95vw !important;
 }
 
 @media (min-width: 640px) {
   .modal-ultra-estrecho {
-    width: 280px !important;
+    width: 320px !important;
+  }
+}
+
+/* Modal más estrecho pero funcional */
+.modal-ultra-estrecho-compacto {
+  max-width: 300px !important;
+  width: 95vw !important;
+}
+
+@media (min-width: 640px) {
+  .modal-ultra-estrecho-compacto {
+    width: 300px !important;
   }
 }
 
@@ -803,13 +815,13 @@ input {
 
 /* Control total del ancho del modal */
 .modal-ancho-personalizado {
-  max-width: var(--modal-width, 280px) !important;
+  max-width: var(--modal-width, 320px) !important;
   width: 95vw !important;
 }
 
 @media (min-width: 640px) {
   .modal-ancho-personalizado {
-    width: var(--modal-width, 280px) !important;
+    width: var(--modal-width, 320px) !important;
   }
 }
 
