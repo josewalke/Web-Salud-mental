@@ -1,0 +1,440 @@
+/* ===== NAVIGATION COMPONENT STYLES ===== */
+/* 
+  ESTE ARCHIVO CONTIENE LOS ESTILOS COMPLETOS DEL COMPONENTE NAVIGATION
+  - Sistema CSS puro sin dependencias de Tailwind
+  - Secciones claramente diferenciadas para móvil y escritorio
+  - Control independiente de cada dispositivo
+  - Comentarios detallados para facilitar el trabajo
+  
+  ESTRUCTURA:
+  ├── CONTENEDOR PRINCIPAL
+  ├── SECCIÓN MÓVIL (≤ 639px)
+  │   ├── Contenedor móvil
+  │   ├── Logo móvil
+  │   ├── Icono móvil
+  │   └── Texto móvil
+  ├── SECCIÓN ESCRITORIO (≥ 640px)
+  │   ├── Contenedor desktop
+  │   ├── Logo desktop
+  │   ├── Icono desktop
+  │   └── Texto desktop
+  └── RESPONSIVE BREAKPOINTS
+*/
+
+/* ======================================== */
+/* ===== CONTENEDOR PRINCIPAL ===== */
+/* ======================================== */
+.navigation-container {
+  position: relative; /* Posicionamiento relativo para contener elementos absolutos */
+  background: rgba(255, 255, 255, 0.95); /* Fondo blanco semi-transparente (95% opacidad) */
+  backdrop-filter: blur(16px); /* Efecto de desenfoque del fondo (16px de blur) */
+  border-bottom: 1px solid rgba(229, 231, 235, 0.8); /* Borde inferior gris semi-transparente */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra doble para profundidad */
+  z-index: 9998; /* CAMBIADO: Z-index muy alto para estar por encima del header y otros elementos */
+}
+
+.navigation-content {
+  max-width: 100%; /* Ancho máximo del 100% del contenedor padre */
+  overflow: hidden; /* Oculta contenido que se desborde */
+  /* ELIMINADO: padding que causaba conflictos con el logo absoluto */
+  position: relative; /* AÑADIDO: Para contener elementos absolutos */
+  display: flex; /* AÑADIDO: Layout flexible */
+  align-items: center; /* AÑADIDO: Centra verticalmente */
+  justify-content: space-between; /* AÑADIDO: Distribuye logo y enlaces */
+  height: 100%; /* AÑADIDO: Altura completa */
+  width: 100%; /* AÑADIDO: Asegura que ocupe todo el ancho */
+}
+
+/* ======================================== */
+/* ===== SECCIÓN MÓVIL (≤ 639px) ===== */
+/* ======================================== */
+/* 
+  ESTA SECCIÓN CONTROLA TODO LO RELACIONADO CON MÓVIL
+  - Logo centrado
+  - Espaciado específico para móvil
+  - Tamaños optimizados para pantallas pequeñas
+  - Comportamiento táctil
+*/
+
+/* Contenedor de la sección móvil */
+.navigation-mobile-section {
+  display: flex; /* Contenedor flexible para alinear elementos */
+  align-items: center; /* Centra verticalmente los elementos */
+  justify-content: space-between; /* CAMBIADO: Distribuye logo a la izquierda y enlaces a la derecha */
+  padding: 1rem; /* Padding de 16px en todos los lados */
+  min-height: 64px; /* Altura mínima para facilitar el toque */
+  width: 100%; /* AÑADIDO: Asegura que ocupe todo el ancho disponible */
+}
+
+/* Logo móvil - Contenedor principal */
+.navigation-mobile-logo {
+  display: flex; /* Contenedor flexible para alinear icono y texto */
+  align-items: center; /* Centra verticalmente el icono y texto */
+  gap: 0.75rem; /* Espacio entre el icono y el texto (12px) */
+  cursor: pointer; /* Indica que es interactivo */
+  flex-shrink: 0; /* AÑADIDO: Evita que el logo se comprima */
+  margin-left: 1rem; /* AÑADIDO: Mueve el logo un poco hacia la derecha en móvil */
+}
+
+/* Icono del logo móvil */
+.navigation-mobile-icon {
+  width: 3rem; /* CAMBIADO: Ancho del icono (48px) - Más grande para móvil */
+  height: 3rem; /* CAMBIADO: Alto del icono (48px) - Cuadrado perfecto */
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); /* Gradiente azul diagonal de 135 grados */
+  border-radius: 0.75rem; /* CAMBIADO: Bordes redondeados (12px) para esquinas más suaves */
+  display: flex; /* Contenedor flexible para centrar el icono internamente */
+  align-items: center; /* Centra verticalmente el icono */
+  justify-content: center; /* Centra horizontalmente el icono */
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3); /* CAMBIADO: Sombra más intensa para icono más grande */
+  transition: all 0.3s ease; /* Transición suave de 0.3 segundos para todos los cambios */
+  /* Optimizaciones para móvil */
+  -webkit-tap-highlight-color: transparent; /* Elimina el highlight de toque en iOS */
+  touch-action: manipulation; /* Optimiza para gestos táctiles */
+}
+
+/* Efectos hover/touch para móvil */
+.navigation-mobile-icon:hover,
+.navigation-mobile-icon:active {
+  transform: scale(1.05); /* Escala el icono al 105% en interacción */
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3); /* Sombra más intensa */
+}
+
+/* Texto del logo móvil */
+.navigation-mobile-text {
+  font-size: 1.125rem; /* Tamaño de fuente (18px) - Legible en móvil */
+  font-weight: 700; /* Peso de la fuente (negrita) */
+  color: #1f2937; /* Color del texto (gris oscuro) */
+  line-height: 1.25; /* Altura de línea (1.25 veces el tamaño de fuente) */
+  white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+  /* Optimizaciones para móvil */
+  -webkit-font-smoothing: antialiased; /* Mejora la renderización de fuentes */
+  -moz-osx-font-smoothing: grayscale; /* Mejora la renderización en Firefox */
+}
+
+/* ======================================== */
+/* ===== SECCIÓN ESCRITORIO (≥ 640px) ===== */
+/* ======================================== */
+/* 
+  ESTA SECCIÓN CONTROLA TODO LO RELACIONADO CON ESCRITORIO
+  - Logo pegado a la izquierda
+  - Tamaños más grandes
+  - Efectos hover más elaborados
+  - Posicionamiento absoluto para control total
+*/
+
+/* Contenedor de la sección desktop */
+.navigation-desktop-section {
+  display: none; /* Oculto por defecto - Solo se muestra en pantallas grandes */
+  position: relative; /* Posicionamiento relativo para contener el logo absoluto */
+  height: 80px; /* Altura fija para consistencia */
+  width: 100%; /* AÑADIDO: Asegura que ocupe todo el ancho disponible */
+  /* AÑADIDO: Layout flexbox para mejor control */
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo desktop - Contenedor principal */
+.navigation-logo-desktop {
+  display: flex; /* Contenedor flexible para alinear elementos horizontalmente */
+  align-items: center; /* Centra verticalmente en lugar de flex-start */
+  gap: 0.75rem; /* Espacio entre el icono y el texto (12px) */
+  height: 80px; /* Altura fija del contenedor del logo */
+  padding: 0; /* Sin relleno interno */
+  margin: 0; /* Sin márgenes externos */
+  margin-left: 2rem; /* AÑADIDO: Mueve el logo un poco hacia la derecha */
+  position: relative; /* CAMBIADO: Posicionamiento relativo en lugar de absoluto */
+  left: 0; /* Mantiene el logo a la izquierda */
+  top: 0; /* Mantiene el logo arriba */
+  z-index: 10; /* Nivel de apilamiento (por encima de elementos con z-index menor) */
+  /* AÑADIDO: Forzar que no haya interferencias */
+  transform: none !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0; /* AÑADIDO: Evita que el logo se comprima */
+}
+
+/* Icono del logo desktop */
+.navigation-logo-desktop-icon {
+  width: 48px; /* CAMBIADO: Ancho del icono (48px) - Más grande para escritorio */
+  height: 48px; /* CAMBIADO: Alto del icono (48px) - Cuadrado perfecto */
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); /* Gradiente azul diagonal de 135 grados */
+  border-radius: 1rem; /* CAMBIADO: Bordes redondeados (16px) para esquinas más suaves */
+  display: flex; /* Contenedor flexible para centrar el icono internamente */
+  align-items: center; /* Centra verticalmente el icono */
+  justify-content: center; /* Centra horizontalmente el icono */
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); /* CAMBIADO: Sombra más intensa para icono más grande */
+  transition: all 0.3s ease; /* Transición suave de 0.3 segundos para todos los cambios */
+  cursor: pointer; /* Indica que es interactivo */
+}
+
+/* Efectos hover para desktop */
+.navigation-logo-desktop-icon:hover {
+  transform: scale(1.05); /* Escala el icono al 105% en hover para efecto interactivo */
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); /* Sombra más intensa en hover */
+}
+
+/* Texto del logo desktop */
+.navigation-logo-desktop-text {
+  font-size: 1.25rem; /* Tamaño de fuente (20px) - Tamaño óptimo para escritorio */
+  font-weight: 700; /* Peso de la fuente (negrita) */
+  color: #111827; /* Color del texto (gris muy oscuro) */
+  line-height: 1.25; /* Altura de línea (1.25 veces el tamaño de fuente) */
+  white-space: nowrap; /* Evita que el texto se divida en múltiples líneas */
+  /* Optimizaciones para escritorio */
+  -webkit-font-smoothing: antialiased; /* Mejora la renderización de fuentes */
+  -moz-osx-font-smoothing: grayscale; /* Mejora la renderización en Firefox */
+}
+
+/* ======================================== */
+/* ===== RESPONSIVE BREAKPOINTS COMPLETOS ===== */
+/* ======================================== */
+/* 
+  ESTOS BREAKPOINTS TE DAN CONTROL TOTAL SOBRE CADA DISPOSITIVO
+  - Móvil pequeño: ≤ 375px
+  - Móvil: 376px - 1023px (Navigation móvil visible aquí)
+  - Desktop: ≥ 1024px (Header visible, Navigation oculto)
+*/
+
+/* MÓVIL PEQUEÑO: Optimizaciones para pantallas muy pequeñas */
+@media (max-width: 375px) {
+  .navigation-mobile-section {
+    padding: 0.75rem; /* Padding reducido para pantallas muy pequeñas */
+    min-height: 56px; /* Altura reducida */
+  }
+  
+  .navigation-mobile-icon {
+    width: 1.75rem; /* Icono ligeramente más pequeño */
+    height: 1.75rem;
+  }
+  
+  .navigation-mobile-text {
+    font-size: 1rem; /* Texto más pequeño */
+  }
+}
+
+/* MÓVIL Y TABLET: Mostrar navegación móvil */
+@media (max-width: 1023px) {
+  .navigation-mobile-section {
+    display: flex !important; /* Fuerza la visualización en móvil/tablet */
+  }
+  
+  .navigation-desktop-section {
+    display: none !important; /* Fuerza la ocultación en móvil/tablet */
+  }
+}
+
+/* DESKTOP GRANDE: Mostrar navegación desktop, ocultar móvil */
+@media (min-width: 1024px) {
+  .navigation-mobile-section {
+    display: none !important; /* Ocultar navegación móvil en desktop */
+  }
+  
+  .navigation-desktop-section {
+    display: flex !important; /* CAMBIADO: Usar flex en lugar de block para que los enlaces se muestren */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+/* ======================================== */
+/* ===== IMPRESIÓN ===== */
+/* ======================================== */
+@media print {
+  .navigation-container {
+    background: white !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #000 !important;
+  }
+  
+  .navigation-mobile-icon,
+  .navigation-logo-desktop-icon {
+    background: #000 !important;
+    box-shadow: none !important;
+  }
+  
+  .navigation-mobile-text,
+  .navigation-logo-desktop-text {
+    color: #000 !important;
+  }
+}
+
+/* ===== ICONO DEL CEREBRO ===== */
+/* 
+  ESTA CLASE CONTROLA EL ICONO DEL CEREBRO EN AMBAS NAVEGACIONES
+  - Tamaño consistente en móvil y desktop
+  - Color blanco para contraste
+  - Transiciones suaves
+  - Optimizaciones para diferentes dispositivos
+*/
+
+/* Selector más específico para forzar la aplicación */
+.navigation-mobile-icon .navigation-brain-icon,
+.navigation-logo-desktop-icon .navigation-brain-icon,
+.navigation-brain-icon {
+  width: 2rem !important; /* CAMBIADO: Ancho del icono (32px) - Más proporcional */
+  height: 2rem !important; /* CAMBIADO: Alto del icono (32px) - Más proporcional */
+  color: white !important; /* Color blanco para contraste con fondo azul */
+  transition: all 0.3s ease !important; /* Transición suave para efectos */
+  /* Optimizaciones para renderizado */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  /* Optimizaciones para dispositivos táctiles */
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+  /* Forzar que se aplique */
+  min-width: 2rem !important;
+  min-height: 2rem !important;
+  max-width: 2rem !important;
+  max-height: 2rem !important;
+  box-sizing: border-box !important;
+}
+
+/* Efectos hover para el icono */
+.navigation-brain-icon:hover {
+  transform: scale(1.1) !important; /* Escala ligeramente en hover */
+  filter: brightness(1.2) !important; /* Brillo ligeramente mayor */
+}
+
+/* ===== ICONO DEL LOGO MÓVIL ===== */
+
+/* ===== ENLACES DE NAVEGACIÓN MÓVIL ===== */
+.navigation-mobile-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto; /* Empuja los enlaces hacia la derecha */
+  margin-right: 1rem; /* AÑADIDO: Mueve los enlaces un poco hacia la izquierda en móvil */
+  align-items: center;
+  flex-shrink: 0; /* Evita que se compriman */
+  /* AÑADIDO: Asegurar posicionamiento correcto */
+  position: relative;
+  right: 0;
+}
+
+.navigation-mobile-link {
+  background: transparent;
+  border: none;
+  color: #1f2937;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.navigation-mobile-link:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+}
+
+.navigation-mobile-link:active {
+  transform: scale(0.95);
+}
+
+/* ===== ENLACES DE NAVEGACIÓN DESKTOP ===== */
+.navigation-desktop-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto; /* Empuja los enlaces hacia la derecha */
+  margin-right: 2rem; /* AÑADIDO: Mueve los enlaces un poco hacia la izquierda */
+  align-items: center;
+  flex-shrink: 0; /* Evita que se compriman */
+  /* AÑADIDO: Asegurar que los enlaces se muestren correctamente */
+  position: relative;
+  right: 0;
+  top: 0;
+  transform: none;
+  /* AÑADIDO: Forzar visibilidad */
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.navigation-desktop-link {
+  background: transparent;
+  border: none;
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.navigation-desktop-link:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+}
+
+.navigation-desktop-link:active {
+  transform: scale(0.95);
+}
+
+/* Efecto de subrayado en hover para desktop */
+.navigation-desktop-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #3b82f6;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navigation-desktop-link:hover::after {
+  width: 80%;
+}
+
+/* ===== RESPONSIVE PARA ENLACES ===== */
+@media (max-width: 1023px) {
+  .navigation-desktop-links {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navigation-mobile-links {
+    display: none !important;
+  }
+  
+  /* AÑADIDO: Forzar que los enlaces desktop se muestren en pantallas grandes */
+  .navigation-desktop-links {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+
+
+
+
+/* ===== RESPONSIVE PARA NAVEGACIÓN MÓVIL ===== */
+@media (max-width: 1023px) {
+  .navigation-mobile-section {
+    justify-content: center !important; /* Centrar solo el logo en móvil */
+  }
+  
+  .navigation-desktop-links {
+    display: none !important; /* Ocultar enlaces desktop en móvil */
+  }
+}
+
+@media (min-width: 1024px) {
+  .navigation-mobile-section {
+    justify-content: space-between !important; /* Distribuir logo y enlaces en desktop */
+  }
+  
+  .navigation-desktop-links {
+    display: flex !important; /* Mostrar enlaces desktop */
+  }
+}
+
+
+
+

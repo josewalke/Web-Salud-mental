@@ -2,10 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Importar estilos de componentes */
+@import url('./components/Navigation.css');
+
 /* Optimized font loading - preload critical fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
+  /* RESPONSIVE DESIGN MODERNO - Base sólida */
+  --step-0: clamp(1rem, 0.9rem + 1vw, 1.25rem);
+  --step-1: clamp(1.125rem, 1rem + 1.5vw, 1.5rem);
+  --step-2: clamp(1.25rem, 1.125rem + 2vw, 1.875rem);
+  --step-3: clamp(1.5rem, 1.25rem + 3vw, 2.25rem);
+  --step-4: clamp(1.875rem, 1.5rem + 4vw, 3rem);
+  --step-5: clamp(2.25rem, 1.875rem + 5vw, 3.75rem);
+  
+  /* Espaciados fluidos */
+  --space-xs: clamp(0.5rem, 0.25rem + 1vw, 0.75rem);
+  --space-sm: clamp(0.75rem, 0.5rem + 1vw, 1rem);
+  --space-md: clamp(1rem, 0.75rem + 1.5vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 1rem + 2vw, 2rem);
+  --space-xl: clamp(2rem, 1.5rem + 3vw, 3rem);
+  
+  /* Container queries */
+  --container-padding: clamp(1rem, 2vw, 2rem);
+  --container-max-width: 1100px;
+  
+  /* Variables existentes de Tailwind */
   --font-size: 14px;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
@@ -47,24 +70,24 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: #ffffff;
+  --popover-foreground: oklch(0.145 0 0);
   --primary: #3b82f6;
-  --primary-foreground: oklch(0.145 0 0);
-  --secondary: #1e293b;
-  --secondary-foreground: #3b82f6;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #1e293b;
-  --accent-foreground: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #f8fafc;
+  --secondary-foreground: #1e40af;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #eff6ff;
+  --accent-foreground: #1e40af;
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  --border: #1e293b;
-  --input: #1e293b;
+  --border: #e2e8f0;
+  --input: #ffffff;
   --ring: #3b82f6;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
@@ -73,13 +96,13 @@
   --chart-3: #0891b2;
   --chart-4: #1d4ed8;
   --chart-5: #1e40af;
-  --sidebar: #0f172a;
-  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar: #f8fafc;
+  --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: oklch(0.145 0 0);
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #3b82f6;
-  --sidebar-border: #1e293b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eff6ff;
+  --sidebar-accent-foreground: #1e40af;
+  --sidebar-border: #e2e8f0;
   --sidebar-ring: #3b82f6;
 }
 
@@ -201,6 +224,191 @@ body {
 
 /* CHATGPT RECOMMENDED OPTIMIZATIONS */
 /* High-impact performance improvements */
+
+
+
+/* CRÍTICO: FIXES RESPONSIVE PARA MÓVIL */
+@media (max-width: 768px) {
+  /* Forzar wrap de texto en móvil */
+  .break-words {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    white-space: normal !important;
+  }
+  
+  /* Contenedor responsive */
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: 100% !important;
+  }
+  
+  /* Grid responsive */
+  .grid {
+    gap: 1rem !important;
+  }
+  
+  /* Texto responsive */
+  h1, h2, h3, p, span {
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+  
+  /* Botones responsive */
+  button, .btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+  
+  /* FIXES EXTREMOS PARA MÓVIL */
+  * {
+    max-width: 100vw !important;
+  }
+  
+  body, html {
+    max-width: 100vw !important;
+  }
+  
+  /* Forzar wrap en todos los textos */
+  p, h1, h2, h3, h4, h5, h6, span, div {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+    /* AÑADIDO: Asegurar que el texto se envuelva correctamente */
+    text-overflow: ellipsis !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+  
+  /* Contenedores principales */
+  .container, .grid, .flex, .block {
+    max-width: 100% !important;
+    /* ELIMINADO: overflow-x: hidden que cortaba el texto */
+    width: 100% !important;
+    /* AÑADIDO: Asegurar que el contenido se ajuste */
+    box-sizing: border-box !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* AÑADIDO: Estilos específicos para texto en móvil */
+  .hero p, .hero h1, .hero h2, .hero h3 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: left !important;
+    line-height: 1.6 !important;
+  }
+  
+  /* AÑADIDO: Tamaños de fuente específicos para móvil */
+  .hero h1 {
+    font-size: 3rem !important; /* Más pequeño para que quepa en móvil */
+    line-height: 1.3 !important; /* Ajustado para el nuevo tamaño */
+  }
+  
+  .hero h2 {
+    font-size: 1.5rem !important; /* Tamaño apropiado para móvil */
+    line-height: 1.4 !important;
+  }
+  
+  .hero h3 {
+    font-size: 1.25rem !important; /* Tamaño apropiado para móvil */
+    line-height: 1.4 !important;
+  }
+  
+  .hero p {
+    font-size: 1rem !important; /* Tamaño apropiado para móvil */
+    line-height: 1.5 !important;
+  }
+}
+
+/* CONTAINER QUERIES MODERNOS */
+.section {
+  container-type: inline-size;
+}
+
+@container (min-width: 700px) {
+  .hero {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+}
+
+@container (min-width: 500px) {
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-md);
+  }
+}
+
+/* LAYOUT FLUIDO MODERNO */
+.container {
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.grid-responsive {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+/* TIPOGRAFÍA FLUIDA */
+h1 { font-size: var(--step-5); line-height: 1.2; }
+h2 { font-size: var(--step-4); line-height: 1.3; }
+h3 { font-size: var(--step-3); line-height: 1.4; }
+h4 { font-size: var(--step-2); line-height: 1.4; }
+p, .text-body { font-size: var(--step-0); line-height: 1.6; }
+
+/* PROSE OPTIMIZADO */
+.prose {
+  max-width: 70ch;
+  margin-inline: auto;
+  padding-inline: var(--space-sm);
+}
+
+/* SAFE AREAS PARA MÓVIL */
+.safe-area {
+  padding-top: max(var(--space-sm), env(safe-area-inset-top));
+  padding-bottom: max(var(--space-sm), env(safe-area-inset-bottom));
+  padding-left: max(var(--space-sm), env(safe-area-inset-left));
+  padding-right: max(var(--space-sm), env(safe-area-inset-right));
+}
+
+/* NAV RESPONSIVE MEJORADO */
+@media (max-width: 640px) {
+  /* Header más compacto en móvil */
+  header {
+    padding: 0.5rem 0;
+  }
+  
+  /* Logo más pequeño en móvil */
+  .header-logo {
+    font-size: var(--step-1);
+  }
+  
+  /* Menú móvil mejorado */
+  .mobile-menu {
+    border-radius: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Items del menú más compactos */
+  .mobile-menu-item {
+    padding: 0.5rem 0.75rem;
+    font-size: var(--step-0);
+  }
+}
 
 /* 1. Content-visibility for off-screen sections */
 .lazy-section {

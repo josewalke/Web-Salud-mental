@@ -31,20 +31,7 @@ export function Footer() {
   ], []);
 
   return (
-    <footer id="contacto" className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white py-16 relative overflow-hidden">
-      {/* Fondo animado sutil */}
-      <motion.div
-        className="absolute inset-0 opacity-20"
-        animate={{
-          background: [
-            "radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)",
-            "radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)",
-            "radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)",
-          ]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-      />
-
+    <footer id="contacto" className="text-white py-16 relative overflow-hidden bg-blue-900">
       <div className="container mx-auto px-4 relative z-10">
         {/* Sección de contacto principal */}
         <motion.div
@@ -54,11 +41,11 @@ export function Footer() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-3xl lg:text-4xl mb-6">
+          <h2 className="text-3xl lg:text-4xl mb-6 text-white">
             ¿Listo para
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600"> acariciar tu cerebro</span>?
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-100"> acariciar tu cerebro</span>?
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
             Contáctanos para comenzar tu camino hacia el crecimiento personal y el bienestar emocional
           </p>
         </motion.div>
@@ -78,7 +65,7 @@ export function Footer() {
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <motion.div
-                className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg"
+                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg border-2 border-blue-400 bg-blue-300"
                 whileHover={{
                   rotateY: 180,
                   boxShadow: "0 10px 25px rgba(59, 130, 246, 0.4)"
@@ -86,13 +73,13 @@ export function Footer() {
                 transition={{ duration: 0.6 }}
                 style={{ transformStyle: "preserve-3d" }}
               >
-                <Brain className="text-white w-6 h-6" />
+                <Brain className="text-blue-900 w-6 h-6" />
               </motion.div>
-              <span className="text-2xl font-medium">Love on the Brain</span>
+              <span className="text-2xl font-medium text-white">Love on the Brain</span>
             </motion.div>
 
             <motion.p
-              className="text-gray-400 text-sm leading-relaxed"
+              className="text-blue-100 text-sm leading-relaxed"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -104,23 +91,23 @@ export function Footer() {
 
             <div className="flex space-x-4">
               {socialIcons.map((social, index) => (
-                                                    <motion.a
-                    key={social.label}
-                    href={social.href}
-                    className="p-2 rounded-lg bg-gray-800 hover:bg-blue-600 transition-all duration-300 group"
-                    aria-label={social.label}
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
-                    whileHover={{
-                      scale: 1.1,
-                      rotateY: 10,
-                      boxShadow: "0 5px 15px rgba(59, 130, 246, 0.3)"
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                  <social.icon className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  className="p-2 rounded-lg border-2 border-blue-700 hover:border-blue-400 transition-all duration-300 group"
+                  aria-label={social.label}
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
+                  whileHover={{
+                    scale: 1.1,
+                    rotateY: 10,
+                    boxShadow: "0 5px 15px rgba(59, 130, 246, 0.3)"
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <social.icon className="w-5 h-5 text-blue-200 group-hover:text-white transition-colors" />
                 </motion.a>
               ))}
             </div>
@@ -133,7 +120,7 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <h4 className="font-medium mb-6 text-lg">Servicios</h4>
+            <h4 className="font-medium mb-6 text-lg text-white">Servicios</h4>
             <ul className="space-y-3">
               {serviceLinks.map((link, index) => (
                 <motion.li
@@ -145,8 +132,8 @@ export function Footer() {
                 >
                   <motion.a
                     href="#servicios"
-                    className="text-sm text-gray-400 hover:text-white transition-colors duration-300 block"
-                    whileHover={{ x: 5, color: "#3b82f6" }}
+                    className="text-sm text-blue-200 hover:text-white transition-colors duration-300 block"
+                    whileHover={{ x: 5, color: "#93c5fd" }}
                   >
                     {link}
                   </motion.a>
@@ -162,7 +149,7 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            <h4 className="font-medium mb-6 text-lg">Recursos</h4>
+            <h4 className="font-medium mb-6 text-lg text-white">Recursos</h4>
             <ul className="space-y-3">
               {resourceLinks.map((link, index) => (
                 <motion.li
@@ -174,8 +161,8 @@ export function Footer() {
                 >
                   <motion.a
                     href="#"
-                    className="text-sm text-gray-400 hover:text-white transition-colors duration-300 block"
-                    whileHover={{ x: 5, color: "#3b82f6" }}
+                    className="text-sm text-blue-200 hover:text-white transition-colors duration-300 block"
+                    whileHover={{ x: 5, color: "#93c5fd" }}
                   >
                     {link}
                   </motion.a>
@@ -191,7 +178,7 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
-            <h4 className="font-medium mb-6 text-lg">Contacto</h4>
+            <h4 className="font-medium mb-6 text-lg text-white">Contacto</h4>
             <ul className="space-y-3">
               {contactInfo.map((item, index) => (
                 <motion.li
@@ -206,9 +193,9 @@ export function Footer() {
                     whileHover={{ scale: 1.1, rotateY: 10 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
-                    <item.icon className="w-4 h-4 text-blue-400" />
+                    <item.icon className="w-4 h-4 text-blue-300" />
                   </motion.div>
-                  <span className="text-sm text-gray-400">{item.text}</span>
+                  <span className="text-sm text-blue-200">{item.text}</span>
                 </motion.li>
               ))}
             </ul>
@@ -217,13 +204,13 @@ export function Footer() {
 
         {/* Copyright */}
         <motion.div
-          className="border-t border-gray-800 mt-12 pt-8 text-center"
+          className="border-t border-blue-700 mt-12 pt-8 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          <p className="text-gray-400 text-sm">
+          <p className="text-blue-200 text-sm">
             © {new Date().getFullYear()} Love on the Brain. Todos los derechos reservados.
           </p>
         </motion.div>

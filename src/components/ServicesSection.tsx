@@ -216,18 +216,7 @@ export function ServicesSection() {
 
   return (
     <section id="servicios" className="py-20 relative overflow-hidden">
-      {/* Background overlay */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-white/60 via-blue-50/40 to-white/60"
-        animate={{
-          background: [
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
-            "linear-gradient(225deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.6) 50%, rgba(255, 255, 255, 0.6) 100%)",
-          ]
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
+
 
       <div className="container mx-auto px-4 relative z-10">
 
@@ -245,7 +234,7 @@ export function ServicesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            style={{ textShadow: '0 2px 4px rgba(255, 255, 255, 0.5)' }}
+
           >
             Nuestros Packs de
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"> Bienestar</span>
@@ -256,7 +245,7 @@ export function ServicesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}
+
           >
             Cada pack incluye una salida sorpresa con chofer y está diseñado para trabajar 
             aspectos específicos de tu bienestar emocional y social.
@@ -280,7 +269,7 @@ export function ServicesSection() {
               className="transition-all duration-500 ease-out hover:z-10"
             >
               <Card 
-                className="group h-full border-blue-100/50 bg-white/70 backdrop-blur-md shadow-lg overflow-hidden transition-all duration-500 ease-out hover:shadow-custom hover:border-blue-200/70 hover:bg-white/90 hover:scale-[1.02] hover:-translate-y-1"
+                className="group h-full border-blue-100/50 shadow-lg overflow-hidden transition-all duration-500 ease-out hover:shadow-custom hover:border-blue-200/70 hover:scale-[1.02] hover:-translate-y-1 bg-white"
                 style={{
                   '--hover-shadow-color': service.color === 'from-pink-500 to-pink-700' ? 'rgba(236, 72, 153, 0.3)' :
                                          service.color === 'from-red-500 to-red-700' ? 'rgba(239, 68, 68, 0.3)' :
@@ -356,12 +345,12 @@ export function ServicesSection() {
                   </div>
 
                   {/* Icono flotante con hover elegante */}
-                  <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg transition-all duration-300 group-hover:bg-blue-50 group-hover:shadow-xl group-hover:shadow-blue-200/40 group-hover:scale-110 group-hover:rotate-3">
+                  <div className="absolute top-4 left-4 rounded-xl p-3 shadow-lg transition-all duration-300 group-hover:shadow-xl group-hover:shadow-blue-200/40 group-hover:scale-110 group-hover:rotate-3 bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-sm border border-white/30">
                     {service.icon}
                   </div>
                 </div>
 
-                <CardHeader className="pb-4 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-50/50 group-hover:to-transparent">
+                <CardHeader className="pb-4 transition-all duration-300">
                   <div>
                     <CardTitle 
                       className="text-gray-900 text-xl mb-2 transition-all duration-300 group-hover:scale-[1.02] group-hover:text-custom"
@@ -376,7 +365,7 @@ export function ServicesSection() {
                   </div>
                 </CardHeader>
 
-                <CardContent className="space-y-6 pt-0 transition-all duration-300 group-hover:bg-gradient-to-b group-hover:from-transparent group-hover:to-blue-50/30">
+                <CardContent className="space-y-6 pt-0 transition-all duration-300">
                   <ul className="space-y-3">
                     {service.features.map((feature, featureIndex) => (
                       <li

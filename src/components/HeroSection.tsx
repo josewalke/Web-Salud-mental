@@ -1,93 +1,67 @@
+import React from 'react';
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { ArrowRight, Shield, Brain, Sparkles } from "lucide-react";
-import { motion } from "motion/react";
+import { motion } from 'framer-motion';
+import { ArrowRight, Shield, Brain, Star } from 'lucide-react';
 import { FloatingElement } from "./FloatingElement";
 import { useCallback } from "react";
-import { useMobileOptimization } from "../hooks/useMobileOptimization";
-import { usePerformanceOptimization } from "../hooks/usePerformanceOptimization";
 
 export function HeroSection() {
-  const { isLowEndDevice, shouldDisableSmoothScroll } = useMobileOptimization();
-  const { useInView, optimizedAnimation } = usePerformanceOptimization();
-  
-  // Usar useInView para optimizar secciones
-  const heroRef = useInView((isVisible: boolean) => {
-    if (isVisible) {
-      // Sección visible - activar optimizaciones
-      document.body.classList.add('hero-visible');
-    } else {
-      // Sección no visible - desactivar optimizaciones
-      document.body.classList.remove('hero-visible');
-    }
-  });
-  
-  const scrollToServices = useCallback(() => {
+  const scrollToSection = useCallback(() => {
     const element = document.getElementById('servicios');
     if (element) {
-      if (shouldDisableSmoothScroll) {
-        element.scrollIntoView();
-      } else {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      element.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [shouldDisableSmoothScroll]);
+  }, []);
 
   const scrollToContact = useCallback(() => {
     const element = document.getElementById('contacto');
     if (element) {
-      if (shouldDisableSmoothScroll) {
-        element.scrollIntoView();
-      } else {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      element.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [shouldDisableSmoothScroll]);
+  }, []);
 
   const features = [
-    { icon: Shield, text: "Seguro y confidencial" },
-    { icon: Brain, text: "Respaldado por expertos" },
-    { icon: Sparkles, text: "Científicamente probado" }
+    {
+      icon: Shield,
+      title: "Seguro y confidencial",
+      description: "Tu privacidad es nuestra prioridad"
+    },
+    {
+      icon: Brain,
+      title: "Respaldado por expertos",
+      description: "Profesionales certificados en salud mental"
+    },
+    {
+      icon: Star,
+      title: "Científicamente probado",
+      description: "Métodos basados en evidencia científica"
+    }
   ];
 
   return (
-    <section 
-      ref={heroRef}
-      id="inicio" 
-      className="relative min-h-screen py-20 overflow-hidden lazy-section stable-layout"
-    >
-      {/* Subtle gradient overlay for better text readability */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-white/60 via-blue-50/40 to-white/60"
-        animate={isLowEndDevice ? {} : {
-          background: [
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
-            "linear-gradient(225deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
-            "linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(239, 246, 255, 0.4) 50%, rgba(255, 255, 255, 0.6) 100%)",
-          ]
-        }}
-        transition={isLowEndDevice ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      />
+    <section id="hero" className="hero grid items-center min-h-[80vh] relative overflow-hidden">
+
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
-                      <motion.div
-              className="space-y-8 animate-optimized"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.28, ease: "easeOut" }}
-            >
+          <motion.div
+            className="space-y-8 animate-optimized"
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
+          >
             <div className="space-y-6">
               <motion.h1
-                className="text-4xl lg:text-6xl text-gray-900 leading-tight"
+                className="text-4xl lg:text-6xl text-gray-900 leading-tight text-center sm:text-left"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.28, ease: "easeOut" }}
-                style={{ textShadow: '0 2px 4px rgba(255, 255, 255, 0.5)' }}
+
               >
-                El cerebro también se puede
+                <span className="block">El cerebro también se puede</span>
                 <motion.span
-                  className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800"
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800 block"
                   animate={{
                     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                   }}
@@ -96,16 +70,16 @@ export function HeroSection() {
                     backgroundSize: "200% 200%",
                   }}
                 >
-                  {" "}acariciar
+                  acariciar
                 </motion.span>
               </motion.h1>
 
               <motion.p
-                className="text-xl text-gray-700 leading-relaxed"
+                className="text-xl text-gray-700 leading-relaxed text-center sm:text-left"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.28, ease: "easeOut" }}
-                style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}
+
               >
                 Estamos encantados de que quieras trabajar en tu crecimiento personal. 
                 ¡Aquí no hay juicio porque ayudamos de corazón! Love on the Brain es una 
@@ -114,13 +88,10 @@ export function HeroSection() {
             </div>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 justify-center sm:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.28, ease: "easeOut" }}
-              onAnimationStart={() => optimizedAnimation(() => {
-                // Animación optimizada con requestAnimationFrame
-              })}
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -129,7 +100,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 backdrop-blur-sm"
-                  onClick={scrollToServices}
+                  onClick={scrollToSection}
                 >
                   Explorar packs
                   <motion.div
@@ -148,7 +119,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-blue-600 text-blue-600 hover:bg-blue-50 hover:shadow-lg hover:shadow-blue-100/50 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                  className="border-2 border-solid border-red-500 text-blue-600 hover:bg-blue-50 hover:shadow-lg hover:shadow-blue-100/50 transition-all duration-300"
                   onClick={scrollToContact}
                 >
                   Contactar
@@ -159,7 +130,7 @@ export function HeroSection() {
 
 
             <motion.div
-              className="flex items-center space-x-8 pt-4"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
@@ -167,21 +138,37 @@ export function HeroSection() {
               {features.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-center space-x-2"
-                  whileHover={{ scale: 1.05, y: -2 }}
+                  className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left space-y-2 sm:space-y-0 sm:space-x-2 p-4 rounded-xl bg-white border border-blue-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  whileHover={{ 
+                    scale: 1.05, 
+                    y: -5,
+                    transition: { duration: 0.15 }
+                  }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 + index * 0.1, duration: 0.5 }}
+                  transition={{ 
+                    delay: 0.8 + index * 0.1, 
+                    duration: 0.3
+                  }}
                 >
                   <motion.div
-                    animate={{ rotate: [0, 5, -5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
+                    className="mb-2 sm:mb-0"
+                    whileHover={{
+                      rotate: index === 0 ? 360 : index === 1 ? -360 : 180,
+                      scale: 1.2,
+                      transition: { duration: 0.2 }
+                    }}
                   >
-                    <item.icon className="w-5 h-5 text-blue-600" />
+                    <item.icon className="w-6 h-6 text-blue-600" />
                   </motion.div>
-                  <span className="text-sm text-gray-700" style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}>
-                    {item.text}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                      {item.title}
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1">
+                      {item.description}
+                    </span>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -204,61 +191,21 @@ export function HeroSection() {
                 transition={{ type: "spring", stiffness: 300, damping: 10 }}
                 style={{ transformStyle: "preserve-3d" }}
               >
-                {/* Sombra 3D más sutil */}
-                <div className="absolute inset-0 bg-blue-200/20 rounded-3xl transform rotate-3 scale-105 blur-xl opacity-40" />
-
-                {/* Contenedor principal con más transparencia */}
-                <div className="relative bg-white/70 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden border border-blue-100/50">
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-blue-100/10 to-blue-300/10"
-                    animate={{
-                      background: [
-                        "linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.1) 100%)",
-                        "linear-gradient(225deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%)",
-                        "linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.1) 100%)",
-                      ]
-                    }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  />
+                {/* Contenedor principal sin background */}
+                <div className="relative rounded-3xl shadow-2xl overflow-hidden">
 
                   <ImageWithFallback
                     src="https://images.unsplash.com/photo-1634585605949-8f1e029af923?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaWdpdGFsJTIwd2VsbG5lc3MlMjBtZWRpdGF0aW9ufGVufDF8fHx8MTc1NDQ5NzI5NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                     alt="Persona meditando con dispositivos digitales"
-                    className="w-full h-96 object-cover relative z-10 opacity-90"
+                    className="w-full h-96 object-cover relative z-10"
                   />
 
-                  {/* Overlay con efecto holográfico más sutil */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-tr from-transparent via-blue-400/5 to-transparent"
-                    animate={{
-                      background: [
-                        "linear-gradient(45deg, transparent 0%, rgba(59, 130, 246, 0.05) 50%, transparent 100%)",
-                        "linear-gradient(225deg, transparent 0%, rgba(59, 130, 246, 0.05) 50%, transparent 100%)",
-                        "linear-gradient(45deg, transparent 0%, rgba(59, 130, 246, 0.05) 50%, transparent 100%)",
-                      ]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  />
+
                 </div>
               </motion.div>
             </FloatingElement>
 
-            {/* Elementos decorativos flotantes más sutiles */}
-            <FloatingElement delay={1} duration={5} y={10} className="absolute -top-4 -right-4">
-              <motion.div
-                className="w-16 h-16 bg-gradient-to-br from-blue-400/60 to-blue-600/60 rounded-2xl shadow-lg backdrop-blur-sm"
-                whileHover={{ scale: 1.1, rotateZ: 15 }}
-                style={{ transformStyle: "preserve-3d" }}
-              />
-            </FloatingElement>
 
-            <FloatingElement delay={2} duration={6} y={8} className="absolute -bottom-6 -left-6">
-              <motion.div
-                className="w-12 h-12 bg-gradient-to-br from-blue-300/60 to-blue-500/60 rounded-full shadow-lg backdrop-blur-sm"
-                whileHover={{ scale: 1.2 }}
-                style={{ transformStyle: "preserve-3d" }}
-              />
-            </FloatingElement>
           </motion.div>
         </div>
       </div>

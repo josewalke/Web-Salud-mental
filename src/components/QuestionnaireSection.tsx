@@ -45,7 +45,7 @@ export function QuestionnaireSection() {
               viewport={{ once: true }}
             >
               <motion.div 
-                className="bg-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center"
+                className="bg-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center relative overflow-hidden"
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
@@ -59,7 +59,7 @@ export function QuestionnaireSection() {
               </motion.div>
 
               <motion.div 
-                className="bg-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center"
+                className="bg-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center relative overflow-hidden"
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
               >
@@ -73,7 +73,7 @@ export function QuestionnaireSection() {
               </motion.div>
 
               <motion.div 
-                className="bg-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center"
+                className="bg-white p-8 rounded-2xl shadow-lg border border-blue-100 text-center relative overflow-hidden"
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
               >
@@ -197,7 +197,7 @@ export function QuestionnaireSection() {
               viewport={{ once: true }}
             >
               <motion.div 
-                className="bg-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center"
+                className="bg-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center relative overflow-hidden"
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
@@ -211,7 +211,7 @@ export function QuestionnaireSection() {
               </motion.div>
 
               <motion.div 
-                className="bg-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center"
+                className="bg-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center relative overflow-hidden"
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
               >
@@ -225,7 +225,7 @@ export function QuestionnaireSection() {
               </motion.div>
 
               <motion.div 
-                className="bg-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center"
+                className="bg-white p-8 rounded-2xl shadow-lg border border-purple-100 text-center relative overflow-hidden"
                 whileHover={{ y: -10, scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
               >

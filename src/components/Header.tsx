@@ -34,8 +34,8 @@ export function Header() {
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-blue-100/50" 
-          : "bg-transparent"
+          ? "shadow-lg border-b border-blue-100/50" 
+          : ""
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -50,7 +50,7 @@ export function Header() {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <motion.div
-              className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg"
+              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg border-2 border-blue-500"
               whileHover={{
                 rotateY: 180,
                 boxShadow: "0 10px 25px rgba(59, 130, 246, 0.4)"
@@ -87,7 +87,7 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <motion.button
-            className="md:hidden p-2 rounded-lg hover:bg-blue-50 transition-colors"
+            className="md:hidden p-2 rounded-lg transition-colors"
             onClick={toggleMenu}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -129,12 +129,12 @@ export function Header() {
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <div className="flex flex-col space-y-4 pt-4 pb-4 border-t border-blue-100 mt-4 px-4 bg-white/95 backdrop-blur-md shadow-lg rounded-b-lg">
+              <div className="flex flex-col space-y-4 pt-4 pb-4 border-t border-blue-100 mt-4 px-4 shadow-lg rounded-b-lg">
                 {navigationItems.map((item, index) => (
                   <motion.a
                     key={item.name}
                     href={item.href}
-                    className="text-gray-800 hover:text-blue-600 transition-colors py-3 px-3 w-full text-left font-medium hover:bg-blue-50 rounded-lg"
+                    className="text-gray-800 hover:text-blue-600 transition-colors py-3 px-3 w-full text-left font-medium rounded-lg"
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1 }}

@@ -1,13 +1,12 @@
-import { useState } from "react";
-import { motion } from "motion/react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-
-import { Brain, Heart, Users, CheckCircle, Send, ArrowLeft, Home, Info, X } from "lucide-react";
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Textarea } from '../components/ui/textarea';
+import { CheckCircle, Heart, Brain, Users, Home, ArrowLeft, Send, Info, X } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-import { DynamicBackground } from "../components/DynamicBackground";
+// ELIMINADO: import { DynamicBackground } from "../components/DynamicBackground";
 import { SEOHead } from "../components/SEOHead";
 
 interface Question {
@@ -601,7 +600,6 @@ export function PersonalityQuestionnairePage() {
         />
         
         <div className="min-h-screen relative">
-          <DynamicBackground />
           <div className="container mx-auto px-4 py-20 relative z-10">
             <motion.div
               className="text-center max-w-4xl mx-auto"
@@ -692,7 +690,6 @@ export function PersonalityQuestionnairePage() {
       />
       
       <div className="min-h-screen relative">
-        <DynamicBackground />
         
         {/* Header */}
         <motion.header
