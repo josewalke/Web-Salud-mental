@@ -766,6 +766,53 @@ input {
   }
 }
 
+/* MODAL ULTRA-ESTRECHO CON CSS PERSONALIZADO */
+.modal-ultra-estrecho {
+  max-width: 280px !important;
+  width: 95vw !important;
+}
+
+@media (min-width: 640px) {
+  .modal-ultra-estrecho {
+    width: 280px !important;
+  }
+}
+
+/* Si quieres aún más estrecho, puedes cambiar este valor */
+.modal-ultra-estrecho-250 {
+  max-width: 250px !important;
+  width: 95vw !important;
+}
+
+@media (min-width: 640px) {
+  .modal-ultra-estrecho-250 {
+    width: 250px !important;
+  }
+}
+
+.modal-ultra-estrecho-200 {
+  max-width: 200px !important;
+  width: 95vw !important;
+}
+
+@media (min-width: 640px) {
+  .modal-ultra-estrecho-200 {
+    width: 200px !important;
+  }
+}
+
+/* Control total del ancho del modal */
+.modal-ancho-personalizado {
+  max-width: var(--modal-width, 280px) !important;
+  width: 95vw !important;
+}
+
+@media (min-width: 640px) {
+  .modal-ancho-personalizado {
+    width: var(--modal-width, 280px) !important;
+  }
+}
+
 /* ESTILOS PARA OPCIONES DE RADIO EN MODO CONCURSO */
 .radio-options-concourse {
   display: grid;
