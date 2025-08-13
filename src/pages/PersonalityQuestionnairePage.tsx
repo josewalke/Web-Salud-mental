@@ -528,19 +528,19 @@ export function PersonalityQuestionnairePage() {
               value={formData[question.id.toString()] || ''}
               onChange={(e) => handleInputChange(question.id.toString(), e.target.value)}
               placeholder="Escribe tu respuesta aquí..."
-              className="w-full max-w-2xl text-lg p-4 border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 rounded-xl"
+              className="w-full max-w-2xl text-base sm:text-lg p-3 sm:p-4 border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 rounded-xl"
             />
           </div>
         );
       
       case 'textarea':
         return (
-          <div className="flex items-center justify-center h-24">
+          <div className="flex items-center justify-center h-24 sm:h-32">
             <Textarea
               value={formData[question.id.toString()] || ''}
               onChange={(e) => handleInputChange(question.id.toString(), e.target.value)}
               placeholder="Escribe tu respuesta detallada aquí..."
-              className="w-full max-w-2xl text-lg p-4 border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 min-h-[100px] resize-none rounded-xl"
+              className="w-full max-w-2xl text-base sm:text-lg p-3 sm:p-4 border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 min-h-[100px] resize-none rounded-xl"
             />
           </div>
         );
@@ -552,7 +552,7 @@ export function PersonalityQuestionnairePage() {
         const lastOptionIndex = question.options.length - 1;
         
         return (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-3 sm:gap-4">
             {question.options.map((option, index) => {
               const isLastOption = index === lastOptionIndex;
               const shouldCenter = isOddOptions && isLastOption;
@@ -560,8 +560,8 @@ export function PersonalityQuestionnairePage() {
               return (
                 <motion.div
                   key={index}
-                  className={`flex items-center space-x-4 p-4 rounded-xl border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 cursor-pointer h-16 ${
-                    shouldCenter ? 'lg:col-span-2 lg:max-w-md lg:mx-auto' : ''
+                  className={`flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 rounded-xl border-2 border-blue-100 hover:border-blue-300 transition-all duration-300 cursor-pointer min-h-[3.5rem] sm:min-h-[4rem] ${
+                    shouldCenter ? 'max-w-md mx-auto' : ''
                   }`}
                   whileHover={{ scale: 1.02, backgroundColor: 'rgba(59, 130, 246, 0.05)' }}
                   whileTap={{ scale: 0.98 }}
@@ -573,9 +573,9 @@ export function PersonalityQuestionnairePage() {
                     value={option}
                     checked={formData[question.id.toString()] === option}
                     onChange={() => handleInputChange(question.id.toString(), option)}
-                    className="w-5 h-5 text-blue-600 border-2 border-blue-300 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
+                    className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 border-2 border-blue-300 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 flex-shrink-0"
                   />
-                  <label className="flex-1 text-lg text-gray-700 cursor-pointer font-medium">
+                  <label className="flex-1 text-sm sm:text-base lg:text-lg text-gray-700 cursor-pointer font-medium leading-tight">
                     {option}
                   </label>
                 </motion.div>
@@ -600,7 +600,7 @@ export function PersonalityQuestionnairePage() {
         />
         
         <div className="min-h-screen relative">
-          <div className="container mx-auto px-4 py-20 relative z-10">
+          <div className="container mx-auto px-4 py-12 sm:py-20 relative z-10">
             <motion.div
               className="text-center max-w-4xl mx-auto"
               initial={{ opacity: 0, y: 30 }}
@@ -608,44 +608,44 @@ export function PersonalityQuestionnairePage() {
               transition={{ duration: 0.8 }}
             >
               <motion.div
-                className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-green-500 to-green-600 rounded-full mb-8 shadow-2xl"
+                className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-r from-green-500 to-green-600 rounded-full mb-6 sm:mb-8 shadow-2xl"
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
               >
-                <CheckCircle className="w-12 h-12 text-white" />
+                <CheckCircle className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
               </motion.div>
               
-              <h1 className="text-4xl lg:text-5xl text-gray-900 mb-6">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl text-gray-900 mb-4 sm:mb-6 px-2">
                 ¡Cuestionario de Personalidad Completado!
               </h1>
               
-              <p className="text-xl text-gray-700 mb-8">
+              <p className="text-lg sm:text-xl text-gray-700 mb-6 sm:mb-8 px-4">
                 Gracias por completar nuestro test de personalidad basado en la teoría de Carl Jung. 
                 Hemos recibido tus respuestas y estamos procesando tu perfil de personalidad.
               </p>
               
-              <div className="bg-white/80 backdrop-blur-md rounded-2xl p-8 border border-white/30 shadow-xl mb-8">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/30 shadow-xl mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
                   ¿Qué pasa ahora?
                 </h2>
-                <div className="grid md:grid-cols-2 gap-6 text-left">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-left">
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-blue-600 font-bold">1</span>
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-blue-600 font-bold text-sm sm:text-base">1</span>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-800 mb-1">Análisis en Proceso</h3>
-                      <p className="text-gray-600 text-sm">Nuestros psicólogos están analizando tus respuestas</p>
+                      <h3 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Análisis en Proceso</h3>
+                      <p className="text-gray-600 text-xs sm:text-sm">Nuestros psicólogos están analizando tus respuestas</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-blue-600 font-bold">2</span>
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-blue-600 font-bold text-sm sm:text-base">2</span>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-800 mb-1">Resultados Próximamente</h3>
-                      <p className="text-gray-600 text-sm">Recibirás un análisis detallado de tu personalidad</p>
+                      <h3 className="font-semibold text-gray-800 mb-1 text-sm sm:text-base">Resultados Próximamente</h3>
+                      <p className="text-gray-600 text-xs sm:text-sm">Recibirás un análisis detallado de tu personalidad</p>
                     </div>
                   </div>
                 </div>
@@ -654,9 +654,9 @@ export function PersonalityQuestionnairePage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   onClick={() => navigate('/')}
-                  className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-8 py-3 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
-                  <Home className="w-5 h-5 mr-2" />
+                  <Home className="w-5 h-5 sm:w-5 sm:h-5 mr-2" />
                   Volver al Inicio
                 </Button>
               </div>
@@ -703,50 +703,48 @@ export function PersonalityQuestionnairePage() {
               <Button
                 variant="outline"
                 onClick={() => navigate('/')}
-                className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-colors text-sm sm:text-base px-3 sm:px-4 py-2 sm:py-3"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Volver al Inicio
+                <span className="hidden sm:inline">Volver al Inicio</span>
+                <span className="sm:hidden">Inicio</span>
               </Button>
               
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Brain className="w-7 h-7 text-white" />
-                </div>
-                <h1 className="text-2xl font-bold text-gray-900">Love on the Brain</h1>
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">Love on the Brain</h1>
               </div>
             </div>
           </div>
         </motion.header>
 
-        <div className="container mx-auto px-4 py-12 relative z-10">
+        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10">
           {/* Header del Cuestionario */}
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full mb-8 shadow-2xl"
+              className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full mb-6 sm:mb-8 shadow-2xl"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Brain className="w-10 h-10 text-white" />
+              <Brain className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
             </motion.div>
             
             <motion.h1
-              className="text-4xl lg:text-5xl text-gray-900 mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-900 mb-4 sm:mb-6 px-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               Cuestionario de
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700"> Personalidad</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700 block sm:inline"> Personalidad</span>
             </motion.h1>
             
             <motion.p
-              className="text-lg text-gray-700 max-w-3xl mx-auto mb-8"
+              className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto mb-6 sm:mb-8 px-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
@@ -757,23 +755,23 @@ export function PersonalityQuestionnairePage() {
             </motion.p>
 
             {/* Progress bar */}
-            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-4 mb-6">
+            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-3 sm:h-4 mb-4 sm:mb-6 px-4">
               <motion.div
-                className="bg-gradient-to-r from-blue-500 to-blue-700 h-4 rounded-full"
+                className="bg-gradient-to-r from-blue-500 to-blue-700 h-3 sm:h-4 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5 }}
               />
             </div>
             
-            <p className="text-sm text-gray-600">
+            <p className="text-sm sm:text-base text-gray-600">
               Pregunta {currentStep + 1} de {questions.length}
             </p>
           </motion.div>
 
           {/* Cuestionario */}
           <motion.div
-            className="max-w-5xl mx-auto"
+            className="max-w-5xl mx-auto px-2"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -786,7 +784,7 @@ export function PersonalityQuestionnairePage() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="bg-white/90 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(59,130,246,0.25),0_0_0_1px_rgba(255,255,255,0.1)] border border-white/30 relative overflow-hidden min-h-[450px]">
+              <Card className="bg-white/90 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(59,130,246,0.25),0_0_0_1px_rgba(255,255,255,0.1)] border border-white/30 relative overflow-hidden min-h-[400px] sm:min-h-[450px]">
                 {/* Efecto de brillo en la parte superior */}
                 <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-transparent pointer-events-none" />
                 
@@ -796,35 +794,36 @@ export function PersonalityQuestionnairePage() {
                 {/* Efecto de sombra interna para profundidad */}
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/5 pointer-events-none" />
                 
-                <CardHeader className="text-center pb-6">
-                  <CardTitle className="text-2xl lg:text-3xl text-gray-900 mb-4">
+                <CardHeader className="text-center pb-4 sm:pb-6 px-4 sm:px-6">
+                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl text-gray-900 mb-3 sm:mb-4 px-2">
                     {questions[currentStep].text}
                   </CardTitle>
                   {questions[currentStep].required && (
-                    <CardDescription className="text-red-500 font-medium text-lg">
+                    <CardDescription className="text-red-500 font-medium text-base sm:text-lg">
                       * Esta pregunta es obligatoria
                     </CardDescription>
                   )}
                 </CardHeader>
                 
-                <CardContent className="space-y-6 px-6">
-                  <div className="min-h-[280px] flex flex-col justify-center">
+                <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
+                  <div className="min-h-[200px] sm:min-h-[280px] flex flex-col justify-center">
                     {renderQuestion(questions[currentStep])}
                   </div>
 
                   {/* Navigation buttons */}
-                  <div className="flex justify-between items-center pt-6">
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 pt-4 sm:pt-6">
                     <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 400 }}
+                      className="w-full sm:w-auto order-2 sm:order-1"
                     >
                       <Button
                         onClick={handlePrevious}
                         disabled={currentStep === 0}
                         variant="outline"
                         size="lg"
-                        className="px-10 py-4 disabled:opacity-50 border-2 border-blue-200 hover:border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="w-full sm:w-auto px-6 sm:px-10 py-3 sm:py-4 disabled:opacity-50 border-2 border-blue-200 hover:border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300 text-sm sm:text-base"
                       >
                         Anterior
                       </Button>
@@ -835,13 +834,14 @@ export function PersonalityQuestionnairePage() {
                         whileHover={{ scale: 1.05, y: -3 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ type: "spring", stiffness: 400 }}
+                        className="w-full sm:w-auto order-1 sm:order-2"
                       >
                         <Button
                           onClick={handleSubmit}
                           size="lg"
-                          className="bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-12 py-4 text-lg font-semibold shadow-2xl hover:shadow-[0_20px_25px_-5px_rgba(59,130,246,0.4)] transition-all duration-300 transform hover:-translate-y-1"
+                          className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-2xl hover:shadow-[0_20px_25px_-5px_rgba(59,130,246,0.4)] transition-all duration-300 transform hover:-translate-y-1"
                         >
-                          <Send className="w-6 h-6 mr-3" />
+                          <Send className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
                           Enviar Cuestionario
                         </Button>
                       </motion.div>
@@ -850,11 +850,12 @@ export function PersonalityQuestionnairePage() {
                         whileHover={{ scale: 1.05, y: -2 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ type: "spring", stiffness: 400 }}
+                        className="w-full sm:w-auto order-1 sm:order-2"
                       >
                         <Button
                           onClick={handleNext}
                           size="lg"
-                          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-10 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+                          className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 px-8 sm:px-10 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                         >
                           Siguiente
                         </Button>
