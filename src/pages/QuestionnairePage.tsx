@@ -436,7 +436,7 @@ export function QuestionnairePage() {
         twitterCard="summary_large_image"
       />
       
-      <div className="min-h-screen relative">
+      <div className="min-h-screen relative questionnaire-container">
         
         {/* Header */}
         <motion.header
@@ -480,17 +480,17 @@ export function QuestionnairePage() {
             </motion.div>
             
             <motion.h1
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-900 mb-4 sm:mb-6 px-2"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-900 mb-4 sm:mb-6 text-center questionnaire-text"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               Cuestionario de
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700 block sm:inline"> Compatibilidad de Pareja</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700"> Compatibilidad de Pareja</span>
             </motion.h1>
             
             <motion.p
-              className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto mb-6 sm:mb-8 px-4"
+              className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto mb-6 sm:mb-8 text-center px-2 questionnaire-text"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
@@ -502,7 +502,7 @@ export function QuestionnairePage() {
             </motion.p>
 
             {/* Progress bar */}
-            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-3 sm:h-4 mb-4 sm:mb-6 px-4">
+            <div className="w-full max-w-3xl mx-auto bg-gray-200 rounded-full h-3 sm:h-4 mb-4 sm:mb-6">
               <motion.div
                 className="bg-gradient-to-r from-blue-500 to-blue-700 h-3 sm:h-4 rounded-full"
                 initial={{ width: 0 }}
@@ -523,7 +523,7 @@ export function QuestionnairePage() {
             animate={{ opacity: 1, x: 0, rotateY: 0, scale: 1 }}
             exit={{ opacity: 0, x: -50, rotateY: 15, scale: 0.9 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="max-w-5xl mx-auto px-2"
+            className="max-w-5xl mx-auto"
           >
             <motion.div
               className="transform-style-preserve-3d"
@@ -539,7 +539,7 @@ export function QuestionnairePage() {
                 damping: 20 
               }}
             >
-              <Card className="bg-white/90 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(59,130,246,0.25),0_0_0_1px_rgba(255,255,255,0.1)] border border-white/30 relative overflow-hidden min-h-[400px] sm:min-h-[450px]">
+              <Card className="bg-white/90 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(59,130,246,0.25),0_0_0_1px_rgba(255,255,255,0.1)] border border-white/30 relative overflow-hidden min-h-[400px] sm:min-h-[450px] questionnaire-card">
                 {/* Efecto de brillo en la parte superior */}
                 <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-transparent pointer-events-none" />
                 
@@ -549,8 +549,8 @@ export function QuestionnairePage() {
                 {/* Efecto de sombra interna para profundidad */}
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/5 pointer-events-none" />
                 
-                <CardHeader className="text-center pb-4 sm:pb-6 px-4 sm:px-6">
-                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl text-gray-900 mb-3 sm:mb-4 px-2">
+                <CardHeader className="text-center pb-4 sm:pb-6">
+                  <CardTitle className="text-xl sm:text-2xl lg:text-3xl text-gray-900 mb-3 sm:mb-4 text-center">
                     {questions[currentStep].text}
                   </CardTitle>
                   {questions[currentStep].required && (
@@ -560,7 +560,7 @@ export function QuestionnairePage() {
                   )}
                 </CardHeader>
                 
-                <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
+                <CardContent className="space-y-4 sm:space-y-6">
                   <div className="min-h-[200px] sm:min-h-[280px] flex flex-col justify-center">
                     {renderQuestion(questions[currentStep])}
                   </div>
@@ -620,7 +620,7 @@ export function QuestionnairePage() {
                 </CardContent>
 
                 {/* Botón de información discreto */}
-                <div className="text-center pt-3 sm:pt-4 pb-2 px-4">
+                <div className="text-center pt-3 sm:pt-4 pb-2">
                   <motion.button
                     onClick={() => setShowInfoModal(true)}
                     className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors duration-300 hover:underline"
