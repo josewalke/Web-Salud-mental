@@ -1758,6 +1758,7 @@ input {
   gap: 0.75rem;
   position: relative;
   min-height: 60px;
+  justify-content: space-between;
 }
 
 .modal-title-rediseñado {
@@ -1779,15 +1780,22 @@ input {
   border: none;
   color: #64748b;
   cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
+  padding: 0.5rem;
+  border-radius: 8px;
   transition: all 0.2s ease;
   flex-shrink: 0;
+  margin-left: auto;
+  order: 2;
 }
 
 .modal-close-rediseñado:hover {
   background: #f1f5f9;
   color: #475569;
+  transform: scale(1.1);
+}
+
+.modal-close-rediseñado:active {
+  transform: scale(0.95);
 }
 
 .modal-body-rediseñado {
@@ -1834,9 +1842,10 @@ input {
 
   .modal-header-rediseñado {
     padding: 1rem;
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 0.5rem;
+    justify-content: space-between;
   }
 
   .modal-title-rediseñado {
@@ -1848,13 +1857,16 @@ input {
     hyphens: none;
     width: 100%;
     text-align: left;
+    flex: 1;
   }
 
   .modal-close-rediseñado {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    position: static;
+    top: auto;
+    right: auto;
     padding: 0.5rem;
+    margin-left: 0;
+    order: 2;
   }
 
   .modal-body-rediseñado {
