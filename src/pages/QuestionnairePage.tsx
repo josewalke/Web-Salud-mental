@@ -641,84 +641,84 @@ export function QuestionnairePage() {
         {/* Modal de Información */}
         {showInfoModal && (
           <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-1"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowInfoModal(false)}
           >
             <motion.div
-              className="bg-white rounded-xl shadow-2xl w-[95vw] sm:w-full max-w-lg max-h-[90vh] overflow-y-auto mx-2 modal-content"
+              className="bg-white rounded-lg shadow-2xl w-[95vw] sm:w-full max-w-md max-h-[85vh] overflow-y-auto mx-1 modal-content"
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header del modal */}
-              <div className="flex items-start justify-between p-3 border-b border-gray-200 modal-header">
+              <div className="flex items-start justify-between p-2 border-b border-gray-200 modal-header">
                 <div className="flex items-start space-x-2 flex-1 min-w-0">
-                  <Info className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
-                  <h2 className="text-lg font-bold text-gray-800 leading-tight modal-title">
+                  <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <h2 className="text-base font-bold text-gray-800 leading-tight modal-title">
                     Información del Cuestionario
                   </h2>
                 </div>
                 <button
                   onClick={() => setShowInfoModal(false)}
-                  className="w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-2"
+                  className="w-6 h-6 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors flex-shrink-0 ml-1"
                 >
-                  <X className="w-4 h-4 text-gray-600" />
+                  <X className="w-3 h-3 text-gray-600" />
                 </button>
               </div>
               
               {/* Contenido del modal */}
-              <div className="p-3 space-y-3">
+              <div className="p-2 space-y-2">
                 <div>
-                  <h3 className="text-base font-semibold text-gray-800 mb-2 text-center sm:text-left">
+                  <h3 className="text-sm font-semibold text-gray-800 mb-1 text-center sm:text-left">
                     ¿Por qué elegir nuestro Test de Compatibilidad de Pareja?
                   </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed text-center sm:text-left">
+                  <p className="text-xs text-gray-600 leading-relaxed text-center sm:text-left">
                     Nuestro <strong>cuestionario de compatibilidad</strong> está diseñado por psicólogos expertos 
                     para ayudarte a encontrar a tu pareja ideal. Utilizamos metodologías científicas probadas 
                     que analizan múltiples dimensiones de la personalidad y las relaciones.
                   </p>
                 </div>
                 
-                <div className="grid grid-cols-1 gap-2">
-                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
-                    <Brain className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
+                <div className="grid grid-cols-1 gap-1">
+                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
+                    <Brain className="w-3.5 h-3.5 text-blue-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">Científicamente Probado</h4>
+                      <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">Científicamente Probado</h4>
                       <p className="text-xs text-gray-600">Metodología avalada por psicólogos expertos</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
-                    <Heart className="w-4 h-4 text-blue-600 mt-1 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
+                    <Heart className="w-3.5 h-3.5 text-blue-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">Compatibilidad Real</h4>
+                      <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">Compatibilidad Real</h4>
                       <p className="text-xs text-gray-600">Encuentra a alguien que realmente te entienda</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
-                    <Users className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
+                    <Users className="w-3.5 h-3.5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">Resultados Garantizados</h4>
+                      <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">Resultados Garantizados</h4>
                       <p className="text-xs text-gray-600">Resultados precisos o tu dinero de vuelta</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2 p-2 bg-gray-50 rounded-lg">
-                    <CheckCircle className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                  <div className="flex items-start space-x-2 p-1.5 bg-gray-50 rounded-md">
+                    <CheckCircle className="w-3.5 h-3.5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1 text-sm">100% Confidencial</h4>
+                      <h4 className="font-semibold text-gray-800 mb-0.5 text-xs">100% Confidencial</h4>
                       <p className="text-xs text-gray-600">Tu privacidad es nuestra prioridad</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-blue-50 rounded-lg p-3">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm text-center sm:text-left">
+                <div className="bg-blue-50 rounded-md p-2">
+                  <h4 className="font-semibold text-gray-800 mb-1 text-xs text-center sm:text-left">
                     Test de Compatibilidad: ¿Cómo Funciona?
                   </h4>
-                  <div className="space-y-1 text-xs text-gray-700">
+                  <div className="space-y-0.5 text-xs text-gray-700">
                     <p><strong>🔍 Análisis Profundo:</strong> Evaluamos 18 aspectos clave de tu personalidad</p>
                     <p><strong>🧠 Base Científica:</strong> Metodología validada por expertos</p>
                     <p><strong>💝 Resultados Personalizados:</strong> Análisis detallado de tu perfil</p>
