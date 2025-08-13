@@ -28,35 +28,521 @@ const PersonalityQuestionnairePage: React.FC = () => {
     },
     {
       id: 2,
-      text: "¿Prefieres trabajar solo o en equipo?",
+      text: "¿Te resulta fácil establecer conversación con un desconocido?",
       type: 'radio',
-      options: ['1 = SOLO', '2 = EN EQUIPO', '3 = DEPENDE'],
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
       required: true,
-      info: "Esta pregunta evalúa tu preferencia por el trabajo individual versus el trabajo colaborativo."
+      info: "Esta pregunta evalúa tu capacidad de comunicación y apertura social."
     },
     {
       id: 3,
-      text: "¿Cómo te sientes en situaciones sociales grandes?",
+      text: "¿Te sientes más cómodo estando solo que en grupo?",
       type: 'radio',
-      options: ['1 = CÓMODO', '2 = INCÓMODO', '3 = NEUTRAL'],
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
       required: true,
-      info: "Esta pregunta evalúa tu nivel de comodidad en eventos sociales con muchas personas."
+      info: "Esta pregunta evalúa tu preferencia por la soledad versus la socialización."
     },
     {
       id: 4,
-      text: "¿Qué prefieres hacer en tu tiempo libre?",
+      text: "¿Socializar puede agotar tu energía rápidamente?",
       type: 'radio',
-      options: ['1 = ACTIVIDADES SOCIALES', '2 = ACTIVIDADES SOLITARIAS', '3 = MIXTO'],
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
       required: true,
-      info: "Esta pregunta evalúa tus preferencias de ocio y tiempo libre."
+      info: "Esta pregunta evalúa si eres introvertido (se agota socializando) o extrovertido (se energiza socializando)."
     },
     {
       id: 5,
-      text: "¿Cómo tomas decisiones importantes?",
+      text: "¿Prefieres las llamadas telefónicas a los mensajes de texto cuando te comunicas con otras personas?",
       type: 'radio',
-      options: ['1 = INTUICIÓN', '2 = LÓGICA', '3 = AMBAS'],
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
       required: true,
-      info: "Esta pregunta evalúa tu estilo de toma de decisiones."
+      info: "Esta pregunta evalúa tu preferencia por la comunicación directa versus la escrita."
+    },
+    {
+      id: 6,
+      text: "¿En situaciones sociales prefieres quedarte con caras conocidas antes que conocer a otras nuevas?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de comodidad con lo familiar versus lo nuevo."
+    },
+    {
+      id: 7,
+      text: "¿Prefieres las actividades en solitario a las interacciones en grupo?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por actividades individuales versus grupales."
+    },
+    {
+      id: 8,
+      text: "¿Debatir y analizar obras creativas te apasiona?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu inclinación hacia el análisis intelectual y la reflexión."
+    },
+    {
+      id: 9,
+      text: "¿Te gustan las películas con conclusiones abiertas que permitan la interpretación?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la ambigüedad y la interpretación personal."
+    },
+    {
+      id: 10,
+      text: "¿Siempre te han intrigado los misterios de la vida después de la muerte?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu inclinación hacia temas filosóficos y existenciales."
+    },
+    {
+      id: 11,
+      text: "¿Te encanta debatir conceptos teóricos y puedes pasarte horas conversando sobre ellos?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por discusiones intelectuales profundas."
+    },
+    {
+      id: 12,
+      text: "¿A menudo reflexionas sobre el significado de las cosas en lugar de aceptarlas sin más?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia la reflexión filosófica."
+    },
+    {
+      id: 13,
+      text: "¿Te atraen las nuevas experiencias y te gusta explorar lugares desconocidos?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu apertura a nuevas experiencias y aventuras."
+    },
+    {
+      id: 14,
+      text: "¿Te gusta mantener conversaciones profundas que inviten a la reflexión?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por conversaciones significativas versus superficiales."
+    },
+    {
+      id: 15,
+      text: "¿Reflexionar sobre experiencias pasadas te ayuda a comprender tus creencias y valores actuales?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia la introspección y el autoconocimiento."
+    },
+    {
+      id: 16,
+      text: "¿Disfrutas aprendiendo nuevas ideas y conceptos, buscando constantemente el conocimiento?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu sed de conocimiento y aprendizaje continuo."
+    },
+    {
+      id: 17,
+      text: "¿Te gustan los debates animados en los que puedes compartir e intercambiar ideas con los demás?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu disfrute por el intercambio intelectual y los debates."
+    },
+    {
+      id: 18,
+      text: "¿La curiosidad te impulsa a explorar nuevas ideas y temas en profundidad?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de curiosidad intelectual."
+    },
+    {
+      id: 19,
+      text: "¿Puedes pasarte horas profundizando en los temas que despiertan tu curiosidad?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu capacidad de concentración y profundización en temas de interés."
+    },
+    {
+      id: 20,
+      text: "¿Eres paciente con las personas que no son tan rápidas o eficientes como tú?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de paciencia y tolerancia hacia los demás."
+    },
+    {
+      id: 21,
+      text: "¿Cuándo alguien a tu alrededor está disgustado tiendes a sentir también sus emociones?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de empatía emocional."
+    },
+    {
+      id: 22,
+      text: "¿Te cuesta empatizar con personas de orígenes muy diferentes?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu capacidad de empatía hacia personas de diferentes culturas o orígenes."
+    },
+    {
+      id: 23,
+      text: "¿Cuándo alguien piensa de forma diferente a ti, intentas comprender de verdad a la otra parte?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu apertura hacia diferentes perspectivas y opiniones."
+    },
+    {
+      id: 24,
+      text: "¿Valoras la honestidad por encima del tacto, aunque sea duro?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la verdad directa versus la diplomacia."
+    },
+    {
+      id: 25,
+      text: "¿Empatizas con los sentimientos de los demás, aunque no hayas compartido sus experiencias?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu capacidad de empatía cognitiva."
+    },
+    {
+      id: 26,
+      text: "¿Alcanzar metas personales te produce más satisfacción que ayudar a los demás?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu orientación hacia metas personales versus altruismo."
+    },
+    {
+      id: 27,
+      text: "¿A veces te cuesta entender las emociones de los demás?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu capacidad de comprensión emocional."
+    },
+    {
+      id: 28,
+      text: "¿Sueles hacer planes de emergencia?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia la planificación y la preparación."
+    },
+    {
+      id: 29,
+      text: "¿Mantienes la compostura incluso bajo presión?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu capacidad de manejo del estrés y la presión."
+    },
+    {
+      id: 30,
+      text: "¿Los entornos dinámicos y de ritmo rápido te dan energía y te desenvuelves bien bajo presión?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por entornos estimulantes y desafiantes."
+    },
+    {
+      id: 31,
+      text: "¿Te gustan los retos, especialmente en entornos de alta presión?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu atracción hacia situaciones desafiantes."
+    },
+    {
+      id: 32,
+      text: "¿En situaciones sociales prefieres quedarte con caras conocidas antes que conocer a otras nuevas?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la familiaridad social."
+    },
+    {
+      id: 33,
+      text: "¿Un pequeño error a veces puede hacer dudar de tus conocimientos generales sobre un tema?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de confianza en tus conocimientos."
+    },
+    {
+      id: 34,
+      text: "¿Conocer gente nueva te hace preocuparte por la impresión que has causado?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de ansiedad social y preocupación por la imagen."
+    },
+    {
+      id: 35,
+      text: "¿Con frecuencia te preocupa el peor escenario posible en cualquier situación?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia el pesimismo y la preocupación excesiva."
+    },
+    {
+      id: 36,
+      text: "¿A menudo consideras las decisiones que has tomado?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia la reflexión y el análisis de decisiones."
+    },
+    {
+      id: 37,
+      text: "¿La inseguridad es algo con lo que lidias a menudo?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de confianza en ti mismo."
+    },
+    {
+      id: 38,
+      text: "¿Los errores de tu pasado suelen perdurar en la memoria?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia el arrepentimiento y la rumiación."
+    },
+    {
+      id: 39,
+      text: "¿A menudo te preocupa por incertidumbres futuras, incluso en situaciones tranquilas?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de ansiedad por el futuro."
+    },
+    {
+      id: 40,
+      text: "¿Eres una persona que aprecia los recuerdos y los objetos sentimentales?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu conexión emocional con el pasado y los recuerdos."
+    },
+    {
+      id: 41,
+      text: "¿Crees que el mundo mejoraría si la gente tomara decisiones más basadas en las emociones?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la toma de decisiones emocional versus racional."
+    },
+    {
+      id: 42,
+      text: "¿Te molesta que los demás discutan delante de ti?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu sensibilidad hacia los conflictos y discusiones."
+    },
+    {
+      id: 43,
+      text: "¿Te gusta organizar tu día con listas y horarios?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la organización y la estructura."
+    },
+    {
+      id: 44,
+      text: "¿Prefieres seguir una rutina a ser espontáneo?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la estabilidad versus la espontaneidad."
+    },
+    {
+      id: 45,
+      text: "¿Te sientes más a gusto cuando tu entorno está ordenado y organizado?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por el orden y la organización del entorno."
+    },
+    {
+      id: 46,
+      text: "¿A menudo sigues tus sentimientos más que tu lógica?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la intuición versus el razonamiento lógico."
+    },
+    {
+      id: 47,
+      text: "¿Cuándo tienes que elegir sigues a tu corazón y eliges lo que te parece correcto?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia la toma de decisiones basada en valores y sentimientos."
+    },
+    {
+      id: 48,
+      text: "¿Te identificas mucho con ser una persona artística?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu identificación con la creatividad y la expresión artística."
+    },
+    {
+      id: 49,
+      text: "¿Te gusta pasar tiempo en museos de arte?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu apreciación por el arte y la cultura."
+    },
+    {
+      id: 50,
+      text: "¿Te gusta mantener conversaciones profundas que inviten a la reflexión?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por conversaciones significativas y reflexivas."
+    },
+    {
+      id: 51,
+      text: "¿La curiosidad te impulsa a explorar nuevas ideas y temas en profundidad?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de curiosidad intelectual y exploración."
+    },
+    {
+      id: 52,
+      text: "¿Te gusta ser el centro de atención?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu comodidad con ser el foco de atención en grupos."
+    },
+    {
+      id: 53,
+      text: "¿Prefieres una rutina diaria bien estructurada y te sientes más cómodo cuando las cosas son predecibles?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la estructura y la predictibilidad."
+    },
+    {
+      id: 54,
+      text: "¿Prefieres relajarte antes de ocuparte de las tareas domésticas?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por el descanso versus la productividad."
+    },
+    {
+      id: 55,
+      text: "¿Prefieres tomar decisiones rápidamente en lugar de pensar en ellas?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu estilo de toma de decisiones: impulsivo versus reflexivo."
+    },
+    {
+      id: 56,
+      text: "¿Confías más en tu instinto que en horarios o planes escritos?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por la intuición versus la planificación estructurada."
+    },
+    {
+      id: 57,
+      text: "¿Te adaptas fácilmente a los cambios inesperados de planes?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu flexibilidad y capacidad de adaptación."
+    },
+    {
+      id: 58,
+      text: "¿A la hora de tomar decisiones, priorizas la lógica y la objetividad sobre las emociones?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu preferencia por el razonamiento lógico versus la intuición emocional."
+    },
+    {
+      id: 59,
+      text: "¿Tomas las riendas de forma natural en situaciones de grupo guiando a los demás hacia objetivos comunes?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia natural hacia el liderazgo."
+    },
+    {
+      id: 60,
+      text: "¿Te gusta asumir funciones de liderazgo?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu disfrute por roles de liderazgo y dirección."
+    },
+    {
+      id: 61,
+      text: "¿Tiendes a ser autocrítico, a reflexionar constantemente sobre tus acciones y a esforzarte por mejorar?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu tendencia hacia la autocrítica constructiva y la mejora personal."
+    },
+    {
+      id: 62,
+      text: "¿Para ti es importante tener objetivos claros y trabajar diligentemente para alcanzarlos?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu orientación hacia metas y tu nivel de determinación."
+    },
+    {
+      id: 63,
+      text: "¿Pasar tiempo a solas es algo que aprecias y encuentras paz en las actividades solitarias?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu apreciación por la soledad y la introspección."
+    },
+    {
+      id: 64,
+      text: "¿Eres tu mejor amigo?",
+      type: 'radio',
+      options: ['1 = SI', '2 = NO', '3 = A VECES'],
+      required: true,
+      info: "Esta pregunta evalúa tu nivel de autoconocimiento y autoaceptación."
+    },
+    {
+      id: 65,
+      text: "¿Cómo te gusta pasar tu tiempo libre? (Hobbies)",
+      type: 'textarea',
+      required: false,
+      info: "Esta pregunta te permite describir tus intereses y actividades de ocio. En caso de estar en el pack parejas no hace falta completar esta pregunta."
+    },
+    {
+      id: 66,
+      text: "¿Tienes alguna alergia, fobia o algo que deberíamos tener en cuenta para la cita?",
+      type: 'textarea',
+      required: false,
+      info: "Esta pregunta es importante para considerar cualquier necesidad especial o consideración de salud en tu perfil."
     }
   ];
 
