@@ -890,7 +890,8 @@ export function PersonalityQuestionnairePage() {
             onClick={() => setShowInfoModal(false)}
           >
             <motion.div
-              className="bg-white rounded-lg shadow-2xl w-[95vw] sm:w-full max-w-xs max-h-[85vh] overflow-y-auto mx-1 modal-content"
+              className="bg-white rounded-lg shadow-2xl w-[95vw] sm:w-full max-h-[85vh] overflow-y-auto mx-1 modal-content"
+              style={{ maxWidth: '280px' }}
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
