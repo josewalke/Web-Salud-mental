@@ -44,6 +44,7 @@ export function HeroSection() {
     <section 
       id="inicio" 
       className="relative min-h-screen py-20 overflow-hidden lazy-section stable-layout"
+      style={{ maxWidth: '100vw', overflowX: 'hidden' }}
     >
       {/* Subtle gradient overlay for better text readability */}
       <motion.div
@@ -58,21 +59,22 @@ export function HeroSection() {
         transition={isMobile || isLowEnd ? { duration: 0 } : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]">
+      <div className="container mx-auto px-4 relative z-10" style={{ maxWidth: '100vw', overflowX: 'hidden' }}>
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]" style={{ maxWidth: '100%', overflowX: 'hidden' }}>
                       <motion.div
               className="space-y-8 animate-optimized"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
+              style={{ maxWidth: '100%', overflowX: 'hidden' }}
             >
-            <div className="space-y-6">
+            <div className="space-y-6" style={{ maxWidth: '100%', overflowX: 'hidden' }}>
               <motion.h1
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-gray-900 leading-tight break-words"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.28, ease: "easeOut" }}
-                style={{ textShadow: '0 2px 4px rgba(255, 255, 255, 0.5)' }}
+                style={{ textShadow: '0 2px 4px rgba(255, 255, 255, 0.5)', maxWidth: '100%', overflowX: 'hidden' }}
               >
                 El cerebro también se puede
                 <motion.span
@@ -94,7 +96,7 @@ export function HeroSection() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.28, ease: "easeOut" }}
-                style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}
+                style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)', maxWidth: '100%', overflowX: 'hidden', wordWrap: 'break-word' }}
               >
                 Estamos encantados de que quieras trabajar en tu crecimiento personal. 
                 ¡Aquí no hay juicio porque ayudamos de corazón! Love on the Brain es una 
@@ -107,6 +109,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.28, ease: "easeOut" }}
+              style={{ maxWidth: '100%', overflowX: 'hidden', width: '100%' }}
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -149,6 +152,7 @@ export function HeroSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
+              style={{ maxWidth: '100%', overflowX: 'hidden' }}
             >
               {features.map((item, index) => (
                 <motion.div
@@ -165,7 +169,7 @@ export function HeroSection() {
                   >
                     <item.icon className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   </motion.div>
-                  <span className="text-sm text-gray-700 break-words" style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}>
+                  <span className="text-sm text-gray-700 break-words" style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)', maxWidth: '100%', overflowX: 'hidden', wordWrap: 'break-word' }}>
                     {item.text}
                   </span>
                 </motion.div>
