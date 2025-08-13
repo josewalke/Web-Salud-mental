@@ -59,7 +59,7 @@ export function HeroSection() {
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]">
                       <motion.div
               className="space-y-8 animate-optimized"
               initial={{ opacity: 0, x: -50 }}
@@ -68,7 +68,7 @@ export function HeroSection() {
             >
             <div className="space-y-6">
               <motion.h1
-                className="text-4xl lg:text-6xl text-gray-900 leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-gray-900 leading-tight break-words"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.28, ease: "easeOut" }}
@@ -90,7 +90,7 @@ export function HeroSection() {
               </motion.h1>
 
               <motion.p
-                className="text-xl text-gray-700 leading-relaxed"
+                className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed break-words"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.28, ease: "easeOut" }}
@@ -103,11 +103,10 @@ export function HeroSection() {
             </div>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.28, ease: "easeOut" }}
-
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -115,7 +114,7 @@ export function HeroSection() {
               >
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 backdrop-blur-sm"
+                  className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-xl hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 backdrop-blur-sm text-sm sm:text-base"
                   onClick={scrollToServices}
                 >
                   Explorar packs
@@ -135,7 +134,7 @@ export function HeroSection() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-blue-600 text-blue-600 hover:bg-blue-50 hover:shadow-lg hover:shadow-blue-100/50 transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                  className="w-full sm:w-auto border-blue-600 text-blue-600 hover:bg-blue-50 hover:shadow-lg hover:shadow-blue-100/50 transition-all duration-300 bg-white/80 backdrop-blur-sm text-sm sm:text-base"
                   onClick={scrollToContact}
                 >
                   Contactar
@@ -146,7 +145,7 @@ export function HeroSection() {
 
 
             <motion.div
-              className="flex items-center space-x-8 pt-4"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.8 }}
@@ -154,7 +153,7 @@ export function HeroSection() {
               {features.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-center space-x-2"
+                  className="flex items-center space-x-2 w-full sm:w-auto"
                   whileHover={{ scale: 1.05, y: -2 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -164,9 +163,9 @@ export function HeroSection() {
                     animate={{ rotate: [0, 5, -5, 0] }}
                     transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
                   >
-                    <item.icon className="w-5 h-5 text-blue-600" />
+                    <item.icon className="w-5 h-5 text-blue-600 flex-shrink-0" />
                   </motion.div>
-                  <span className="text-sm text-gray-700" style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}>
+                  <span className="text-sm text-gray-700 break-words" style={{ textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)' }}>
                     {item.text}
                   </span>
                 </motion.div>
