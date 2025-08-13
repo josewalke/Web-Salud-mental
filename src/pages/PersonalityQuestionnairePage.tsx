@@ -575,7 +575,82 @@ const PersonalityQuestionnairePage: React.FC = () => {
   };
 
   const showInfo = (info: string) => {
-    setCurrentInfo(info);
+    // Información real sobre el cuestionario de personalidad
+    const questionnaireInfo = `
+      <h3 style="font-weight: 600; margin-bottom: 1rem; color: #1e293b;">🧠 Cuestionario de Personalidad Basado en Carl Jung</h3>
+      
+      <div style="margin-bottom: 1rem;">
+        <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #374151;">📚 Sobre Carl Jung</h4>
+        <p style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-bottom: 0.5rem;">
+          Carl Gustav Jung (1875-1961) fue un psiquiatra y psicoanalista suizo, fundador de la psicología analítica. 
+          Su trabajo revolucionó la comprensión de la personalidad humana, introduciendo conceptos como:
+        </p>
+        <ul style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-left: 1rem;">
+          <li><strong>Arquetipos:</strong> Patrones universales de comportamiento</li>
+          <li><strong>Inconsciente colectivo:</strong> Memoria compartida de la humanidad</li>
+          <li><strong>Tipos psicológicos:</strong> Clasificación de personalidades</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #374151;">🔬 Teoría de Tipos de Personalidad</h4>
+        <p style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-bottom: 0.5rem;">
+          Jung identificó 4 funciones principales de la personalidad:
+        </p>
+        <ul style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-left: 1rem;">
+          <li><strong>Pensamiento (T):</strong> Lógica, análisis, objetividad</li>
+          <li><strong>Sentimiento (F):</strong> Valores, armonía, empatía</li>
+          <li><strong>Sensación (S):</strong> Detalles, realidad, experiencia</li>
+          <li><strong>Intuición (N):</strong> Posibilidades, patrones, futuro</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #374151;">📊 ¿Cómo Funciona Este Test?</h4>
+        <p style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-bottom: 0.5rem;">
+          Este cuestionario evalúa 64 aspectos clave de tu personalidad:
+        </p>
+        <ul style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-left: 1rem;">
+          <li><strong>Extroversión vs Introversión:</strong> Cómo obtienes energía</li>
+          <li><strong>Pensamiento vs Sentimiento:</strong> Cómo tomas decisiones</li>
+          <li><strong>Sensación vs Intuición:</strong> Cómo percibes información</li>
+          <li><strong>Juzgar vs Percibir:</strong> Cómo te relacionas con el mundo</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #374151;">💡 Consejos para Responder</h4>
+        <ul style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-left: 1rem;">
+          <li><strong>Sé honesto:</strong> Responde como eres, no como te gustaría ser</li>
+          <li><strong>Evita "A veces":</strong> Intenta ser decisivo para resultados más precisos</li>
+          <li><strong>Primera impresión:</strong> Tu respuesta inicial suele ser la más acertada</li>
+          <li><strong>Contexto general:</strong> Piensa en tu comportamiento típico, no en situaciones específicas</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #374151;">🎯 ¿Qué Obtendrás?</h4>
+        <p style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-bottom: 0.5rem;">
+          Al completar este test recibirás:
+        </p>
+        <ul style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin-left: 1rem;">
+          <li><strong>Tu tipo de personalidad:</strong> Clasificación según la teoría de Jung</li>
+          <li><strong>Análisis detallado:</strong> Fortalezas y áreas de desarrollo</li>
+          <li><strong>Recomendaciones:</strong> Consejos personalizados para tu crecimiento</li>
+          <li><strong>Compatibilidad:</strong> Perfiles que mejor se complementan contigo</li>
+        </ul>
+      </div>
+
+      <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px; border-left: 4px solid #3b82f6;">
+        <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: #1e293b;">🔒 Privacidad y Confidencialidad</h4>
+        <p style="font-size: 0.875rem; line-height: 1.5; color: #4b5563; margin: 0;">
+          <strong>Tus respuestas son completamente confidenciales.</strong> Utilizamos encriptación de datos 
+          y no compartimos información personal con terceros. Este test es para tu autoconocimiento personal.
+        </p>
+      </div>
+    `;
+    
+    setCurrentInfo(questionnaireInfo);
     setShowInfoModal(true);
   };
 
@@ -774,7 +849,7 @@ const PersonalityQuestionnairePage: React.FC = () => {
               </div>
               
               <div className="modal-body-rediseñado">
-                {currentInfo}
+                <div dangerouslySetInnerHTML={{ __html: currentInfo }} />
               </div>
             </motion.div>
           </motion.div>
