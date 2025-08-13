@@ -566,7 +566,7 @@ const PersonalityQuestionnairePage: React.FC = () => {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
         setIsProcessing(false);
-      }, 800); // 800ms de delay para mejor experiencia visual
+      }, 300); // 300ms de delay para cambio más rápido
     }
   };
 
