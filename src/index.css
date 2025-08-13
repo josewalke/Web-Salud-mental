@@ -1759,7 +1759,7 @@ input {
   padding: 1.5rem 1.5rem 1rem;
   border-bottom: 1px solid #f1f5f9;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.75rem;
   position: relative;
   min-height: 60px;
@@ -1810,8 +1810,10 @@ input {
   border-radius: 8px;
   transition: all 0.2s ease;
   flex-shrink: 0;
-  margin-left: auto;
-  order: 2;
+  margin-left: 0; /* ELIMINAR MARGEN AUTOMÁTICO */
+  order: 2; /* MANTENER ORDEN */
+  position: relative; /* POSICIÓN RELATIVA */
+  z-index: 10; /* ASEGURAR QUE ESTÉ POR ENCIMA */
 }
 
 .modal-close-rediseñado:hover {
@@ -1929,8 +1931,10 @@ input {
     top: auto;
     right: auto;
     padding: 0.5rem;
-    margin-left: 0;
-    order: 2;
+    margin-left: 0; /* ELIMINAR MARGEN AUTOMÁTICO */
+    order: 2; /* MANTENER ORDEN */
+    flex-shrink: 0; /* NO PERMITIR QUE SE ENCOJA */
+    z-index: 10; /* ASEGURAR QUE ESTÉ POR ENCIMA */
   }
 
   .modal-body-rediseñado {
