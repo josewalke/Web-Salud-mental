@@ -173,7 +173,7 @@ export default function App() {
 
   // Home page optimizada
   return (
-    <div className="min-h-screen relative bg-white">
+    <div className="min-h-screen relative bg-transparent">
       {/* Fondo 3D Spline */}
       <SplineBackground />
       

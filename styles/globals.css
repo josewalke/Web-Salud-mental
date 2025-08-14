@@ -269,7 +269,12 @@
 }
 
 /* Hacer que las secciones tengan fondo sutil para mejor legibilidad */
-.hero-section,
+.hero-section {
+  background: transparent !important;
+  position: relative;
+  z-index: 10;
+}
+
 .services-section,
 .packs-section,
 .questionnaire-section,
