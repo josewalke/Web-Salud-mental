@@ -245,7 +245,7 @@
   height: 100vh !important;
   z-index: 0 !important;
   pointer-events: none !important;
-  background: rgba(255, 0, 0, 0.1) !important; /* Debug: fondo rojo semi-transparente */
+  background: transparent !important;
 }
 
 /* Debug styles */
@@ -268,14 +268,14 @@
   z-index: 10;
 }
 
-/* Hacer que las secciones sean transparentes para mostrar el Spline */
+/* Hacer que las secciones tengan fondo sutil para mejor legibilidad */
 .hero-section,
 .services-section,
 .packs-section,
 .questionnaire-section,
 .faq-section,
 .contact-section {
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.95) !important;
 }
 
 /* Asegurar que las tarjetas tengan fondo semi-transparente */
@@ -298,14 +298,3 @@ header.scrolled {
   border-bottom: 1px solid #e5e7eb !important;
 }
 
-/* Asegurar que el Spline sea visible */
-.spline-container {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 0 !important;
-  pointer-events: none !important;
-  background: rgba(0, 255, 0, 0.2) !important; /* Debug: fondo verde semi-transparente */
-}

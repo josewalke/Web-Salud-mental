@@ -152,11 +152,9 @@ export default function App() {
     return () => clearTimeout(timeoutId);
   }, [currentPage, returnToSection]);
 
-  // Loading fallback optimizado
+  // Loading fallback optimizado - sin spinner para carga más rápida
   const LoadingFallback = useMemo(() => (
-    <div className="min-h-[200px] flex items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-    </div>
+    <div className="min-h-[200px]"></div>
   ), []);
 
   // Render de páginas de cuestionarios
