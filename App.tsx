@@ -26,10 +26,7 @@ export default function App() {
     return window.innerWidth < 1024;
   }, []);
 
-  // Detectar si debe cargar Spline (solo desktop)
-  const shouldLoadSpline = useMemo(() => {
-    return !isMobile && typeof window !== 'undefined';
-  }, [isMobile]);
+
 
   // SEO optimizado - solo ejecuta en mount inicial y cambios de página críticos
   const seoData = useMemo(() => {

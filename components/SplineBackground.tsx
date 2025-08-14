@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Spline from '@splinetool/react-spline';
 
 export default function SplineBackground() {

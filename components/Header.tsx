@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from './ui/button';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 export default function Header() {

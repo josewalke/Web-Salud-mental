@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
-import { Phone, ArrowRight, Shield, Brain, Award } from 'lucide-react';
+import { ArrowRight, Shield, Brain, Award } from 'lucide-react';
 import { useMobileAnimations } from './ui/use-mobile-animations';
 import heroImage from '../src/assets/images/hero/WhatsApp Image 2025-08-14 at 12.33.22 (1).jpeg';
 
