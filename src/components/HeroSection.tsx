@@ -252,6 +252,22 @@ export function HeroSection() {
                     className="w-full h-64 sm:h-80 md:h-96 object-cover relative z-10"
                   />
 
+                  {/* Integradora Social Dalia */}
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-3 sm:p-4 rounded-b-2xl sm:rounded-b-3xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                  >
+                    <div className="text-center">
+                      <h3 className="text-white font-semibold text-sm sm:text-base mb-1">
+                        Integradora Social
+                      </h3>
+                      <p className="text-white/90 text-xs sm:text-sm font-medium">
+                        Dalia
+                      </p>
+                    </div>
+                  </motion.div>
 
                 </div>
               </motion.div>

@@ -193,6 +193,23 @@ export default function HeroSection() {
                 />
               </motion.div>
               
+              {/* Integradora Social Dalia */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-3 sm:p-4 rounded-b-lg sm:rounded-b-xl"
+                initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={enableAnimations ? { duration: 0.6, delay: 0.4 } : { duration: 0 }}
+              >
+                <div className="text-center">
+                  <h3 className="text-white font-semibold text-sm sm:text-base mb-1">
+                    Integradora Social
+                  </h3>
+                  <p className="text-white/90 text-xs sm:text-sm font-medium">
+                    Dalia
+                  </p>
+                </div>
+              </motion.div>
+              
               {/* Floating elements - Más pequeños */}
               <motion.div
                 className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-white p-1.5 sm:p-2 rounded-full shadow-lg border border-white/20"
