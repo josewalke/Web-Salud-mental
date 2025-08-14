@@ -278,15 +278,26 @@
 .services-section,
 .packs-section,
 .questionnaire-section,
-.faq-section,
-.contact-section {
+.faq-section {
   background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.contact-section {
+  background: transparent !important;
+  position: relative;
+  z-index: 10;
 }
 
 /* Asegurar que las tarjetas tengan fondo semi-transparente */
 .card-enhanced {
   background: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(12px) !important;
+}
+
+/* Tarjetas en contacto más transparentes para mostrar Spline */
+.contact-section .card-enhanced {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
 }
 
 /* Header transparente por defecto - forzado con !important */
