@@ -76,7 +76,7 @@ export function SEOHead({
             "provider": {
               "@type": "Organization",
               "name": "Love on the Brain",
-              "description": "Empresa psico-social especializada en compatibilidad de parejas"
+              "description": "Empresa psico-social e integradora social especializada en compatibilidad de parejas"
             }
           }
         })}

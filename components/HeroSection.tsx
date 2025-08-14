@@ -71,7 +71,7 @@ export default function HeroSection() {
               transition={enableAnimations ? { duration: 0.8, delay: 0.3 } : { duration: 0 }}
               itemProp="description"
             >
-              Estamos encantados de que quieras trabajar en tu crecimiento personal. ¡Aquí no hay juicio porque ayudamos de corazón! Love on la Brain es una empresa psico-social novedosa con presupuestos amigables especializada en servicios de salud mental y bienestar emocional.
+              Estamos encantados de que quieras trabajar en tu crecimiento personal. ¡Aquí no hay juicio porque ayudamos de corazón! Love on la Brain es una empresa psico-social novedosa e integradora social con presupuestos amigables especializada en servicios de salud mental y bienestar emocional.
             </motion.p>
             
             <motion.div 

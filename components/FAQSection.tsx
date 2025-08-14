@@ -4,7 +4,7 @@ export default function FAQSection() {
   const faqs = [
     {
       question: "¿Qué es Love on the Brain y cómo puede ayudarme?",
-      answer: "Love on the Brain es una empresa psico-social innovadora que ofrece servicios de salud mental y crecimiento personal con presupuestos amigables. Ayudamos en tu desarrollo emocional sin juicio, con profesionales certificados que trabajan de corazón para tu bienestar mental."
+        answer: "Love on the Brain es una empresa psico-social innovadora e integradora social que ofrece servicios de salud mental y crecimiento personal con presupuestos amigables. Ayudamos en tu desarrollo emocional sin juicio, con profesionales certificados que trabajan de corazón para tu bienestar mental."
     },
     {
       question: "¿Cuáles son los beneficios del apoyo emocional personalizado?",

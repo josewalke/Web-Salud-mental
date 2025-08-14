@@ -92,7 +92,7 @@ export default function App() {
         "@type": "Organization",
         "name": "Love on the Brain",
         "url": window.location.href,
-        "description": "Empresa psico-social española especializada en servicios de salud mental y crecimiento personal con presupuestos amigables.",
+        "description": "Empresa psico-social española e integradora social especializada en servicios de salud mental y crecimiento personal con presupuestos amigables.",
         "slogan": "El cerebro también se puede acariciar",
         "address": {
           "@type": "PostalAddress",

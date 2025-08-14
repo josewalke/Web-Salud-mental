@@ -136,7 +136,7 @@ export function HeroSection() {
               >
                 Estamos encantados de que quieras trabajar en tu crecimiento personal. 
                 ¡Aquí no hay juicio porque ayudamos de corazón! Love on la Brain es una 
-                empresa psico-social novedosa con presupuestos amigables.
+                empresa psico-social novedosa e integradora social con presupuestos amigables.
               </motion.p>
             </div>
 
