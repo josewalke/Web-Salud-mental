@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
+import { useMobileAnimations } from "./ui/use-mobile-animations";
 import {
   Card,
   CardContent,
@@ -39,6 +40,7 @@ export default function QuestionairePage({
   type,
   onBack,
 }: QuestionairePageProps) {
+  const enableAnimations = useMobileAnimations();
   const [currentStep, setCurrentStep] = useState(0);
   const [personalInfo, setPersonalInfo] =
     useState<PersonalInfo>({
@@ -805,27 +807,27 @@ export default function QuestionairePage({
     return (
       <motion.div
         className={`min-h-screen flex items-center justify-center ${currentData.accentColor}`}
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={enableAnimations ? { opacity: 0, scale: 0.9 } : { opacity: 1, scale: 1 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
       >
         <div className="max-w-xl mx-auto px-6">
           <motion.div
-            initial={{ y: 20, opacity: 0 }}
+            initial={enableAnimations ? { y: 20, opacity: 0 } : { y: 0, opacity: 1 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+            transition={enableAnimations ? { delay: 0.2, duration: 0.5 } : { duration: 0 }}
           >
             <Card className="text-center shadow-2xl border-0">
               <CardContent className="p-8">
                 <motion.div
                   className={`${currentData.iconBg} w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg`}
-                  initial={{ scale: 0, rotate: -180 }}
+                  initial={enableAnimations ? { scale: 0, rotate: -180 } : { scale: 1, rotate: 0 }}
                   animate={{ scale: 1, rotate: 0 }}
-                  transition={{
+                  transition={enableAnimations ? {
                     delay: 0.3,
                     duration: 0.6,
                     type: "spring",
-                  }}
+                  } : { duration: 0 }}
                 >
                   <Check
                     className={`h-8 w-8 ${currentData.color}`}
@@ -834,18 +836,18 @@ export default function QuestionairePage({
 
                 <motion.h2
                   className="text-2xl text-gray-900 mb-3"
-                  initial={{ opacity: 0 }}
+                  initial={enableAnimations ? { opacity: 0 } : { opacity: 1 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  transition={enableAnimations ? { delay: 0.5, duration: 0.5 } : { duration: 0 }}
                 >
                   ¡Cuestionario Completado!
                 </motion.h2>
 
                 <motion.p
                   className="text-gray-600 mb-8"
-                  initial={{ opacity: 0 }}
+                  initial={enableAnimations ? { opacity: 0 } : { opacity: 1 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
+                  transition={enableAnimations ? { delay: 0.7, duration: 0.5 } : { duration: 0 }}
                 >
                   {type === "personalidad"
                     ? "Nuestro equipo de psicólogos analizará tu perfil de personalidad y te contactaremos pronto con tu análisis personalizado."
@@ -854,9 +856,9 @@ export default function QuestionairePage({
 
                 <motion.div
                   className="space-y-3"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9, duration: 0.5 }}
+                  transition={enableAnimations ? { delay: 0.9, duration: 0.5 } : { duration: 0 }}
                 >
                   <Button
                     className={`${currentData.bgColor} hover:opacity-90 text-white w-full py-3 transition-all duration-300 hover:scale-105`}
@@ -884,16 +886,16 @@ export default function QuestionairePage({
   return (
     <motion.div
       className={`min-h-screen flex flex-col ${currentData.accentColor}`}
-      initial={{ opacity: 0 }}
+      initial={enableAnimations ? { opacity: 0 } : { opacity: 1 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
     >
       {/* Header compacto */}
       <motion.div
         className="flex-shrink-0 px-6 py-4"
-        initial={{ y: -20, opacity: 0 }}
+        initial={enableAnimations ? { y: -20, opacity: 0 } : { y: 0, opacity: 1 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
       >
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-4">
@@ -909,9 +911,9 @@ export default function QuestionairePage({
 
             <motion.div
               className="text-center"
-              initial={{ opacity: 0, y: -10 }}
+              initial={enableAnimations ? { opacity: 0, y: -10 } : { opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              transition={enableAnimations ? { delay: 0.2, duration: 0.5 } : { duration: 0 }}
             >
               <h1 className="text-xl text-gray-900 mb-1">
                 {currentData.title}
@@ -929,9 +931,9 @@ export default function QuestionairePage({
           {/* Progress compacto */}
           <motion.div
             className="mb-4"
-            initial={{ opacity: 0 }}
+            initial={enableAnimations ? { opacity: 0 } : { opacity: 1 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+            transition={enableAnimations ? { delay: 0.3, duration: 0.5 } : { duration: 0 }}
           >
             <div className="flex justify-between text-sm text-gray-600 mb-2">
               <span className="text-xs">
@@ -944,9 +946,9 @@ export default function QuestionairePage({
               </span>
             </div>
             <motion.div
-              initial={{ scaleX: 0 }}
+              initial={enableAnimations ? { scaleX: 0 } : { scaleX: 1 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              transition={enableAnimations ? { duration: 0.5, delay: 0.4 } : { duration: 0 }}
               style={{ transformOrigin: "left" }}
             >
               <Progress value={progress} className="h-1.5" />
@@ -957,9 +959,9 @@ export default function QuestionairePage({
           {type === "personalidad" && isPersonalInfoStep && (
             <motion.div
               className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg"
-              initial={{ opacity: 0, y: 10 }}
+              initial={enableAnimations ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
+              transition={enableAnimations ? { delay: 0.5, duration: 0.5 } : { duration: 0 }}
             >
               <p className="text-sm text-blue-800">
                 <span className="uppercase tracking-wide text-xs">
@@ -980,19 +982,19 @@ export default function QuestionairePage({
             {isPersonalInfoStep && (
               <motion.div
                 key="personal-info"
-                initial={{ opacity: 0, x: 20 }}
+                initial={enableAnimations ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
+                exit={enableAnimations ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
+                transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
                 className="flex-1 flex flex-col"
               >
                 <Card className="flex-1 flex flex-col shadow-lg border-0">
                   <CardHeader className="flex-shrink-0 pb-4">
                     <CardTitle className="text-lg text-gray-900 flex items-center">
                       <motion.div
-                        initial={{ rotate: -180, opacity: 0 }}
+                        initial={enableAnimations ? { rotate: -180, opacity: 0 } : { rotate: 0, opacity: 1 }}
                         animate={{ rotate: 0, opacity: 1 }}
-                        transition={{ duration: 0.5 }}
+                        transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
                       >
                         <User className="h-5 w-5 mr-2" />
                       </motion.div>
@@ -1004,24 +1006,24 @@ export default function QuestionairePage({
                     <div className="flex-1 flex items-center justify-center">
                       <motion.div
                         className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full"
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{
+                        transition={enableAnimations ? {
                           delay: 0.3,
                           duration: 0.5,
-                        }}
+                        } : { duration: 0 }}
                       >
                         {currentData.personalInfoFields.map(
                           (field, index) => (
                             <motion.div
                               key={field.key}
                               className={`space-y-2 ${field.key === "correo" || field.key === "orientacionSexual" ? "md:col-span-2" : ""}`}
-                              initial={{ opacity: 0, y: 20 }}
+                              initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                               animate={{ opacity: 1, y: 0 }}
-                              transition={{
+                              transition={enableAnimations ? {
                                 delay: 0.4 + index * 0.1,
                                 duration: 0.5,
-                              }}
+                              } : { duration: 0 }}
                             >
                               <Label
                                 htmlFor={field.key}
@@ -1069,9 +1071,9 @@ export default function QuestionairePage({
                     {/* Navegación dentro de la card */}
                     <motion.div
                       className="flex justify-between pt-6 border-t border-gray-100"
-                      initial={{ opacity: 0 }}
+                      initial={enableAnimations ? { opacity: 0 } : { opacity: 1 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8, duration: 0.5 }}
+                      transition={enableAnimations ? { delay: 0.8, duration: 0.5 } : { duration: 0 }}
                     >
                       <Button
                         variant="outline"
@@ -1107,10 +1109,10 @@ export default function QuestionairePage({
             {!isPersonalInfoStep && (
               <motion.div
                 key={`question-${currentStep}-${animationKey}`}
-                initial={{ opacity: 0, x: 20 }}
+                initial={enableAnimations ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5 }}
+                exit={enableAnimations ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
+                transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
                 className="flex-1 flex flex-col"
               >
                 <Card className="flex-1 flex flex-col shadow-lg border-0">
@@ -1136,9 +1138,9 @@ export default function QuestionairePage({
                               currentStep - 1
                             ].type === "radio" ? (
                               <motion.div
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
+                                transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
                               >
                                 <RadioGroup
                                   value={
@@ -1155,24 +1157,27 @@ export default function QuestionairePage({
                                       <motion.div
                                         key={index}
                                         className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-white/50 transition-all duration-300 cursor-pointer hover:scale-102"
-                                        initial={{
+                                        initial={enableAnimations ? {
                                           opacity: 0,
                                           x: -20,
+                                        } : {
+                                          opacity: 1,
+                                          x: 0,
                                         }}
                                         animate={{
                                           opacity: 1,
                                           x: 0,
                                         }}
-                                        transition={{
+                                        transition={enableAnimations ? {
                                           delay: index * 0.1,
                                           duration: 0.3,
-                                        }}
-                                        whileHover={{
+                                        } : { duration: 0 }}
+                                        whileHover={enableAnimations ? {
                                           scale: 1.02,
-                                        }}
-                                        whileTap={{
+                                        } : {}}
+                                        whileTap={enableAnimations ? {
                                           scale: 0.98,
-                                        }}
+                                        } : {}}
                                       >
                                         <RadioGroupItem
                                           value={option}
@@ -1191,9 +1196,9 @@ export default function QuestionairePage({
                               </motion.div>
                             ) : (
                               <motion.div
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
+                                transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
                               >
                                 <Textarea
                                   value={
@@ -1220,11 +1225,11 @@ export default function QuestionairePage({
                     {/* Navegación dentro de la card */}
                     <motion.div
                       className="flex justify-between pt-6 border-t border-gray-100"
-                      initial={{ opacity: 0 }}
+                      initial={enableAnimations ? { opacity: 0 } : { opacity: 1 }}
                       animate={{
                         opacity: showOptions ? 1 : 0.3,
                       }}
-                      transition={{ duration: 0.3 }}
+                      transition={enableAnimations ? { duration: 0.3 } : { duration: 0 }}
                     >
                       <Button
                         variant="outline"
