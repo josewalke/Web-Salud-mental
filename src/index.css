@@ -1734,7 +1734,7 @@ input {
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center; /* CENTRADO EN ESCRITORIO */
   z-index: 1000;
   padding: 1rem;
 }
@@ -1750,8 +1750,7 @@ input {
   overflow-y: auto;
   overflow-x: hidden; /* PREVENIR SCROLL HORIZONTAL */
   position: relative;
-  margin-right: 1rem;
-  margin-left: auto;
+  margin: 0 auto; /* CENTRADO EN ESCRITORIO */
   box-sizing: border-box; /* INCLUIR PADDING Y BORDER EN EL ANCHO */
 }
 
@@ -1866,7 +1865,7 @@ input {
 
   /* MODAL RESPONSIVE PARA MÓVIL */
   .modal-overlay-rediseñado {
-    justify-content: flex-end;
+    justify-content: flex-end; /* POSICIONADO A LA DERECHA EN MÓVIL */
     align-items: flex-start;
     padding: 1rem 0.5rem 1rem 1rem;
     overflow: hidden; /* PREVENIR SCROLL EN EL OVERLAY */
