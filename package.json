@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --mode production",
+    "build:simple": "vite build --mode production --config vite.config.simple.ts",
     "preview": "vite preview"
   },
   "dependencies": {

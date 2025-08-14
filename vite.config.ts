@@ -4,21 +4,17 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 3000,
-    open: true
-  },
   build: {
-    outDir: 'dist',
-    sourcemap: true,
     rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-accordion', '@radix-ui/react-alert-dialog', '@radix-ui/react-aspect-ratio', '@radix-ui/react-avatar', '@radix-ui/react-badge', '@radix-ui/react-button', '@radix-ui/react-calendar', '@radix-ui/react-card', '@radix-ui/react-carousel', '@radix-ui/react-chart', '@radix-ui/react-checkbox', '@radix-ui/react-collapsible', '@radix-ui/react-command', '@radix-ui/react-context-menu', '@radix-ui/react-dialog', '@radix-ui/react-drawer', '@radix-ui/react-dropdown-menu', '@radix-ui/react-form', '@radix-ui/react-hover-card', '@radix-ui/react-input-otp', '@radix-ui/react-input', '@radix-ui/react-label', '@radix-ui/react-menubar', '@radix-ui/react-navigation-menu', '@radix-ui/react-pagination', '@radix-ui/react-popover', '@radix-ui/react-progress', '@radix-ui/react-radio-group', '@radix-ui/react-resizable', '@radix-ui/react-scroll-area', '@radix-ui/react-select', '@radix-ui/react-separator', '@radix-ui/react-sheet', '@radix-ui/react-sidebar', '@radix-ui/react-skeleton', '@radix-ui/react-slider', '@radix-ui/react-sonner', '@radix-ui/react-switch', '@radix-ui/react-table', '@radix-ui/react-tabs', '@radix-ui/react-textarea', '@radix-ui/react-toggle-group', '@radix-ui/react-toggle', '@radix-ui/react-tooltip'],
-          animations: ['motion', 'lucide-react']
-        }
+      onwarn(warning, warn) {
+        // Ignorar warnings de módulos no encontrados
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return;
+        if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+        warn(warning);
       }
     }
+  },
+  optimizeDeps: {
+    exclude: ['@radix-ui/react-accordion', '@radix-ui/react-alert-dialog', '@radix-ui/react-aspect-ratio', '@radix-ui/react-avatar', '@radix-ui/react-checkbox', '@radix-ui/react-collapsible', '@radix-ui/react-context-menu', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-hover-card', '@radix-ui/react-label', '@radix-ui/react-menubar', '@radix-ui/react-navigation-menu', '@radix-ui/react-popover', '@radix-ui/react-progress', '@radix-ui/react-radio-group', '@radix-ui/react-scroll-area', '@radix-ui/react-select', '@radix-ui/react-separator', '@radix-ui/react-slider', '@radix-ui/react-switch', '@radix-ui/react-tabs', '@radix-ui/react-toggle', '@radix-ui/react-toggle-group', '@radix-ui/react-tooltip']
   }
 })
