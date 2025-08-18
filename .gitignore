@@ -30,6 +30,29 @@ dist-ssr
 .env.test.local
 .env.production.local
 
+# Backend configuration files (sensitive data)
+backend-config.js
+.env
+.env.production
+.env.staging
+
+# Backend logs and data
+logs/
+*.log
+uploads/
+temp/
+tmp/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Node.js backend
+backend/
+server/
+api/
+
 # Build outputs
 build/
 out/
