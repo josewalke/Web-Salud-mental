@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 import { ArrowRight, Shield, Brain, Award } from 'lucide-react';
 import { useMobileAnimations } from './ui/use-mobile-animations';
-import heroImage from '../src/assets/images/hero/WhatsApp Image 2025-08-14 at 12.33.22 (1).jpeg';
+import heroImage from '../src/assets/images/hero/WhatsApp Image 2025-08-14 at 20.14.04.jpeg';
 
 export default function HeroSection() {
   const enableAnimations = useMobileAnimations();

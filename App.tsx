@@ -26,7 +26,28 @@ export default function App() {
     return window.innerWidth < 1024;
   }, []);
 
+  // Router mínimo basado en hash para persistir ruta tras recargar
+  const applyRouteFromHash = () => {
+    const hash = window.location.hash.replace(/^#/, ''); // ej: /cuestionario/pareja
+    if (hash.startsWith('/cuestionario/')) {
+      const type = hash.split('/')[2] as QuestionnaireType | undefined;
+      if (type === 'pareja' || type === 'personalidad') {
+        setQuestionnaireType(type);
+        setCurrentPage(`questionnaire-${type}`);
+        return;
+      }
+    }
+    // Default: home
+    setCurrentPage('home');
+  };
 
+  // Sincronizar hash en inicialización y en navegación del navegador
+  useEffect(() => {
+    applyRouteFromHash();
+    const onHashChange = () => applyRouteFromHash();
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   // SEO optimizado - solo ejecuta en mount inicial y cambios de página críticos
   const seoData = useMemo(() => {
@@ -121,10 +142,14 @@ export default function App() {
   const navigateToQuestionnaire = useMemo(() => (type: QuestionnaireType) => {
     setQuestionnaireType(type);
     setCurrentPage(`questionnaire-${type}` as Page);
+    // Actualizar hash para persistir ruta al recargar
+    window.location.hash = `#/cuestionario/${type}`;
   }, []);
 
   const navigateToHome = useMemo(() => (targetSection?: string) => {
     setCurrentPage('home');
+    // Resetear hash a home
+    window.location.hash = '#/';
     if (targetSection) {
       setReturnToSection(targetSection);
     }
@@ -177,7 +202,7 @@ export default function App() {
       {/* Fondo 3D Spline */}
       <SplineBackground />
       
-
+      
       
       {/* Contenido principal */}
       <div className="relative min-h-screen bg-transparent content-above-spline">

@@ -3,14 +3,26 @@
 import * as React from "react"
 import { cn } from "./utils"
 
+interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  value?: string;
+  onValueChange?: (value: string) => void;
+}
+
 const RadioGroup = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+  RadioGroupProps
+>(({ className, value, onValueChange, ...props }, ref) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onValueChange) {
+      onValueChange(event.target.value);
+    }
+  };
+
   return (
     <div
       ref={ref}
       className={cn("grid gap-2", className)}
+      onChange={handleChange}
       {...props}
     />
   )

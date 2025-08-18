@@ -58,6 +58,165 @@ export default function QuestionairePage({
   const [showOptions, setShowOptions] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
+  // Clave única para localStorage basada en el tipo de cuestionario
+  const storageKey = `questionnaire_${type}`;
+  
+  // Configuración de expiración (3 horas)
+  const EXPIRATION_TIME = 3 * 60 * 60 * 1000; // 3 horas en milisegundos
+
+  // Función para encriptar datos básicos (Base64)
+  const encryptData = (data: string): string => {
+    try {
+      return btoa(encodeURIComponent(data));
+    } catch (error) {
+      console.warn('Error encriptando datos:', error);
+      return data; // Fallback a datos sin encriptar
+    }
+  };
+
+  // Función para desencriptar datos
+  const decryptData = (data: string): string => {
+    try {
+      return decodeURIComponent(atob(data));
+    } catch (error) {
+      console.warn('Error desencriptando datos:', error);
+      return data; // Fallback a datos originales
+    }
+  };
+
+  // Función para verificar si los datos han expirado
+  const isDataExpired = (timestamp: number): boolean => {
+    return Date.now() - timestamp > EXPIRATION_TIME;
+  };
+
+  // Función para limpiar datos expirados automáticamente
+  const cleanupExpiredData = () => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.timestamp && isDataExpired(data.timestamp)) {
+          localStorage.removeItem(storageKey);
+          console.log('Datos expirados eliminados automáticamente');
+        }
+      }
+    } catch (error) {
+      console.warn('Error limpiando datos expirados:', error);
+    }
+  };
+
+  // Función para calcular tiempo restante antes de expiración
+  const getTimeRemaining = (): string => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.expiresAt) {
+          const remaining = data.expiresAt - Date.now();
+          if (remaining > 0) {
+            const hours = Math.floor(remaining / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            return `${hours}h ${minutes}m`;
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('Error calculando tiempo restante:', error);
+    }
+    return '';
+  };
+
+  // Función para guardar el estado en localStorage
+  const saveProgress = (data: {
+    currentStep: number;
+    personalInfo: PersonalInfo;
+    answers: Record<number, string>;
+    isCompleted: boolean;
+  }) => {
+    try {
+      // Encriptar respuestas sensibles
+      const encryptedAnswers = Object.entries(data.answers).reduce((acc, [key, value]) => {
+        acc[key] = encryptData(value);
+        return acc;
+      }, {} as Record<string, string>);
+
+      // Encriptar información personal sensible
+      const encryptedPersonalInfo = {
+        ...data.personalInfo,
+        nombre: encryptData(data.personalInfo.nombre),
+        apellidos: encryptData(data.personalInfo.apellidos),
+        correo: encryptData(data.personalInfo.correo),
+      };
+
+      const progressData = {
+        ...data,
+        answers: encryptedAnswers,
+        personalInfo: encryptedPersonalInfo,
+        timestamp: Date.now(),
+        expiresAt: Date.now() + EXPIRATION_TIME,
+      };
+
+      localStorage.setItem(storageKey, JSON.stringify(progressData));
+      
+      // Limpiar datos expirados después de guardar
+      cleanupExpiredData();
+    } catch (error) {
+      console.warn('No se pudo guardar el progreso:', error);
+    }
+  };
+
+  // Función para cargar el progreso desde localStorage
+  const loadProgress = () => {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const data = JSON.parse(saved);
+        
+        // Verificar si los datos han expirado
+        if (data.timestamp && isDataExpired(data.timestamp)) {
+          localStorage.removeItem(storageKey);
+          console.log('Datos expirados, limpiando...');
+          return false;
+        }
+        
+        // Decriptar respuestas sensibles
+        const decryptedAnswers = Object.entries(data.answers || {}).reduce((acc, [key, value]) => {
+          acc[key] = decryptData(value as string);
+          return acc;
+        }, {} as Record<string, string>);
+
+        // Decriptar información personal sensible
+        const decryptedPersonalInfo = {
+          ...data.personalInfo,
+          nombre: decryptData((data.personalInfo?.nombre as string) || ''),
+          apellidos: decryptData((data.personalInfo?.apellidos as string) || ''),
+          correo: decryptData((data.personalInfo?.correo as string) || ''),
+          edad: data.personalInfo?.edad || '',
+          genero: data.personalInfo?.genero || '',
+          orientacionSexual: data.personalInfo?.orientacionSexual || '',
+        };
+
+        setCurrentStep(data.currentStep || 0);
+        setPersonalInfo(decryptedPersonalInfo);
+        setAnswers(decryptedAnswers);
+        setIsCompleted(data.isCompleted || false);
+        return true;
+      }
+    } catch (error) {
+      console.warn('No se pudo cargar el progreso:', error);
+    }
+    return false;
+  };
+
+  // Función para limpiar el progreso guardado
+  const clearProgress = () => {
+    try {
+      localStorage.removeItem(storageKey);
+    } catch (error) {
+      console.warn('No se pudo limpiar el progreso:', error);
+    }
+  };
+
   const questionnaireData = {
     pareja: {
       title: "Cuestionario para Encontrar Pareja",
@@ -722,6 +881,24 @@ export default function QuestionairePage({
   const totalSteps = currentData.questions.length + 1;
   const progress = (currentStep / (totalSteps - 1)) * 100;
 
+  // Cargar progreso guardado al inicializar
+  useEffect(() => {
+    const hasProgress = loadProgress();
+    if (hasProgress && !isCompleted) {
+      // Si hay progreso y no está completado, mostrar opciones inmediatamente
+      setShowOptions(true);
+    }
+  }, []);
+
+  // Limpiar datos expirados periódicamente (cada 30 minutos)
+  useEffect(() => {
+    const cleanupInterval = setInterval(() => {
+      cleanupExpiredData();
+    }, 30 * 60 * 1000); // 30 minutos
+
+    return () => clearInterval(cleanupInterval);
+  }, []);
+
   // Reset animations when step changes
   useEffect(() => {
     setShowOptions(false);
@@ -732,11 +909,29 @@ export default function QuestionairePage({
     key: keyof PersonalInfo,
     value: string,
   ) => {
-    setPersonalInfo({ ...personalInfo, [key]: value });
+    const newPersonalInfo = { ...personalInfo, [key]: value };
+    setPersonalInfo(newPersonalInfo);
+    
+    // Guardar progreso automáticamente
+    saveProgress({
+      currentStep,
+      personalInfo: newPersonalInfo,
+      answers,
+      isCompleted,
+    });
   };
 
   const handleAnswer = (value: string) => {
-    setAnswers({ ...answers, [currentStep - 1]: value });
+    const newAnswers = { ...answers, [currentStep - 1]: value };
+    setAnswers(newAnswers);
+    
+    // Guardar progreso automáticamente
+    saveProgress({
+      currentStep,
+      personalInfo,
+      answers: newAnswers,
+      isCompleted,
+    });
 
     // Auto-avanzar para preguntas de radio después de un pequeño delay
     if (
@@ -769,15 +964,41 @@ export default function QuestionairePage({
 
   const goToNext = () => {
     if (currentStep < totalSteps - 1) {
-      setCurrentStep(currentStep + 1);
+      const newStep = currentStep + 1;
+      setCurrentStep(newStep);
+      
+      // Guardar progreso automáticamente
+      saveProgress({
+        currentStep: newStep,
+        personalInfo,
+        answers,
+        isCompleted,
+      });
     } else {
       setIsCompleted(true);
+      
+      // Guardar progreso como completado
+      saveProgress({
+        currentStep,
+        personalInfo,
+        answers,
+        isCompleted: true,
+      });
     }
   };
 
   const goToPrevious = () => {
     if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
+      const newStep = currentStep - 1;
+      setCurrentStep(newStep);
+      
+      // Guardar progreso automáticamente
+      saveProgress({
+        currentStep: newStep,
+        personalInfo,
+        answers,
+        isCompleted,
+      });
     }
   };
 
@@ -795,13 +1016,34 @@ export default function QuestionairePage({
     setIsCompleted(false);
     setShowOptions(false);
     setAnimationKey(0);
+    
+    // Limpiar progreso guardado
+    clearProgress();
   };
 
   const handleTypewriterComplete = () => {
     setTimeout(() => {
       setShowOptions(true);
-    }, 300);
+    }, 100);
   };
+
+  // Fallback para mostrar opciones si el TypewriterText falla
+  useEffect(() => {
+    if (!isPersonalInfoStep && !showOptions) {
+      const fallbackTimer = setTimeout(() => {
+        setShowOptions(true);
+      }, 800); // fallback rápido
+
+      return () => clearTimeout(fallbackTimer);
+    }
+  }, [isPersonalInfoStep, showOptions]);
+
+  // Mostrar opciones inmediatamente si las animaciones están deshabilitadas
+  useEffect(() => {
+    if (!enableAnimations && !isPersonalInfoStep) {
+      setShowOptions(true);
+    }
+  }, [enableAnimations, isPersonalInfoStep]);
 
   if (isCompleted) {
     return (
@@ -925,7 +1167,36 @@ export default function QuestionairePage({
               </p>
             </motion.div>
 
-            <div className="w-20"></div>
+            <div className="flex items-center space-x-2">
+              {/* Indicador de progreso guardado - OCULTO */}
+              {/* {Object.keys(answers).length > 0 || Object.values(personalInfo).some(v => v) ? (
+                <motion.div
+                  className="flex items-center text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Check className="h-3 w-3 mr-1" />
+                  Guardado
+                  <span className="ml-1 text-green-500">
+                    ({getTimeRemaining()})
+                  </span>
+                </motion.div>
+              ) : null} */}
+              
+              {/* Botón para limpiar progreso - OCULTO */}
+              {/* {(Object.keys(answers).length > 0 || Object.values(personalInfo).some(v => v)) && (
+                <Button
+                  variant="ghost"
+                  onClick={resetQuestionnaire}
+                  className="text-red-600 hover:text-red-800 hover:bg-red-50 p-2 transition-all duration-300 hover:scale-105"
+                  size="sm"
+                  title="Empezar de nuevo"
+                >
+                  <span className="text-xs">Reiniciar</span>
+                </Button>
+              )} */}
+            </div>
           </div>
 
           {/* Progress compacto */}
@@ -953,6 +1224,21 @@ export default function QuestionairePage({
             >
               <Progress value={progress} className="h-1.5" />
             </motion.div>
+            
+            {/* Mensaje informativo sobre persistencia - OCULTO */}
+            {/* {(Object.keys(answers).length > 0 || Object.values(personalInfo).some(v => v)) && (
+              <motion.div
+                className="mt-2 text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
+                <p className="text-xs text-gray-500">
+                  💾 Tu progreso se guarda automáticamente y expira en 3 horas por privacidad. 
+                  Puedes recargar la página sin perder tus respuestas.
+                </p>
+              </motion.div>
+            )} */}
           </motion.div>
 
           {/* Instrucciones especiales para personalidad */}
@@ -1122,8 +1408,8 @@ export default function QuestionairePage({
                         currentData.questions[currentStep - 1]
                           .question
                       }
-                      speed={30}
-                      delay={200}
+                      speed={12}
+                      delay={50}
                       className="text-lg text-gray-800 leading-tight"
                       onComplete={handleTypewriterComplete}
                     />
@@ -1132,15 +1418,15 @@ export default function QuestionairePage({
                   <CardContent className="flex-1 flex flex-col">
                     <div className="flex-1 flex flex-col justify-center">
                       <AnimatePresence>
-                        {showOptions && (
+                        {showOptions ? (
                           <>
                             {currentData.questions[
                               currentStep - 1
                             ].type === "radio" ? (
                               <motion.div
-                                initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+                                initial={enableAnimations ? { opacity: 0, y: 12 } : { opacity: 1, y: 0 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
+                                transition={enableAnimations ? { duration: 0.25 } : { duration: 0 }}
                               >
                                 <RadioGroup
                                   value={
@@ -1159,7 +1445,7 @@ export default function QuestionairePage({
                                         className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-white/50 transition-all duration-300 cursor-pointer hover:scale-102"
                                         initial={enableAnimations ? {
                                           opacity: 0,
-                                          x: -20,
+                                          x: -10,
                                         } : {
                                           opacity: 1,
                                           x: 0,
@@ -1169,8 +1455,8 @@ export default function QuestionairePage({
                                           x: 0,
                                         }}
                                         transition={enableAnimations ? {
-                                          delay: index * 0.1,
-                                          duration: 0.3,
+                                          delay: index * 0.05,
+                                          duration: 0.2,
                                         } : { duration: 0 }}
                                         whileHover={enableAnimations ? {
                                           scale: 1.02,
@@ -1196,9 +1482,9 @@ export default function QuestionairePage({
                               </motion.div>
                             ) : (
                               <motion.div
-                                initial={enableAnimations ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+                                initial={enableAnimations ? { opacity: 0, y: 12 } : { opacity: 1, y: 0 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={enableAnimations ? { duration: 0.5 } : { duration: 0 }}
+                                transition={enableAnimations ? { duration: 0.25 } : { duration: 0 }}
                               >
                                 <Textarea
                                   value={
@@ -1218,6 +1504,15 @@ export default function QuestionairePage({
                               </motion.div>
                             )}
                           </>
+                        ) : (
+                          <motion.div
+                            className="h-16 flex items-center justify-center text-gray-400"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            Cargando...
+                          </motion.div>
                         )}
                       </AnimatePresence>
                     </div>
