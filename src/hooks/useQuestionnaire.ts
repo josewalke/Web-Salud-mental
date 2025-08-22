@@ -387,27 +387,61 @@ export const useQuestionnaire = ({ type, questions }: UseQuestionnaireProps) => 
       // ✅ Enviar al backend
       console.log('📡 Enviando cuestionario al backend...');
       
-      // ✅ Asegurar que solo se envíen strings como respuestas
+      // ✅ LIMPIEZA AGRESIVA: Asegurar que solo se envíen strings como respuestas
       const cleanFormData: Record<string, string> = {};
       Object.entries(formData).forEach(([questionId, answer]) => {
+        let answerText = '';
+        
+        // Log para debug
+        console.log(`🔍 Limpiando respuesta para pregunta ${questionId}:`, {
+          originalAnswer: answer,
+          type: typeof answer,
+          isObject: answer && typeof answer === 'object'
+        });
+        
         // Convertir cualquier respuesta a string
         if (typeof answer === 'string') {
-          cleanFormData[questionId] = answer;
+          answerText = answer;
         } else if (answer && typeof answer === 'object') {
           // Si es un objeto, extraer el texto de la respuesta
-          const answerObj = answer as any;
-          if (answerObj.text) {
-            cleanFormData[questionId] = answerObj.text;
-          } else if (answerObj.answer) {
-            cleanFormData[questionId] = answerObj.answer;
-          } else if (answerObj.value) {
-            cleanFormData[questionId] = answerObj.value;
+          const answerObj = answer as any; // Cast to any to access properties dynamically
+          if (answerObj.text && typeof answerObj.text === 'string') {
+            answerText = answerObj.text;
+          } else if (answerObj.answer && typeof answerObj.answer === 'string') {
+            answerText = answerObj.answer;
+          } else if (answerObj.value && typeof answerObj.value === 'string') {
+            answerText = answerObj.value;
+          } else if (answerObj.label && typeof answerObj.label === 'string') {
+            answerText = answerObj.label;
+          } else if (answerObj.name && typeof answerObj.name === 'string') {
+            answerText = answerObj.name;
           } else {
-            cleanFormData[questionId] = String(answer);
+            // Último recurso: convertir a string
+            answerText = String(answer);
+            console.warn(`⚠️ Respuesta convertida a string para pregunta ${questionId}:`, answerText);
           }
         } else {
-          cleanFormData[questionId] = String(answer);
+          answerText = String(answer);
         }
+        
+        // ✅ VALIDACIÓN FINAL: Asegurar que sea string válido
+        if (typeof answerText !== 'string') {
+          answerText = String(answerText);
+        }
+        
+        // ✅ VERIFICAR QUE NO CONTENGA [object Object]
+        if (answerText.includes('[object Object]')) {
+          console.error(`❌ ERROR: Respuesta contiene [object Object] para pregunta ${questionId}:`, answerText);
+          answerText = 'Respuesta no válida';
+        }
+        
+        cleanFormData[questionId] = answerText;
+        
+        console.log(`✅ Respuesta limpiada para pregunta ${questionId}:`, {
+          original: answer,
+          cleaned: answerText,
+          finalType: typeof answerText
+        });
       });
       
       console.log('🧹 FormData limpiado:', cleanFormData);

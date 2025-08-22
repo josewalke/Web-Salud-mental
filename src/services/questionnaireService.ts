@@ -35,31 +35,76 @@ const QuestionnaireService = {
    */
   async syncCompletedQuestionnaire(type: string, personalInfo: any, answers: Record<string, any>, questions: any[]) {
     try {
-          // console.log(`📡 ENVIANDO CUESTIONARIO COMPLETADO AL BACKEND:`);
-    // console.log(`   URL: ${API_BASE_URL}/questionnaires/sync`);
-    // console.log(`   Tipo: ${type}`);
-    // console.log(`   Usuario: ${personalInfo.nombre} ${personalInfo.apellidos}`);
-    // console.log(`   Email: ${personalInfo.correo}`);
-    // console.log(`   Preguntas respondidas: ${Object.keys(answers).length}`);
-    // console.log(`   Completado: true`);
-    // console.log(`   📊 ---`);
+      console.log(`📡 ENVIANDO CUESTIONARIO COMPLETADO AL BACKEND:`);
+      console.log(`   URL: ${API_BASE_URL}/questionnaires/sync`);
+      console.log(`   Tipo: ${type}`);
+      console.log(`   Usuario: ${personalInfo.nombre} ${personalInfo.apellidos}`);
+      console.log(`   Email: ${personalInfo.correo}`);
+      console.log(`   Preguntas respondidas: ${Object.keys(answers).length}`);
+      console.log(`   Completado: true`);
+      console.log(`   📊 ---`);
       
-      // Simplificar respuestas para el backend
+      // ✅ LIMPIEZA AGRESIVA: Asegurar que TODAS las respuestas sean strings
       const simplifiedAnswers: Record<string, string> = {};
       Object.entries(answers).forEach(([questionId, answer]) => {
-        // Extraer solo el texto de la respuesta
         let answerText = '';
+        
+        // Log para debug
+        console.log(`🔍 Procesando respuesta para pregunta ${questionId}:`, {
+          originalAnswer: answer,
+          type: typeof answer,
+          isObject: answer && typeof answer === 'object',
+          hasText: answer && typeof answer === 'object' && 'text' in answer,
+          hasAnswer: answer && typeof answer === 'object' && 'answer' in answer,
+          hasValue: answer && typeof answer === 'object' && 'value' in answer
+        });
+        
         if (typeof answer === 'string') {
           answerText = answer;
-        } else if (answer && typeof answer === 'object' && answer.text) {
-          answerText = answer.text;
-        } else if (answer && typeof answer === 'object' && answer.answer) {
-          answerText = answer.answer;
+        } else if (answer && typeof answer === 'object') {
+          // Si es un objeto, extraer el texto de la respuesta
+          if (answer.text && typeof answer.text === 'string') {
+            answerText = answer.text;
+          } else if (answer.answer && typeof answer.answer === 'string') {
+            answerText = answer.answer;
+          } else if (answer.value && typeof answer.value === 'string') {
+            answerText = answer.value;
+          } else if (answer.label && typeof answer.label === 'string') {
+            answerText = answer.label;
+          } else if (answer.name && typeof answer.name === 'string') {
+            answerText = answer.name;
+          } else {
+            // Último recurso: convertir a string
+            answerText = String(answer);
+            console.warn(`⚠️ Respuesta convertida a string para pregunta ${questionId}:`, answerText);
+          }
         } else {
+          // Convertir cualquier otro tipo a string
           answerText = String(answer);
+          console.warn(`⚠️ Respuesta convertida a string para pregunta ${questionId}:`, answerText);
         }
+        
+        // ✅ VALIDACIÓN FINAL: Asegurar que sea string válido
+        if (typeof answerText !== 'string') {
+          answerText = String(answerText);
+        }
+        
+        // ✅ VERIFICAR QUE NO CONTENGA [object Object]
+        if (answerText.includes('[object Object]')) {
+          console.error(`❌ ERROR: Respuesta contiene [object Object] para pregunta ${questionId}:`, answerText);
+          answerText = 'Respuesta no válida';
+        }
+        
         simplifiedAnswers[questionId] = answerText;
+        
+        console.log(`✅ Respuesta procesada para pregunta ${questionId}:`, {
+          original: answer,
+          processed: answerText,
+          finalType: typeof answerText
+        });
       });
+      
+      console.log('🧹 RESPUESTAS FINALES LIMPIAS:', simplifiedAnswers);
       
       const response = await fetch(`${API_BASE_URL}/questionnaires/sync`, {
         method: 'POST',
@@ -80,14 +125,14 @@ const QuestionnaireService = {
       }
 
       const result = await response.json();
-      // console.log(`📥 RESPUESTA DEL BACKEND RECIBIDA:`);
-      // console.log(`   Status: ${response.status}`);
-      // console.log(`   Success: ${result.success}`);
-      // console.log(`   Message: ${result.message}`);
-      // console.log(`   📊 ---`);
+      console.log(`📥 RESPUESTA DEL BACKEND RECIBIDA:`);
+      console.log(`   Status: ${response.status}`);
+      console.log(`   Success: ${result.success}`);
+      console.log(`   Message: ${result.message}`);
+      console.log(`   📊 ---`);
       return result;
     } catch (error) {
-      // console.error('Error sincronizando cuestionario completado:', error);
+      console.error('❌ Error sincronizando cuestionario completado:', error);
       throw error; // Lanzar error para que el frontend lo maneje
     }
   },

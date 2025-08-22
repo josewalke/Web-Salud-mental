@@ -65,18 +65,56 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.get('/health', async (req, res) => {
   try {
     let dbStatus = 'disconnected';
+    let dbInfo = {};
+    
     try {
       await database.query('SELECT 1 as test');
       dbStatus = 'connected';
+      
+      // Obtener información básica de la BD
+      try {
+        // Verificar tablas
+        const tablesQuery = `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name`;
+        const tables = await database.query(tablesQuery);
+        
+        // Verificar usuarios
+        let usersCount = 0;
+        try {
+          const usersResult = await database.query('SELECT COUNT(*) as count FROM users');
+          usersCount = parseInt(usersResult.rows[0].count);
+        } catch (e) {
+          usersCount = 0;
+        }
+        
+        // Verificar cuestionarios
+        let questionnairesCount = 0;
+        try {
+          const questionnairesResult = await database.query('SELECT COUNT(*) as count FROM questionnaires');
+          questionnairesCount = parseInt(questionnairesResult.rows[0].count);
+        } catch (e) {
+          questionnairesCount = 0;
+        }
+        
+        dbInfo = {
+          tables: tables.rows.map(t => t.table_name),
+          users: usersCount,
+          questionnaires: questionnairesCount
+        };
+      } catch (dbInfoError) {
+        dbInfo = { error: dbInfoError.message };
+      }
+      
     } catch (dbError) {
       dbStatus = 'error';
+      dbInfo = { error: dbError.message };
     }
     
     res.status(200).json({
       status: 'OK',
       timestamp: new Date().toISOString(),
       environment: NODE_ENV,
-      database: dbStatus
+      database: dbStatus,
+      dbInfo: dbInfo
     });
   } catch (error) {
     res.status(500).json({
@@ -86,10 +124,119 @@ app.get('/health', async (req, res) => {
   }
 });
 
+// Ruta de debug simple para verificar BD
+app.get('/debug/db-status', async (req, res) => {
+  try {
+    console.log('🔍 DEBUG: Verificando estado de la base de datos...');
+    
+    // 1. Verificar conexión
+    const connectionTest = await database.query('SELECT 1 as test, NOW() as timestamp');
+    console.log('✅ Conexión a BD exitosa');
+    
+    // 2. Verificar tablas existentes
+    const tablesQuery = `
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public'
+      ORDER BY table_name
+    `;
+    const tables = await database.query(tablesQuery);
+    console.log('📋 Tablas encontradas:', tables.rows.map(t => t.table_name));
+    
+    // 3. Verificar usuarios
+    let usersCount = 0;
+    let adminUser = null;
+    try {
+      const usersResult = await database.query('SELECT COUNT(*) as count FROM users');
+      usersCount = parseInt(usersResult.rows[0].count);
+      
+      if (usersCount > 0) {
+        const adminResult = await database.query('SELECT id, email, role FROM users WHERE role = $1', ['admin']);
+        if (adminResult.rows.length > 0) {
+          adminUser = adminResult.rows[0];
+        }
+      }
+    } catch (error) {
+      console.log('⚠️ Error verificando usuarios:', error.message);
+    }
+    
+    // 4. Verificar cuestionarios
+    let questionnairesCount = 0;
+    let corruptedCount = 0;
+    
+    try {
+      const questionnairesResult = await database.query('SELECT COUNT(*) as count FROM questionnaires');
+      questionnairesCount = parseInt(questionnairesResult.rows[0].count);
+      
+      if (questionnairesCount > 0) {
+        // Verificar cuestionarios corruptos
+        const allQuestionnaires = await database.query('SELECT id, answers FROM questionnaires LIMIT 10');
+        allQuestionnaires.rows.forEach(row => {
+          try {
+            if (row.answers && row.answers !== '{}' && row.answers !== '') {
+              const parsed = JSON.parse(row.answers);
+              if (typeof parsed === 'object' && parsed !== null) {
+                const hasCorruptedData = Object.values(parsed).some(answer => 
+                  String(answer).includes('[object Object]')
+                );
+                if (hasCorruptedData) {
+                  corruptedCount++;
+                }
+              }
+            }
+          } catch (error) {
+            corruptedCount++;
+          }
+        });
+      }
+    } catch (error) {
+      console.log('⚠️ Error verificando cuestionarios:', error.message);
+    }
+    
+    // 5. Resumen del estado
+    const status = {
+      timestamp: new Date().toISOString(),
+      database: {
+        connection: 'OK',
+        tables: tables.rows.map(t => t.table_name)
+      },
+      users: {
+        total: usersCount,
+        admin: adminUser ? { id: adminUser.id, email: adminUser.email } : null
+      },
+      questionnaires: {
+        total: questionnairesCount,
+        corrupted: corruptedCount,
+        healthy: questionnairesCount - corruptedCount
+      }
+    };
+    
+    console.log('📊 Estado de BD:', {
+      usuarios: usersCount,
+      cuestionarios: questionnairesCount,
+      corruptos: corruptedCount
+    });
+    
+    res.json({
+      success: true,
+      message: 'Estado de la base de datos',
+      data: status
+    });
+    
+  } catch (error) {
+    console.error('❌ Error en debug de BD:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
 // Ruta de debug para usuarios
 app.get('/debug/users', async (req, res) => {
   try {
-    console.log('🔍 Debug: Verificando usuarios en la base de datos...');
+    console.log('🔍 Debug: Verificando usuarios y cuestionarios en la base de datos...');
     
     // Verificar estructura de la tabla users
     const tableInfo = await database.query(`
@@ -108,12 +255,60 @@ app.get('/debug/users', async (req, res) => {
       ['admin@websaludmental.com']
     );
     
+    // Verificar cuestionarios
+    let questionnairesInfo = {};
+    try {
+      const questionnairesCount = await database.query('SELECT COUNT(*) as count FROM questionnaires');
+      const questionnaires = await database.query(`
+        SELECT id, type, email, status, created_at, updated_at,
+               LEFT(answers::text, 200) as answers_preview,
+               LEFT(personal_info::text, 200) as personal_info_preview
+        FROM questionnaires 
+        ORDER BY created_at DESC
+        LIMIT 5
+      `);
+      
+      // Verificar si hay cuestionarios corruptos
+      let corruptedCount = 0;
+      let healthyCount = 0;
+      
+      questionnaires.rows.forEach(q => {
+        try {
+          if (q.answers_preview && q.answers_preview !== '{}' && q.answers_preview !== '') {
+            const parsed = JSON.parse(q.answers_preview);
+            if (typeof parsed === 'object' && parsed !== null) {
+              const hasCorruptedData = Object.values(parsed).some(answer => 
+                String(answer).includes('[object Object]')
+              );
+              if (hasCorruptedData) {
+                corruptedCount++;
+              } else {
+                healthyCount++;
+              }
+            }
+          }
+        } catch (error) {
+          corruptedCount++;
+        }
+      });
+      
+      questionnairesInfo = {
+        total: parseInt(questionnairesCount.rows[0].count),
+        healthy: healthyCount,
+        corrupted: corruptedCount,
+        sample: questionnaires.rows
+      };
+    } catch (error) {
+      questionnairesInfo = { error: error.message };
+    }
+    
     res.status(200).json({
       debug: true,
       tableStructure: tableInfo.rows,
       totalUsers: users.rows.length,
       users: users.rows,
-      adminUser: adminUser.rows[0] || null
+      adminUser: adminUser.rows[0] || null,
+      questionnaires: questionnairesInfo
     });
     
   } catch (error) {
@@ -121,6 +316,142 @@ app.get('/debug/users', async (req, res) => {
     res.status(500).json({
       error: 'Error en debug',
       message: error.message
+    });
+  }
+});
+
+// Ruta de debug temporal para cuestionarios (sin autenticación)
+app.get('/debug/questionnaires', async (req, res) => {
+  try {
+    console.log('🔍 Debug: Verificando cuestionarios en la base de datos...');
+    
+    // Verificar estructura de la tabla questionnaires
+    const tableInfo = await database.query(`
+      SELECT column_name, data_type, is_nullable, column_default
+      FROM information_schema.columns 
+      WHERE table_name = 'questionnaires' 
+      ORDER BY ordinal_position;
+    `);
+    
+    // Verificar cuestionarios existentes
+    const questionnaires = await database.query(`
+      SELECT id, type, email, status, created_at, updated_at,
+             LEFT(answers::text, 200) as answers_preview,
+             LEFT(personal_info::text, 200) as personal_info_preview
+      FROM questionnaires 
+      ORDER BY created_at DESC;
+    `);
+    
+    // Verificar si hay cuestionarios corruptos
+    let corruptedCount = 0;
+    let healthyCount = 0;
+    
+    questionnaires.rows.forEach(q => {
+      try {
+        if (q.answers_preview && q.answers_preview !== '{}' && q.answers_preview !== '') {
+          const parsed = JSON.parse(q.answers_preview);
+          if (typeof parsed === 'object' && parsed !== null) {
+            const hasCorruptedData = Object.values(parsed).some(answer => 
+              String(answer).includes('[object Object]')
+            );
+            if (hasCorruptedData) {
+              corruptedCount++;
+            } else {
+              healthyCount++;
+            }
+          }
+        }
+      } catch (error) {
+        corruptedCount++;
+      }
+    });
+    
+    res.status(200).json({
+      debug: true,
+      tableStructure: tableInfo.rows,
+      totalQuestionnaires: questionnaires.rows.length,
+      healthy: healthyCount,
+      corrupted: corruptedCount,
+      questionnaires: questionnaires.rows
+    });
+    
+  } catch (error) {
+    console.error('💥 Error en debug de cuestionarios:', error);
+    res.status(500).json({
+      error: 'Error en debug de cuestionarios',
+      message: error.message
+    });
+  }
+});
+
+// Ruta temporal para limpiar datos corruptos (sin autenticación)
+app.delete('/debug/clean-corrupted', async (req, res) => {
+  try {
+    console.log('🧹 DEBUG: Limpiando datos corruptos...');
+    
+    // 1. Verificar cuestionarios existentes
+    const questionnaires = await database.query('SELECT id, answers FROM questionnaires');
+    console.log(`📊 Total cuestionarios encontrados: ${questionnaires.rows.length}`);
+    
+    // 2. Identificar cuestionarios corruptos
+    const corruptedIds = [];
+    questionnaires.rows.forEach(row => {
+      try {
+        if (row.answers && row.answers !== '{}' && row.answers !== '') {
+          const answers = JSON.parse(row.answers);
+          // Verificar si alguna respuesta contiene [object Object]
+          const hasCorruptedData = Object.values(answers).some(answer => 
+            String(answer).includes('[object Object]')
+          );
+          if (hasCorruptedData) {
+            corruptedIds.push(row.id);
+            console.log(`❌ Cuestionario ${row.id} tiene datos corruptos`);
+          }
+        }
+      } catch (error) {
+        corruptedIds.push(row.id);
+        console.log(`❌ Cuestionario ${row.id} tiene JSON inválido`);
+      }
+    });
+    
+    if (corruptedIds.length === 0) {
+      console.log('✅ No se encontraron cuestionarios corruptos');
+      return res.json({
+        success: true,
+        message: 'No se encontraron cuestionarios corruptos',
+        deleted: 0
+      });
+    }
+    
+    console.log(`🗑️ Cuestionarios a eliminar: ${corruptedIds.join(', ')}`);
+    
+    // 3. Eliminar cuestionarios corruptos
+    let deletedCount = 0;
+    for (const id of corruptedIds) {
+      await database.query('DELETE FROM questionnaires WHERE id = $1', [id]);
+      deletedCount++;
+      console.log(`✅ Cuestionario ${id} eliminado`);
+    }
+    
+    // 4. Verificar resultado
+    const remainingQuestionnaires = await database.query('SELECT COUNT(*) as count FROM questionnaires');
+    console.log(`📊 Cuestionarios restantes: ${remainingQuestionnaires.rows[0].count}`);
+    
+    console.log('🎉 ¡Limpieza completada exitosamente!');
+    
+    res.json({
+      success: true,
+      message: 'Limpieza completada exitosamente',
+      deleted: deletedCount,
+      remaining: parseInt(remainingQuestionnaires.rows[0].count)
+    });
+    
+  } catch (error) {
+    console.error('❌ Error durante la limpieza:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
     });
   }
 });
