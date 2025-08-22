@@ -15,6 +15,7 @@ const database = require('./config/database');
 const authRoutes = require('./routes/auth-simple');
 const questionnaireRoutes = require('./routes/questionnaires');
 const adminRoutes = require('./routes/admin');
+const contactRoutes = require('./routes/contact');
 
 // Importar middlewares
 // const errorHandler = require('./middleware/errorHandler');
@@ -215,6 +216,7 @@ app.get('/system/info', async (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/questionnaires', questionnaireRoutes);
+app.use('/api/contact', contactRoutes);
 // app.use('/api/analytics', authMiddleware, analyticsRoutes);
 // app.use('/api/system', authMiddleware, systemRoutes);
 

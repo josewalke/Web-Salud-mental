@@ -4,7 +4,7 @@ import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion';
-import { Users, FileText, LogOut, Heart, Brain, Download, Trash2 } from 'lucide-react';
+import { Users, FileText, LogOut, Heart, Brain, Download, Trash2, Mail } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { buildApiUrl } from '../config/api';
 
@@ -29,6 +29,17 @@ interface Questionnaire {
   createdAt: string;
 }
 
+interface ContactMessage {
+  id: number;
+  nombre: string;
+  email: string;
+  asunto: string;
+  mensaje: string;
+  status: 'unread' | 'read' | 'replied';
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface DashboardData {
   success: boolean;
   total: number;
@@ -44,6 +55,7 @@ interface DashboardData {
 
 const AdminDashboard: React.FC = () => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('pareja');
@@ -54,6 +66,7 @@ const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     loadDashboardData();
+    loadContactMessages();
   }, []);
 
   const loadDashboardData = async () => {
@@ -86,6 +99,78 @@ const AdminDashboard: React.FC = () => {
       setError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadContactMessages = async () => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      const response = await fetch(buildApiUrl('/api/admin/contact-messages'), {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setContactMessages(data.data.messages || []);
+      }
+    } catch (error) {
+      console.error('Error cargando mensajes de contacto:', error);
+    }
+  };
+
+  const handleUpdateMessageStatus = async (messageId: number, status: 'read' | 'replied') => {
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      const response = await fetch(buildApiUrl(`/api/admin/contact-messages/${messageId}/status`), {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status })
+      });
+
+      if (response.ok) {
+        // Actualizar el estado local
+        setContactMessages(prev => 
+          prev.map(msg => 
+            msg.id === messageId ? { ...msg, status } : msg
+          )
+        );
+      }
+    } catch (error) {
+      console.error('Error actualizando status del mensaje:', error);
+    }
+  };
+
+  const handleDeleteMessage = async (messageId: number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este mensaje?')) return;
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) return;
+
+      const response = await fetch(buildApiUrl(`/api/admin/contact-messages/${messageId}`), {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        // Remover el mensaje del estado local
+        setContactMessages(prev => prev.filter(msg => msg.id !== messageId));
+      }
+    } catch (error) {
+      console.error('Error eliminando mensaje:', error);
     }
   };
 
@@ -711,45 +796,58 @@ const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Cuestionarios</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{dashboardData.total}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Cuestionarios de Pareja</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{dashboardData.pareja.count}</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Cuestionarios de Personalidad</CardTitle>
-              <FileText className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{dashboardData.personalidad.count}</div>
-            </CardContent>
-          </Card>
-        </div>
+              {/* Stats Cards */}
+        <div className="container mx-auto px-4 py-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Cuestionarios</CardTitle>
+                <FileText className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{dashboardData.total}</div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Cuestionarios de Pareja</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{dashboardData.pareja.count}</div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Cuestionarios de Personalidad</CardTitle>
+                <FileText className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{dashboardData.personalidad.count}</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Mensajes de Contacto</CardTitle>
+                <Mail className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{contactMessages.length}</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {contactMessages.filter(m => m.status === 'unread').length} sin leer
+                </p>
+              </CardContent>
+            </Card>
+          </div>
 
 
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="pareja" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               Pareja ({dashboardData.pareja.count})
@@ -762,6 +860,10 @@ const AdminDashboard: React.FC = () => {
                   Vacío
                 </span>
               )}
+            </TabsTrigger>
+            <TabsTrigger value="contacto" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              Contacto ({contactMessages.length})
             </TabsTrigger>
           </TabsList>
 
@@ -797,6 +899,97 @@ const AdminDashboard: React.FC = () => {
               </Card>
             ) : (
               dashboardData.personalidad.questionnaires.map(renderQuestionnaireCard)
+            )}
+          </TabsContent>
+
+          <TabsContent value="contacto" className="space-y-4">
+            {contactMessages.length === 0 ? (
+              <Card className="border-2 border-dashed border-gray-300">
+                <CardContent className="pt-12 pb-12 text-center">
+                  <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                    <Mail className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                    No hay mensajes de contacto
+                  </h3>
+                  <p className="text-gray-500 mb-4">
+                    Aún no se han recibido mensajes de contacto.
+                  </p>
+                  <div className="text-sm text-gray-400">
+                    Los usuarios pueden enviar mensajes desde el formulario de contacto
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {contactMessages.map((message) => (
+                  <Card key={message.id} className="border-l-4 border-l-blue-500">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <Mail className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">{message.nombre}</CardTitle>
+                            <p className="text-sm text-gray-600">{message.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge 
+                            variant={message.status === 'unread' ? 'default' : message.status === 'read' ? 'secondary' : 'outline'}
+                            className={message.status === 'unread' ? 'bg-red-100 text-red-800' : ''}
+                          >
+                            {message.status === 'unread' ? 'Nuevo' : message.status === 'read' ? 'Leído' : 'Respondido'}
+                          </Badge>
+                          <span className="text-xs text-gray-500">
+                            {new Date(message.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {message.asunto && (
+                          <div>
+                            <h4 className="font-medium text-gray-900">Asunto:</h4>
+                            <p className="text-gray-700">{message.asunto}</p>
+                          </div>
+                        )}
+                        <div>
+                          <h4 className="font-medium text-gray-900">Mensaje:</h4>
+                          <p className="text-gray-700 whitespace-pre-wrap">{message.mensaje}</p>
+                        </div>
+                        <div className="flex items-center gap-2 pt-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleUpdateMessageStatus(message.id, 'read')}
+                            disabled={message.status === 'read'}
+                          >
+                            Marcar como leído
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleUpdateMessageStatus(message.id, 'replied')}
+                            disabled={message.status === 'replied'}
+                          >
+                            Marcar como respondido
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleDeleteMessage(message.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             )}
           </TabsContent>
         </Tabs>

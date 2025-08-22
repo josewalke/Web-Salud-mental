@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Send, Mail, Phone } from 'lucide-react';
 import { useMobileAnimations } from './ui/use-mobile-animations';
 import { toast } from 'sonner';
+import { buildApiUrl } from '../src/config/api';
 
 export default function ContactSection() {
   const enableAnimations = useMobileAnimations();
@@ -53,20 +54,38 @@ export default function ContactSection() {
 
     setIsSubmitting(true);
     
-    // Simular envío del formulario
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast.success('¡Mensaje enviado con éxito! Te contactaremos pronto 💙');
-      
-      // Limpiar formulario
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+      // Enviar mensaje al backend
+      const response = await fetch(buildApiUrl('/api/contact'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nombre: formData.name,
+          email: formData.email,
+          asunto: formData.subject || 'Sin asunto',
+          mensaje: formData.message
+        })
       });
+
+      if (response.ok) {
+        const result = await response.json();
+        toast.success('¡Mensaje enviado con éxito! Te contactaremos pronto 💙');
+        
+        // Limpiar formulario
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        const errorData = await response.json();
+        toast.error(`Error: ${errorData.message || 'Hubo un error al enviar el mensaje'}`);
+      }
     } catch (error) {
+      console.error('Error enviando mensaje:', error);
       toast.error('Hubo un error al enviar el mensaje. Intenta de nuevo.');
     } finally {
       setIsSubmitting(false);

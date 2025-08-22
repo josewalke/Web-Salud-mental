@@ -505,4 +505,173 @@ router.get('/debug/database-status', async (req, res) => {
   }
 });
 
+// ========================================
+// MENSAJES DE CONTACTO (ADMIN)
+// ========================================
+
+/**
+ * GET /api/admin/contact-messages
+ * Obtener todos los mensajes de contacto
+ */
+router.get('/contact-messages', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    console.log('📬 OBTENIENDO MENSAJES DE CONTACTO');
+    
+    const ContactMessage = require('../models/ContactMessage');
+    const messages = await ContactMessage.findAll();
+    
+    console.log(`✅ ${messages.length} mensajes de contacto obtenidos`);
+    
+    res.json({
+      success: true,
+      message: 'Mensajes de contacto obtenidos exitosamente',
+      data: {
+        messages,
+        total: messages.length
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Error obteniendo mensajes de contacto:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * GET /api/admin/contact-messages/:id
+ * Obtener mensaje de contacto por ID
+ */
+router.get('/contact-messages/:id', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('📬 OBTENIENDO MENSAJE DE CONTACTO:', id);
+    
+    const ContactMessage = require('../models/ContactMessage');
+    const message = await ContactMessage.findById(id);
+    
+    if (!message) {
+      return res.status(404).json({
+        success: false,
+        message: 'Mensaje no encontrado'
+      });
+    }
+    
+    console.log('✅ Mensaje de contacto obtenido:', id);
+    
+    res.json({
+      success: true,
+      message: 'Mensaje de contacto obtenido exitosamente',
+      data: message
+    });
+
+  } catch (error) {
+    console.error('❌ Error obteniendo mensaje de contacto:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * PUT /api/admin/contact-messages/:id/status
+ * Actualizar status de un mensaje de contacto
+ */
+router.put('/contact-messages/:id/status', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    if (!['unread', 'read', 'replied'].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Status inválido. Debe ser: unread, read, o replied'
+      });
+    }
+    
+    console.log('📬 ACTUALIZANDO STATUS DE MENSAJE:', { id, status });
+    
+    const ContactMessage = require('../models/ContactMessage');
+    await ContactMessage.updateStatus(id, status);
+    
+    console.log('✅ Status del mensaje actualizado:', { id, status });
+    
+    res.json({
+      success: true,
+      message: 'Status del mensaje actualizado exitosamente'
+    });
+
+  } catch (error) {
+    console.error('❌ Error actualizando status del mensaje:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * DELETE /api/admin/contact-messages/:id
+ * Eliminar mensaje de contacto
+ */
+router.delete('/contact-messages/:id', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('📬 ELIMINANDO MENSAJE DE CONTACTO:', id);
+    
+    const ContactMessage = require('../models/ContactMessage');
+    await ContactMessage.delete(id);
+    
+    console.log('✅ Mensaje de contacto eliminado:', id);
+    
+    res.json({
+      success: true,
+      message: 'Mensaje de contacto eliminado exitosamente'
+    });
+
+  } catch (error) {
+    console.error('❌ Error eliminando mensaje de contacto:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+/**
+ * GET /api/admin/contact-stats
+ * Obtener estadísticas de mensajes de contacto
+ */
+router.get('/contact-stats', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    console.log('📊 OBTENIENDO ESTADÍSTICAS DE CONTACTO');
+    
+    const ContactMessage = require('../models/ContactMessage');
+    const stats = await ContactMessage.getStats();
+    
+    console.log('✅ Estadísticas de contacto obtenidas:', stats);
+    
+    res.json({
+      success: true,
+      message: 'Estadísticas de contacto obtenidas exitosamente',
+      data: stats
+    });
+
+  } catch (error) {
+    console.error('❌ Error obteniendo estadísticas de contacto:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;
