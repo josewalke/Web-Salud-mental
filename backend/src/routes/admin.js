@@ -218,4 +218,130 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
   }
 });
 
+// ========================================
+// LIMPIAR DATOS CORRUPTOS
+// ========================================
+router.delete('/clean-corrupted-data', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    console.log('🧹 ADMIN SOLICITANDO LIMPIEZA DE DATOS CORRUPTOS');
+    
+    const database = require('../config/database');
+    
+    // 1. Verificar cuestionarios existentes
+    const questionnaires = await database.query('SELECT id, answers FROM questionnaires');
+    console.log(`📊 Total cuestionarios encontrados: ${questionnaires.rows.length}`);
+    
+    // 2. Identificar cuestionarios corruptos
+    const corruptedIds = [];
+    questionnaires.rows.forEach(row => {
+      try {
+        const answers = JSON.parse(row.answers);
+        // Verificar si alguna respuesta contiene [object Object]
+        const hasCorruptedData = Object.values(answers).some(answer => 
+          String(answer).includes('[object Object]')
+        );
+        if (hasCorruptedData) {
+          corruptedIds.push(row.id);
+          console.log(`❌ Cuestionario ${row.id} tiene datos corruptos`);
+        }
+      } catch (error) {
+        corruptedIds.push(row.id);
+        console.log(`❌ Cuestionario ${row.id} tiene JSON inválido`);
+      }
+    });
+    
+    if (corruptedIds.length === 0) {
+      console.log('✅ No se encontraron cuestionarios corruptos');
+      return res.json({
+        success: true,
+        message: 'No se encontraron cuestionarios corruptos',
+        deleted: 0
+      });
+    }
+    
+    console.log(`🗑️ Cuestionarios a eliminar: ${corruptedIds.join(', ')}`);
+    
+    // 3. Eliminar cuestionarios corruptos
+    let deletedCount = 0;
+    for (const id of corruptedIds) {
+      await database.query('DELETE FROM questionnaires WHERE id = $1', [id]);
+      deletedCount++;
+      console.log(`✅ Cuestionario ${id} eliminado`);
+    }
+    
+    // 4. Verificar resultado
+    const remainingQuestionnaires = await database.query('SELECT COUNT(*) as count FROM questionnaires');
+    console.log(`📊 Cuestionarios restantes: ${remainingQuestionnaires.rows[0].count}`);
+    
+    console.log('🎉 ¡Limpieza completada exitosamente!');
+    
+    res.json({
+      success: true,
+      message: 'Limpieza completada exitosamente',
+      deleted: deletedCount,
+      remaining: parseInt(remainingQuestionnaires.rows[0].count)
+    });
+    
+  } catch (error) {
+    console.error('❌ Error durante la limpieza:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+// ========================================
+// ELIMINAR CUESTIONARIO INDIVIDUAL
+// ========================================
+router.delete('/questionnaires/:id', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(`🗑️ ADMIN SOLICITANDO ELIMINAR CUESTIONARIO ID: ${id}`);
+    
+    const database = require('../config/database');
+    
+    // 1. Verificar que el cuestionario existe
+    const existingQuestionnaire = await database.query(
+      'SELECT id, type, email FROM questionnaires WHERE id = $1',
+      [id]
+    );
+    
+    if (existingQuestionnaire.rows.length === 0) {
+      console.log(`❌ Cuestionario ${id} no encontrado`);
+      return res.status(404).json({
+        success: false,
+        message: 'Cuestionario no encontrado'
+      });
+    }
+    
+    const questionnaire = existingQuestionnaire.rows[0];
+    console.log(`📝 Cuestionario a eliminar: ID ${id}, Tipo: ${questionnaire.type}, Email: ${questionnaire.email}`);
+    
+    // 2. Eliminar el cuestionario
+    await database.query('DELETE FROM questionnaires WHERE id = $1', [id]);
+    console.log(`✅ Cuestionario ${id} eliminado exitosamente`);
+    
+    // 3. Verificar resultado
+    const remainingQuestionnaires = await database.query('SELECT COUNT(*) as count FROM questionnaires');
+    console.log(`📊 Cuestionarios restantes: ${remainingQuestionnaires.rows[0].count}`);
+    
+    res.json({
+      success: true,
+      message: 'Cuestionario eliminado exitosamente',
+      deletedId: parseInt(id),
+      remaining: parseInt(remainingQuestionnaires.rows[0].count)
+    });
+    
+  } catch (error) {
+    console.error('❌ Error eliminando cuestionario:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;

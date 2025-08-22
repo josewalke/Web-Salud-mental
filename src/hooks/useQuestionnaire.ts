@@ -386,7 +386,33 @@ export const useQuestionnaire = ({ type, questions }: UseQuestionnaireProps) => 
       
       // ✅ Enviar al backend
       console.log('📡 Enviando cuestionario al backend...');
-      const result = await QuestionnaireService.syncCompletedQuestionnaire(type, personalInfo, formData, questions);
+      
+      // ✅ Asegurar que solo se envíen strings como respuestas
+      const cleanFormData: Record<string, string> = {};
+      Object.entries(formData).forEach(([questionId, answer]) => {
+        // Convertir cualquier respuesta a string
+        if (typeof answer === 'string') {
+          cleanFormData[questionId] = answer;
+        } else if (answer && typeof answer === 'object') {
+          // Si es un objeto, extraer el texto de la respuesta
+          const answerObj = answer as any;
+          if (answerObj.text) {
+            cleanFormData[questionId] = answerObj.text;
+          } else if (answerObj.answer) {
+            cleanFormData[questionId] = answerObj.answer;
+          } else if (answerObj.value) {
+            cleanFormData[questionId] = answerObj.value;
+          } else {
+            cleanFormData[questionId] = String(answer);
+          }
+        } else {
+          cleanFormData[questionId] = String(answer);
+        }
+      });
+      
+      console.log('🧹 FormData limpiado:', cleanFormData);
+      
+      const result = await QuestionnaireService.syncCompletedQuestionnaire(type, personalInfo, cleanFormData, questions);
       
       // Log de éxito
       console.log(`✅ CUESTIONARIO ENVIADO EXITOSAMENTE:`);
