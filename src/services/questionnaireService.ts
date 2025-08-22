@@ -44,16 +44,21 @@ const QuestionnaireService = {
     // console.log(`   Completado: true`);
     // console.log(`   📊 ---`);
       
-      // Crear objeto con preguntas y respuestas combinadas
-      const answersWithQuestions: Record<string, any> = {};
+      // Simplificar respuestas para el backend
+      const simplifiedAnswers: Record<string, string> = {};
       Object.entries(answers).forEach(([questionId, answer]) => {
-        const question = questions.find(q => q.id === parseInt(questionId));
-        answersWithQuestions[questionId] = {
-          question: question ? question.text : `Pregunta ${parseInt(questionId) + 1}`,
-          answer: answer,
-          questionId: parseInt(questionId), // ✅ Usar ID consistente
-          questionType: question ? question.type : 'unknown'
-        };
+        // Extraer solo el texto de la respuesta
+        let answerText = '';
+        if (typeof answer === 'string') {
+          answerText = answer;
+        } else if (answer && typeof answer === 'object' && answer.text) {
+          answerText = answer.text;
+        } else if (answer && typeof answer === 'object' && answer.answer) {
+          answerText = answer.answer;
+        } else {
+          answerText = String(answer);
+        }
+        simplifiedAnswers[questionId] = answerText;
       });
       
       const response = await fetch(`${API_BASE_URL}/questionnaires/sync`, {
@@ -64,7 +69,7 @@ const QuestionnaireService = {
         body: JSON.stringify({
           type,
           personalInfo,
-          answers: answersWithQuestions,
+          answers: simplifiedAnswers,
           completed: true, // Solo cuestionarios completados
           timestamp: Date.now()
         })
