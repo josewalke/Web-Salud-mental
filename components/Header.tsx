@@ -85,6 +85,14 @@ export default function Header() {
               Contacto
             </button>
             
+            {/* Botón Admin discreto en escritorio */}
+            <button
+              onClick={navigateToAdmin}
+              className="text-gray-400 hover:text-purple-600 transition-colors duration-300 opacity-60 hover:opacity-100"
+              title="Acceso Administrativo"
+            >
+              <Shield className="w-5 h-5" />
+            </button>
 
           </nav>
 
@@ -132,17 +140,7 @@ export default function Header() {
                 Contacto
               </button>
               
-              {/* Botón secreto del admin en móvil */}
-              <button
-                onClick={navigateToAdmin}
-                className="text-left text-gray-400 hover:text-purple-600 transition-colors py-2 opacity-60 hover:opacity-100"
-                title="Acceso Administrativo"
-              >
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-4 h-4" />
-                  <span>Admin</span>
-                </div>
-              </button>
+
             </nav>
           </div>
         )}
