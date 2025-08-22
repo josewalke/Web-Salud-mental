@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/button';
 import { Brain, ArrowLeft, Crown, Star, TrendingUp, Users, Search, Filter, Camera, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
 import { Progress } from '../../components/ui/progress';
 import { PersonalityCompatibilityAnalysis, PersonalityCompatibilityResult } from '../services/personalityCompatibilityAnalysis';
+import { buildApiUrl } from '../config/api';
 
 interface PersonalInfo {
   nombre: string;
@@ -64,7 +65,7 @@ const PersonalityCompatibilityAnalysisPage: React.FC = () => {
 
       // Intentar cargar desde la API
               // console.log('🌐 Haciendo llamada a API...');
-      const response = await fetch('http://localhost:3001/api/admin/questionnaires', {
+      const response = await fetch(buildApiUrl('/api/admin/questionnaires'), {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
