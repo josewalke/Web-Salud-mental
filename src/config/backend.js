@@ -4,7 +4,7 @@
 
 const config = {
   // URL del backend
-  backendUrl: process.env.REACT_APP_BACKEND_URL || 'http://localhost:5001',
+  backendUrl: process.env.REACT_APP_BACKEND_URL || 'https://back-websaludmental-1.onrender.com',
   
   // Endpoints de la API
   endpoints: {

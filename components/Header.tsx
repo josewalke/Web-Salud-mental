@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,8 +22,12 @@ export default function Header() {
     setIsMenuOpen(false);
   };
 
+  const navigateToAdmin = () => {
+    window.location.hash = '#/admin-secret';
+  };
+
   // Debug: mostrar el estado actual en el header
-  console.log('Header render - isScrolled:', isScrolled);
+      // console.log('Header render - isScrolled:', isScrolled);
 
   return (
     <header 
@@ -80,6 +84,8 @@ export default function Header() {
             >
               Contacto
             </button>
+            
+
           </nav>
 
           {/* Mobile Menu Button */}
@@ -124,6 +130,18 @@ export default function Header() {
                 className="text-left text-gray-700 hover:text-blue-600 transition-colors py-2"
               >
                 Contacto
+              </button>
+              
+              {/* Botón secreto del admin en móvil */}
+              <button
+                onClick={navigateToAdmin}
+                className="text-left text-gray-400 hover:text-purple-600 transition-colors py-2 opacity-60 hover:opacity-100"
+                title="Acceso Administrativo"
+              >
+                <div className="flex items-center space-x-2">
+                  <Shield className="w-4 h-4" />
+                  <span>Admin</span>
+                </div>
               </button>
             </nav>
           </div>

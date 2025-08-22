@@ -1,298 +1,292 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, ChevronLeft, ChevronRight, Info, X } from 'lucide-react';
+import { Heart, ChevronLeft, ChevronRight, Info, X, CheckCircle } from 'lucide-react';
+import { useQuestionnaire } from '../hooks/useQuestionnaire';
+import PersonalInfoForm from '../components/PersonalInfoForm';
+import { getQuestions, Question } from '../config/questionnaireQuestions';
 
-interface Question {
-  id: number;
-  text: string;
-  type: 'radio' | 'text' | 'textarea';
-  options?: string[];
-  required: boolean;
-  info?: string;
+interface QuestionnairePageProps {
+  type: 'pareja' | 'personalidad';
 }
 
-const QuestionnairePage: React.FC = () => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [formData, setFormData] = useState<Record<number, string>>({});
-  const [showInfoModal, setShowInfoModal] = useState(false);
-  const [currentInfo, setCurrentInfo] = useState('');
+const QuestionnairePage: React.FC<QuestionnairePageProps> = ({ type }) => {
+  // Obtener las preguntas desde la configuración centralizada
+  const questions = useMemo(() => getQuestions(type), [type]);
 
-  const questions: Question[] = [
-    {
-      id: 1,
-      text: "¿Qué buscas principalmente en una relación?",
-      type: 'radio',
-      options: ['1 = COMPAÑÍA', '2 = AMOR', '3 = AMISTAD'],
-      required: true,
-      info: "Esta pregunta evalúa tus expectativas principales en una relación romántica."
-    },
-    {
-      id: 2,
-      text: "¿Cómo prefieres pasar tiempo con tu pareja?",
-      type: 'radio',
-      options: ['1 = ACTIVIDADES', '2 = CONVERSACIONES', '3 = AMBAS'],
-      required: true,
-      info: "Esta pregunta evalúa tu estilo preferido de interacción en pareja."
-    },
-    {
-      id: 3,
-      text: "¿Qué valoras más en una persona?",
-      type: 'radio',
-      options: ['1 = INTELIGENCIA', '2 = SENTIMENTAL', '3 = EQUILIBRIO'],
-      required: true,
-      info: "Esta pregunta evalúa los atributos que más te atraen en una persona."
-    },
-    {
-      id: 4,
-      text: "¿Cómo manejas los conflictos en una relación?",
-      type: 'radio',
-      options: ['1 = DIÁLOGO', '2 = ESPACIO', '3 = DEPENDE'],
-      required: true,
-      info: "Esta pregunta evalúa tu estilo de resolución de conflictos."
-    },
-    {
-      id: 5,
-      text: "¿Qué te gustaría mejorar en ti mismo para una relación?",
-      type: 'textarea',
-      required: false,
-      info: "Esta pregunta te permite reflexionar sobre tu crecimiento personal."
-    }
-  ];
-
-  const totalQuestions = questions.length;
-  const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
-
-  const handleAnswer = (answer: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [currentQuestionIndex]: answer
-    }));
-  };
-
-  const handleNext = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(prev => prev - 1);
-    }
-  };
-
-  const handleSubmit = () => {
-    console.log('Respuestas del cuestionario:', formData);
-    // Aquí iría la lógica para enviar las respuestas
-    alert('¡Cuestionario de compatibilidad completado!');
-  };
+  const {
+    currentQuestionIndex,
+    formData,
+    personalInfo,
+    isCompleted,
+    isSubmitting,
+    error,
+    showPersonalInfoForm,
+    progress,
+    currentQuestion,
+    hasAnswer,
+    canProceed,
+    isLastQuestion,
+    isSaving,
+    lastSaved,
+    handlePersonalInfoSubmit,
+    handleAnswer,
+    handleNext,
+    handlePrevious,
+    handleSubmit,
+    resetQuestionnaire
+  } = useQuestionnaire({ type, questions });
 
   const showInfo = (info: string) => {
-    setCurrentInfo(info);
-    setShowInfoModal(true);
+    // Mostrar información en un modal o tooltip
+    alert(info);
   };
 
-  const currentQuestion = questions[currentQuestionIndex];
-  const hasAnswer = formData[currentQuestionIndex];
-  const canProceed = hasAnswer || !currentQuestion.required;
+  // Si está completado, mostrar pantalla de éxito
+  if (isCompleted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-red-50 flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md mx-auto text-center bg-white rounded-2xl shadow-xl p-8"
+        >
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+            <CheckCircle className="w-12 h-12 text-green-600" />
+          </div>
+          
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            ¡Cuestionario Completado!
+          </h1>
+          
+          <p className="text-gray-600 mb-6">
+            Gracias por completar el {type === 'pareja' ? 'cuestionario de compatibilidad de pareja' : 'cuestionario de personalidad dinámica social'}. 
+            Tus respuestas han sido guardadas exitosamente en nuestra base de datos.
+          </p>
+          
+          <div className="space-y-3 text-sm text-gray-500">
+            <p><strong>Nombre:</strong> {personalInfo?.nombre} {personalInfo?.apellidos}</p>
+            <p><strong>Email:</strong> {personalInfo?.correo}</p>
+            <p><strong>Preguntas respondidas:</strong> {questions.length}</p>
+          </div>
+          
+          <button
+            onClick={resetQuestionnaire}
+            className="mt-8 w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Realizar Otro Cuestionario
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Si no se ha enviado la información personal, mostrar el formulario
+  if (showPersonalInfoForm) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-red-50 flex items-center justify-center p-4">
+        <PersonalInfoForm
+          type={type}
+          onSubmit={handlePersonalInfoSubmit}
+          onBack={() => window.history.back()}
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="cuestionario-rediseñado">
-      <div className="container">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-red-50 p-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Botón Volver - Responsive */}
+        <div className="mb-4">
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center justify-center w-12 h-12 sm:w-auto sm:h-auto sm:px-4 sm:py-2 text-gray-600 hover:text-gray-800 hover:bg-white hover:shadow-md rounded-full sm:rounded-lg transition-all duration-200 border border-gray-200"
+          >
+            <ChevronLeft className="w-5 h-5 sm:mr-2" />
+            <span className="hidden sm:inline">Volver</span>
+          </button>
+        </div>
+
         {/* Header del Cuestionario */}
-        <motion.div
-          className="cuestionario-header-rediseñado"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="icono-principal">
-            <Heart />
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
+            <Heart className="w-8 h-8 text-red-600" />
           </div>
-          
-          <h1>Cuestionario de Compatibilidad</h1>
-          
-          <p>
-            Descubre tu <strong>compatibilidad ideal</strong> con nuestro test psicológico especializado. 
-            Este cuestionario de {totalQuestions} preguntas te ayudará a encontrar la conexión perfecta 
-            basada en personalidad, valores y expectativas.
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+            Cuestionario de Compatibilidad de Pareja
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Descubre tu compatibilidad en las relaciones
           </p>
+        </div>
 
-          {/* Barra de Progreso */}
-          <div className="progress-container-rediseñado">
-            <div className="progress-bar-rediseñado">
-              <div 
-                className="progress-fill-rediseñado" 
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <div className="progress-text-rediseñado">
-              Pregunta {currentQuestionIndex + 1} de {totalQuestions}
-            </div>
+        {/* Barra de Progreso */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-gray-700">
+              Pregunta {currentQuestionIndex + 1} de {questions.length}
+            </span>
+            <span className="text-sm font-medium text-gray-700">
+              {Math.round(progress)}% completado
+            </span>
           </div>
-        </motion.div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <motion.div
+              className="bg-red-600 h-2 rounded-full transition-all duration-300"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
 
-        {/* Card Principal del Cuestionario */}
+        {/* Pregunta Actual */}
         <motion.div
-          className="cuestionario-card-rediseñado"
           key={currentQuestionIndex}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
+          exit={{ opacity: 0, x: -20 }}
+          className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8"
         >
-          {/* Header de la Card */}
-          <div className="cuestionario-card-header-rediseñado">
-            <h2 className="cuestionario-card-title-rediseñado">
-              {currentQuestion.text}
-            </h2>
-            
-            {currentQuestion.required && (
-              <div className="cuestionario-card-subtitle-rediseñado">
-                Esta pregunta es obligatoria
+          {/* Número de Pregunta */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-red-600">
+                  {currentQuestionIndex + 1}
+                </span>
               </div>
+              <span className="text-sm text-gray-500">
+                Pregunta {currentQuestionIndex + 1} de {questions.length}
+              </span>
+            </div>
+            
+            {/* Botón de Información */}
+            {currentQuestion.info && (
+              <button
+                onClick={() => showInfo(currentQuestion.info!)}
+                className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                title="Ver información adicional"
+              >
+                <Info className="w-5 h-5" />
+              </button>
             )}
           </div>
 
-          {/* Contenido de la Card */}
-          <div className="cuestionario-card-content-rediseñado">
+          {/* Texto de la Pregunta */}
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-6 leading-relaxed">
+            {currentQuestion.text}
+          </h2>
+
+          {/* Opciones de Respuesta */}
+          <div className="space-y-4">
             {currentQuestion.type === 'radio' && currentQuestion.options && (
-              <div className="radio-options-container-rediseñado">
-                {currentQuestion.options.map((option, index) => {
-                  const isLastOdd = index === (currentQuestion.options?.length || 0) - 1 && (currentQuestion.options?.length || 0) % 2 === 1;
-                  return (
-                    <div
-                      key={index}
-                      className={`radio-option-card-rediseñado ${isLastOdd ? 'option-odd-last' : ''} ${
-                        formData[currentQuestionIndex] === option ? 'selected' : ''
-                      }`}
-                      onClick={() => handleAnswer(option)}
-                    >
-                      <input
-                        type="radio"
-                        id={`option-${index}`}
-                        name={`question-${currentQuestion.id}`}
-                        value={option}
-                        checked={formData[currentQuestionIndex] === option}
-                        onChange={() => handleAnswer(option)}
-                      />
-                      <label htmlFor={`option-${index}`}>
-                        {option}
-                      </label>
+              <div className="space-y-3">
+                {currentQuestion.options.map((option, index) => (
+                  <label
+                    key={index}
+                    className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                      formData[currentQuestionIndex] === option
+                        ? 'border-red-500 bg-red-50'
+                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name={`question-${currentQuestionIndex}`}
+                      value={option}
+                      checked={formData[currentQuestionIndex] === option}
+                      onChange={(e) => handleAnswer(e.target.value)}
+                      className="sr-only"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-4 ${
+                      formData[currentQuestionIndex] === option
+                        ? 'border-red-500 bg-red-500'
+                        : 'border-gray-300'
+                    }`}>
+                      {formData[currentQuestionIndex] === option && (
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      )}
                     </div>
-                  );
-                })}
+                    <span className="text-gray-700 font-medium">{option}</span>
+                  </label>
+                ))}
               </div>
             )}
 
             {currentQuestion.type === 'text' && (
-              <div className="input-group-rediseñado">
-                <label className="input-label-rediseñado">
-                  Tu respuesta:
-                </label>
-                <input
-                  type="text"
-                  className="input-field-rediseñado"
-                  placeholder="Escribe tu respuesta aquí..."
-                  value={formData[currentQuestionIndex] || ''}
-                  onChange={(e) => handleAnswer(e.target.value)}
-                />
-              </div>
+              <input
+                type="text"
+                value={formData[currentQuestionIndex] || ''}
+                onChange={(e) => handleAnswer(e.target.value)}
+                placeholder="Escribe tu respuesta aquí..."
+                className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors"
+              />
             )}
 
             {currentQuestion.type === 'textarea' && (
-              <div className="input-group-rediseñado">
-                <label className="input-label-rediseñado">
-                  Tu respuesta:
-                </label>
-                <textarea
-                  className="input-field-rediseñado textarea-field-rediseñado"
-                  placeholder="Escribe tu respuesta detallada aquí..."
-                  value={formData[currentQuestionIndex] || ''}
-                  onChange={(e) => handleAnswer(e.target.value)}
-                />
-              </div>
+              <textarea
+                value={formData[currentQuestionIndex] || ''}
+                onChange={(e) => handleAnswer(e.target.value)}
+                placeholder="Escribe tu respuesta aquí..."
+                rows={4}
+                className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors resize-none"
+              />
             )}
-
-            {/* Botones de Navegación */}
-            <div className="botones-container-rediseñado">
-              <button
-                className="btn-rediseñado btn-anterior-rediseñado"
-                onClick={handlePrevious}
-                disabled={currentQuestionIndex === 0}
-              >
-                <ChevronLeft size={16} />
-                Anterior
-              </button>
-
-              {currentQuestionIndex === totalQuestions - 1 ? (
-                <button
-                  className="btn-rediseñado btn-enviar-rediseñado"
-                  onClick={handleSubmit}
-                  disabled={!canProceed}
-                >
-                  Enviar
-                  <ChevronRight size={16} />
-                </button>
-              ) : (
-                <button
-                  className="btn-rediseñado btn-siguiente-rediseñado"
-                  onClick={handleNext}
-                  disabled={!canProceed}
-                >
-                  Siguiente
-                  <ChevronRight size={16} />
-                </button>
-              )}
-            </div>
           </div>
+
+          {/* Mensaje de Error */}
+          {error && (
+            <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg">
+              <p className="text-red-700 text-sm">{error}</p>
+            </div>
+          )}
         </motion.div>
 
-        {/* Botón de Información */}
-        <button
-          className="info-button-rediseñado"
-          onClick={() => showInfo(currentQuestion.info || 'Información no disponible')}
-        >
-          <Info size={16} />
-          Información sobre el cuestionario
-        </button>
-      </div>
-
-      {/* Modal de Información */}
-      <AnimatePresence>
-        {showInfoModal && (
-          <motion.div
-            className="modal-overlay-rediseñado"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowInfoModal(false)}
+        {/* Navegación */}
+        <div className="flex justify-between items-center">
+          {/* Botón Anterior */}
+          <button
+            onClick={handlePrevious}
+            disabled={currentQuestionIndex === 0}
+            className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+              currentQuestionIndex === 0
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-md border border-gray-200'
+            }`}
           >
-            <motion.div
-              className="modal-content-rediseñado"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="modal-header-rediseñado">
-                <h3 className="modal-title-rediseñado">
-                  Información de la Pregunta
-                </h3>
-                <button
-                  className="modal-close-rediseñado"
-                  onClick={() => setShowInfoModal(false)}
-                >
-                  <X size={20} />
-                </button>
-              </div>
-              
-              <div className="modal-body-rediseñado">
-                {currentInfo}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <ChevronLeft className="w-5 h-5 mr-2" />
+            Anterior
+          </button>
+
+          {/* Botón Siguiente/Enviar */}
+          <button
+            onClick={isLastQuestion ? handleSubmit : handleNext}
+            disabled={!canProceed || isSubmitting}
+            className={`flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
+              !canProceed || isSubmitting
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-red-600 text-white hover:bg-red-700 hover:shadow-lg'
+            }`}
+          >
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Enviando...
+              </>
+            ) : isLastQuestion ? (
+              <>
+                Enviar Cuestionario
+                <CheckCircle className="w-5 h-5 ml-2" />
+              </>
+            ) : (
+              <>
+                Siguiente
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </>
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

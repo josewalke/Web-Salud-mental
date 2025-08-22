@@ -6,13 +6,17 @@ import HeroSection from './components/HeroSection';
 const ServicesSection = lazy(() => import('./components/ServicesSection'));
 const PacksSection = lazy(() => import('./components/PacksSection'));
 const QuestionnaireSection = lazy(() => import('./components/QuestionnaireSection'));
-const QuestionairePage = lazy(() => import('./components/QuestionairePage'));
+const QuestionnairePage = lazy(() => import('./src/pages/QuestionnairePage'));
+const PersonalityQuestionnairePage = lazy(() => import('./src/pages/PersonalityQuestionnairePage'));
+const AdminLogin = lazy(() => import('./src/components/AdminLogin'));
+const AdminDashboard = lazy(() => import('./src/components/AdminDashboard'));
+const CompatibilityAnalysisPage = lazy(() => import('./src/pages/CompatibilityAnalysisPage'));
+const PersonalityCompatibilityAnalysisPage = lazy(() => import('./src/pages/PersonalityCompatibilityAnalysisPage'));
 const FAQSection = lazy(() => import('./components/FAQSection'));
 const ContactSection = lazy(() => import('./components/ContactSection'));
 const Footer = lazy(() => import('./components/Footer'));
 const SplineBackground = lazy(() => import('./components/SplineBackground'));
-
-type Page = 'home' | 'questionnaire-pareja' | 'questionnaire-personalidad';
+type Page = 'home' | 'questionnaire-pareja' | 'questionnaire-personalidad' | 'admin-login' | 'admin-dashboard' | 'compatibility-analysis' | 'personality-compatibility-analysis';
 type QuestionnaireType = 'pareja' | 'personalidad';
 
 export default function App() {
@@ -37,6 +41,28 @@ export default function App() {
         return;
       }
     }
+    
+    // Rutas admin
+    if (hash === '/admin-secret') {
+      setCurrentPage('admin-login');
+      return;
+    }
+    
+    if (hash === '/admin-dashboard') {
+      setCurrentPage('admin-dashboard');
+      return;
+    }
+    
+    if (hash === '/compatibility-analysis') {
+      setCurrentPage('compatibility-analysis');
+      return;
+    }
+    
+    if (hash === '/personality-compatibility-analysis') {
+      setCurrentPage('personality-compatibility-analysis');
+      return;
+    }
+    
     // Default: home
     setCurrentPage('home');
   };
@@ -159,6 +185,8 @@ export default function App() {
     navigateToHome('#cuestionarios');
   }, [navigateToHome]);
 
+
+
   // Scroll effect optimizado con debounce
   useEffect(() => {
     if (currentPage !== 'home' || !returnToSection) return;
@@ -183,18 +211,68 @@ export default function App() {
   ), []);
 
   // Render de páginas de cuestionarios
-  if (currentPage === 'questionnaire-pareja' || currentPage === 'questionnaire-personalidad') {
+  if (currentPage === 'questionnaire-pareja') {
     return (
       <div className="min-h-screen bg-white">
         <Suspense fallback={LoadingFallback}>
-          <QuestionairePage 
-            type={questionnaireType}
-            onBack={navigateToHomeFromQuestionnaire}
-          />
+          <QuestionnairePage type="pareja" />
         </Suspense>
       </div>
     );
   }
+  
+  if (currentPage === 'questionnaire-personalidad') {
+    return (
+      <div className="min-h-screen bg-white">
+        <Suspense fallback={LoadingFallback}>
+          <PersonalityQuestionnairePage />
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Render de páginas admin
+  if (currentPage === 'admin-login') {
+    return (
+      <div className="min-h-screen bg-transparent">
+        <Suspense fallback={LoadingFallback}>
+          <AdminLogin />
+        </Suspense>
+      </div>
+    );
+  }
+
+  if (currentPage === 'admin-dashboard') {
+    return (
+      <div className="min-h-screen bg-transparent">
+        <Suspense fallback={LoadingFallback}>
+          <AdminDashboard />
+        </Suspense>
+      </div>
+    );
+  }
+
+  if (currentPage === 'compatibility-analysis') {
+    return (
+      <div className="min-h-screen bg-transparent">
+        <Suspense fallback={LoadingFallback}>
+          <CompatibilityAnalysisPage />
+        </Suspense>
+      </div>
+    );
+  }
+
+  if (currentPage === 'personality-compatibility-analysis') {
+    return (
+      <div className="min-h-screen bg-transparent">
+        <Suspense fallback={LoadingFallback}>
+          <PersonalityCompatibilityAnalysisPage />
+        </Suspense>
+      </div>
+    );
+  }
+
+
 
   // Home page optimizada
   return (

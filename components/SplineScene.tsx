@@ -2,14 +2,14 @@ import { Suspense, lazy, useState, useEffect, useCallback } from 'react';
 
 // Dynamic import de Spline con mejor error handling
 const Spline = lazy(() => {
-  console.log('📦 Loading Spline module...');
+  // console.log('📦 Loading Spline module...');
   return import('@splinetool/react-spline')
     .then(module => {
-      console.log('✅ Spline module loaded successfully');
+      // console.log('✅ Spline module loaded successfully');
       return { default: module.default };
     })
     .catch(error => {
-      console.error('❌ Failed to load Spline module:', error);
+      // console.error('❌ Failed to load Spline module:', error);
       // Return a simple div that shows error
       return { 
         default: () => (
@@ -23,7 +23,7 @@ const Spline = lazy(() => {
 
 // Loading component simple
 function SplineLoader() {
-  console.log('🔄 SplineLoader rendering');
+  // console.log('🔄 SplineLoader rendering');
   
   return (
     <div className="absolute inset-0 bg-transparent">
@@ -36,7 +36,7 @@ function SplineLoader() {
 
 // Error fallback simple
 function SplineErrorFallback() {
-  console.log('💥 SplineErrorFallback rendering');
+  // console.log('💥 SplineErrorFallback rendering');
   
   return (
     <div className="absolute inset-0 bg-gradient-to-br from-blue-50/10 via-transparent to-blue-100/5">
@@ -48,7 +48,7 @@ function SplineErrorFallback() {
 }
 
 export default function SplineScene() {
-  console.log('🎬 SplineScene component rendering');
+  // console.log('🎬 SplineScene component rendering');
   
   // TODOS LOS HOOKS PRIMERO
   const [hasError, setHasError] = useState(false);
@@ -58,19 +58,19 @@ export default function SplineScene() {
 
   // Callbacks optimizados
   const handleLoad = useCallback(() => {
-    console.log('🎉 Spline scene loaded successfully!');
+    // console.log('🎉 Spline scene loaded successfully!');
     setIsLoading(false);
     setHasError(false);
   }, []);
 
   const handleError = useCallback((error: any) => {
-    console.error('⚠️ Spline scene error:', error);
+    // console.error('⚠️ Spline scene error:', error);
     setLoadAttempts(prev => {
       const newAttempts = prev + 1;
-      console.log(`🔄 Load attempt ${newAttempts}`);
+      // console.log(`🔄 Load attempt ${newAttempts}`);
       
       if (newAttempts >= 2) {
-        console.log('❌ Too many failures, showing error fallback');
+        // console.log('❌ Too many failures, showing error fallback');
         setHasError(true);
       }
       setIsLoading(false);
@@ -80,31 +80,31 @@ export default function SplineScene() {
 
   // Effect para marcar como mounted
   useEffect(() => {
-    console.log('⚡ SplineScene mounted');
+    // console.log('⚡ SplineScene mounted');
     setMounted(true);
   }, []);
 
   // Debug del estado
-  console.log('🔍 SplineScene state:', {
-    mounted,
-    hasError,
-    isLoading,
-    loadAttempts
-  });
+  // console.log('🔍 SplineScene state:', {
+  //   mounted,
+  //   hasError,
+  //   isLoading,
+  //   loadAttempts
+  // });
 
   // Early returns después de hooks
   if (!mounted) {
-    console.log('❌ SplineScene not mounted yet');
+    // console.log('❌ SplineScene not mounted yet');
     return null;
   }
 
   // Mostrar fallback si hay muchos errores
   if (hasError && loadAttempts >= 2) {
-    console.log('💥 Showing error fallback');
+    // console.log('💥 Showing error fallback');
     return <SplineErrorFallback />;
   }
 
-  console.log('✅ Rendering Spline component');
+  // console.log('✅ Rendering Spline component');
 
   return (
     <div className="absolute inset-0 w-full h-full bg-transparent">

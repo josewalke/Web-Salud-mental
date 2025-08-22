@@ -1,31 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Spline from '@splinetool/react-spline';
 
 export default function SplineBackground() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleLoad = () => {
-    console.log('Spline cargado exitosamente');
+    // console.log('Spline cargado exitosamente');
     setIsLoaded(true);
   };
 
   const handleError = (error: any) => {
-    console.error('Error cargando Spline:', error);
+    // console.error('Error cargando Spline:', error);
     setError('Error cargando el fondo 3D');
   };
 
-  // Preload del Spline para mejor rendimiento
+  // Cargar Spline solo cuando sea visible y necesario
   useEffect(() => {
-    const preloadSpline = () => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'script';
-      link.href = 'https://prod.spline.design/Qi1xNMPOy3Jd6AVi/scene.splinecode';
-      document.head.appendChild(link);
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoad(true);
+            observer.disconnect(); // Solo cargar una vez
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-    preloadSpline();
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   if (error) {
@@ -33,19 +43,20 @@ export default function SplineBackground() {
   }
 
   return (
-    <div className="spline-container">
-      <Spline 
-        scene="https://prod.spline.design/Qi1xNMPOy3Jd6AVi/scene.splinecode"
-        style={{
-          width: '100%',
-          height: '100%',
-          opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 0.5s ease-in-out'
-        }}
-        onLoad={handleLoad}
-        onError={handleError}
-
-      />
+    <div ref={containerRef} className="spline-container">
+      {shouldLoad && (
+        <Spline 
+          scene="https://prod.spline.design/Qi1xNMPOy3Jd6AVi/scene.splinecode"
+          style={{
+            width: '100%',
+            height: '100%',
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out'
+          }}
+          onLoad={handleLoad}
+          onError={handleError}
+        />
+      )}
     </div>
   );
 }
