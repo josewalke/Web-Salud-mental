@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
 import { Progress } from '../../components/ui/progress';
+import { buildApiUrl } from '../config/api';
 import { 
   Heart, 
   Users, 
@@ -73,8 +74,8 @@ const CompatibilityAnalysisPage: React.FC = () => {
       }
 
       // Intentar cargar desde la API (misma URL que AdminDashboard)
-              // console.log('🌐 Haciendo llamada a API...');
-      const response = await fetch('http://localhost:3001/api/admin/questionnaires', {
+      // console.log('🌐 Haciendo llamada a API...');
+      const response = await fetch(buildApiUrl('/api/admin/questionnaires'), {
         headers: {
           'Authorization': `Bearer ${adminToken}`,
           'Content-Type': 'application/json'
