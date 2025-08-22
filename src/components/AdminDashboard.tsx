@@ -556,22 +556,23 @@ const AdminDashboard: React.FC = () => {
                     answer = answerData;
                   } else if (typeof answerData === 'object') {
                     // Intentar múltiples propiedades en orden
-                    if (answerData.answer) {
-                      answer = String(answerData.answer);
-                    } else if (answerData.value) {
-                      answer = String(answerData.value);
-                    } else if (answerData.response) {
-                      answer = String(answerData.response);
-                    } else if (answerData.text) {
-                      answer = String(answerData.text);
+                    const data = answerData as any;
+                    if (data.answer) {
+                      answer = String(data.answer);
+                    } else if (data.value) {
+                      answer = String(data.value);
+                    } else if (data.response) {
+                      answer = String(data.response);
+                    } else if (data.text) {
+                      answer = String(data.text);
                     } else {
                       // Tomar el primer valor que no sea nulo
-                      const values = Object.values(answerData);
+                      const values = Object.values(data);
                       const firstValidValue = values.find(v => v !== null && v !== undefined);
                       if (firstValidValue) {
                         answer = String(firstValidValue);
                       } else {
-                        answer = JSON.stringify(answerData);
+                        answer = JSON.stringify(data);
                       }
                     }
                   } else {
@@ -592,14 +593,24 @@ const AdminDashboard: React.FC = () => {
                           </div>
                           <div className="text-gray-700 bg-gray-50 p-3 rounded border-l-4 border-blue-400">
                             <strong>Respuesta:</strong> {(() => {
-                              const data = answerData as any;
-                              // Manejar estructura anidada: answerData.answer.answer
-                              if (data.answer && typeof data.answer === 'object' && data.answer.answer) {
-                                return String(data.answer.answer);
+                              // 🔍 DEBUG: Log para ver qué viene
+                              console.log(`🔍 Respuesta para pregunta ${questionIndex}:`, answerData);
+                              
+                              // ✅ Ahora que el backend está corregido, las respuestas vienen directamente como strings
+                              if (typeof answerData === 'string') {
+                                return answerData;
                               }
-                              // Fallback a propiedades directas
-                              const result = data.answer || data.value || data.response || data.text;
-                              return typeof result === 'string' ? result : (result ? String(result) : 'Sin respuesta');
+                              
+                              // Fallback para casos especiales
+                              if (answerData && typeof answerData === 'object') {
+                                // Si es un objeto, buscar la propiedad más probable
+                                const data = answerData as any;
+                                const result = data.answer || data.value || data.response || data.text;
+                                return typeof result === 'string' ? result : 'Respuesta no válida';
+                              }
+                              
+                              // Convertir a string si es otro tipo
+                              return answerData ? String(answerData) : 'Sin respuesta';
                             })()}
                           </div>
 
