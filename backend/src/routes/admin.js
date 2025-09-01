@@ -411,6 +411,16 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
           personalInfo = {};
         }
         
+        // 🔧 GARANTIZAR CAMPOS COMPLETOS EN PERSONAL_INFO
+        personalInfo = {
+          nombre: personalInfo.nombre || 'Usuario',
+          apellidos: personalInfo.apellidos || 'Desconocido',
+          edad: personalInfo.edad || 'N/A',
+          genero: personalInfo.genero || 'N/A',
+          correo: personalInfo.correo || 'N/A',
+          orientacionSexual: personalInfo.orientacionSexual || 'N/A'
+        };
+        
         // Procesar answers
         if (q.answers) {
           if (typeof q.answers === 'string') {
@@ -421,6 +431,11 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
             answers = {};
           }
         } else {
+          answers = {};
+        }
+        
+        // 🔧 GARANTIZAR QUE ANSWERS NO TENGA ERROR
+        if (answers.error === 'Error parseando respuestas') {
           answers = {};
         }
         
