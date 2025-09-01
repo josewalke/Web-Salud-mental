@@ -10,6 +10,7 @@ import {
   ArrowLeft, 
   Star,
   TrendingUp,
+  TrendingDown,
   Search,
   Filter,
   Camera,
