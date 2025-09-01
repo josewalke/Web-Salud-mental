@@ -1,208 +1,40 @@
-# ===================================
-# FRONTEND (React + Vite + TypeScript)
-# ===================================
+# Ignorar carpetas de repositorios independientes
+frontend/
+backend/
 
-# Dependencies
-node_modules/
-/.pnp
-.pnp.js
-
-# Production build
-/dist/
-/build/
-dist-ssr/
-
-# Development
-.vite/
-.cache/
-.parcel-cache/
-
-# Environment variables
-.env
-.env.local
-.env.development
-.env.development.local
-.env.test
-.env.test.local
-.env.production
-.env.production.local
-
-# ===================================
-# LOGS & DEBUGGING
-# ===================================
-
-# Runtime logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Debug
-debug.log
-*.debug
-
-# ===================================
-# EDITORS & IDEs
-# ===================================
-
-# VSCode
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-
-# JetBrains IDEs
-.idea/
-*.iml
-*.ipr
-*.iws
-
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
-
-# Vim
-*.swp
-*.swo
-*~
-
-# Emacs
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-*.elc
-
-# ===================================
-# OPERATING SYSTEM
-# ===================================
-
-# macOS
+# Archivos del sistema
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Icon?
-
-# Windows
 Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
-Desktop.ini
-$RECYCLE.BIN/
 
-# Linux
-*~
-.fuse_hidden*
-.directory
-.Trash-*
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# ===================================
-# TEMPORARY & CACHE FILES
-# ===================================
+# Variables de entorno
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# General temp files
+# Archivos temporales
 *.tmp
 *.temp
+*~
+
+# IDE
+.vscode/
+.idea/
 *.swp
 *.swo
-*.bak
-*.orig
 
-# npm/yarn cache
-.npm/
-.yarn-integrity
-.yarn/cache/
-.yarn/install-state.gz
-
-# ESLint cache
-.eslintcache
-
-# Prettier cache
-.prettiercache
-
-# TypeScript cache
-*.tsbuildinfo
-
-# ===================================
-# TESTING & COVERAGE
-# ===================================
-
-# Coverage reports
-coverage/
-*.lcov
-.nyc_output/
-
-# Jest
-jest.config.js.snap
-
-# ===================================
-# DEPLOYMENT & CI/CD
-# ===================================
-
-# Netlify
-.netlify/
-
-# Vercel
-.vercel/
-
-# Local deployment files
-deploy/
-deployment/
-
-# ===================================
-# MISCELLANEOUS
-# ===================================
-
-# Local environment files
-.local
-*.local
-
-# Storybook
-.storybook/build/
-
-# Lock files (uncomment if you want to ignore them)
-# package-lock.json
-# yarn.lock
-# pnpm-lock.yaml
-
-# Sitemap & robots (if auto-generated)
-# sitemap.xml
-# robots.txt
-
-# ===================================
-# PROJECT SPECIFIC
-# ===================================
-
-# Spline cache (if any)
-.spline-cache/
-
-# Custom uploads (if any)
-uploads/
-public/uploads/
-
-# User generated content
-user-content/
-
-# Analytics & tracking files
-analytics/
-tracking/
-
-# Backup files
-backup/
+# Archivos de backup
 *.backup
-
-# API keys and secrets (additional layer)
-secrets/
-keys/
-*.key
-*.pem
-*.p12
-*.pfx
+*.bak
