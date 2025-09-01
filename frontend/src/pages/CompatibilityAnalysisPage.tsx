@@ -15,10 +15,13 @@ import {
   Camera,
   AlertTriangle,
   Crown,
-  GitCompare
+  GitCompare,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { CompatibilityAnalysisService, CompatibilityResult } from '../services/compatibilityAnalysis';
 import ResponseComparisonModal from '../components/ResponseComparisonModal';
+import { getQuestions } from '../config/questionnaireQuestions';
 
 interface PersonalInfo {
   nombre: string;
@@ -63,6 +66,7 @@ const CompatibilityAnalysisPage: React.FC = () => {
     person1: null,
     compatibilityPercentage: 0
   });
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     loadQuestionnaires();
@@ -199,6 +203,22 @@ const CompatibilityAnalysisPage: React.FC = () => {
   const formatDate = (dateString: string) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('es-ES');
+  };
+
+  const toggleCardExpansion = (personId: number) => {
+    setExpandedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(personId)) {
+        newSet.delete(personId);
+      } else {
+        newSet.add(personId);
+      }
+      return newSet;
+    });
+  };
+
+  const isCardExpanded = (personId: number) => {
+    return expandedCards.has(personId);
   };
 
   if (loading) {
@@ -584,37 +604,72 @@ const CompatibilityAnalysisPage: React.FC = () => {
                             </div>
                           )}
 
-                          {/* Botones de acción */}
-                          <div className="mt-4 flex gap-2">
+                          {/* Botón para expandir/contraer respuestas */}
+                          <div className="mt-4">
                             <Button 
                               variant="outline" 
                               size="sm"
-                              onClick={() => {
-                                const answers = Object.entries(match.person.answers || {});
-                                if (answers.length > 0) {
-                                  alert(`Respuestas de ${match.person.personalInfo?.nombre || 'Usuario'}:\n\n${answers.map(([key, value]) => `${key}: ${value}`).join('\n')}`);
-                                } else {
-                                  alert('No hay respuestas disponibles para este usuario.');
-                                }
-                              }}
+                              onClick={() => toggleCardExpansion(match.person.id)}
+                              className="w-full flex items-center justify-between"
                             >
-                              📋 Ver Respuestas
+                              <span>📋 Ver Respuestas del Cuestionario</span>
+                              {isCardExpanded(match.person.id) ? (
+                                <ChevronUp className="h-4 w-4" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4" />
+                              )}
                             </Button>
                             
-                            <Button 
-                              variant="default" 
-                              size="sm"
-                              onClick={() => {
-                                setComparisonModal({
-                                  isOpen: true,
-                                  person1: selectedPerson,
-                                  compatibilityPercentage: match.compatibility.compatibilityPercentage
-                                });
-                              }}
-                            >
-                              <GitCompare className="h-4 w-4 mr-2" />
-                              Comparar Respuestas
-                            </Button>
+                            {/* Dropdown expandible con respuestas */}
+                            {isCardExpanded(match.person.id) && (
+                              <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
+                                <h4 className="font-medium text-gray-800 mb-3 flex items-center gap-2">
+                                  <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                    {(match.person.personalInfo?.nombre || 'U').charAt(0)}
+                                  </div>
+                                  Respuestas de {match.person.personalInfo?.nombre || 'Usuario'}
+                                </h4>
+                                
+                                <div className="space-y-3 max-h-64 overflow-y-auto">
+                                  {getQuestions('pareja').map((question, index) => {
+                                    const answer = match.person.answers[index.toString()] || 'Sin respuesta';
+                                    return (
+                                      <div key={question.id} className="flex gap-3 p-2 bg-white rounded border">
+                                        <div className="flex-shrink-0 w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-gray-600">
+                                          {question.id + 1}
+                                        </div>
+                                        <div className="flex-1">
+                                          <div className="text-sm font-medium text-gray-700 mb-1">
+                                            {question.text}
+                                          </div>
+                                          <Badge variant="outline" className="text-xs">
+                                            {answer}
+                                          </Badge>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                                
+                                <div className="mt-3 pt-3 border-t">
+                                  <Button 
+                                    variant="default" 
+                                    size="sm"
+                                    onClick={() => {
+                                      setComparisonModal({
+                                        isOpen: true,
+                                        person1: selectedPerson,
+                                        compatibilityPercentage: match.compatibility.compatibilityPercentage
+                                      });
+                                    }}
+                                    className="w-full"
+                                  >
+                                    <GitCompare className="h-4 w-4 mr-2" />
+                                    Comparar con {selectedPerson?.personalInfo?.nombre || 'Usuario'}
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </CardContent>
