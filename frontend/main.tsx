@@ -9,7 +9,7 @@ console.log(`
 👨‍💻 Desarrollado por: José Juan Pérez González
 🔗 LinkedIn: https://www.linkedin.com/in/jose-juan-perez-gonzalez/
 💼 GitHub: https://github.com/josewalke
-📧 Contacto: josejuanperezgonzalez@ejemplo.com
+📧 Contacto: joseperezglz01@gmail.com
 
 ¡Gracias por visitar mi proyecto! 🎉
 `);

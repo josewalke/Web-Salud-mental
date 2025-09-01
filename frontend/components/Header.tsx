@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Shield, X, Menu } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -8,7 +9,7 @@ export default function Header() {
     const onScroll = () => setIsScrolled((window.scrollY || window.pageYOffset) > 10);
     
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // ← sincroniza el estado al montar (por si entras ya scrolleado)
+    onScroll();
     
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -25,9 +26,6 @@ export default function Header() {
     window.location.hash = '#/admin-secret';
   };
 
-  // Debug: mostrar el estado actual en el header
-      // console.log('Header render - isScrolled:', isScrolled);
-
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -40,8 +38,6 @@ export default function Header() {
         borderBottom: isScrolled ? '1px solid #e5e7eb' : 'none'
       }}
     >
-
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
@@ -92,13 +88,6 @@ export default function Header() {
             >
               <Shield className="w-5 h-5" />
             </button>
-
-            {/* Marca de agua del desarrollador */}
-            <a
-              className="text-gray-400 hover:text-blue-600 transition-colors duration-300 opacity-60 hover:opacity-100 flex items-center"
-            >
-            </a>
-
           </nav>
 
           {/* Mobile Menu Button */}
@@ -144,15 +133,6 @@ export default function Header() {
               >
                 Contacto
               </button>
-              
-              {/* Marca de agua del desarrollador en móvil */}
-              <div className="border-t border-gray-200 pt-4 mt-4">
-                <a
-                  className="text-gray-500 hover:text-blue-600 transition-colors flex items-center text-sm"
-                >
-                </a>
-              </div>
-
             </nav>
           </div>
         )}
