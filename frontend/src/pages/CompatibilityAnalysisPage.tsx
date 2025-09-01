@@ -620,31 +620,83 @@ const CompatibilityAnalysisPage: React.FC = () => {
                               )}
                             </Button>
                             
-                            {/* Dropdown expandible con respuestas */}
+                            {/* Dropdown expandible con comparación de respuestas */}
                             {isCardExpanded(match.person.id) && (
                               <div className="mt-3 p-4 bg-gray-50 rounded-lg border">
                                 <h4 className="font-medium text-gray-800 mb-3 flex items-center gap-2">
-                                  <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
-                                    {(match.person.personalInfo?.nombre || 'U').charAt(0)}
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                      {(selectedPerson?.personalInfo?.nombre || 'U').charAt(0)}
+                                    </div>
+                                    <span>VS</span>
+                                    <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                      {(match.person.personalInfo?.nombre || 'U').charAt(0)}
+                                    </div>
                                   </div>
-                                  Respuestas de {match.person.personalInfo?.nombre || 'Usuario'}
+                                  Comparación de Respuestas
                                 </h4>
                                 
-                                <div className="space-y-3 max-h-64 overflow-y-auto">
+                                <div className="space-y-3 max-h-80 overflow-y-auto">
                                   {getQuestions('pareja').map((question, index) => {
-                                    const answer = match.person.answers[index.toString()] || 'Sin respuesta';
+                                    const answer1 = selectedPerson?.answers[index.toString()] || 'Sin respuesta';
+                                    const answer2 = match.person.answers[index.toString()] || 'Sin respuesta';
+                                    const isCompatible = answer1 === answer2;
+                                    
                                     return (
-                                      <div key={question.id} className="flex gap-3 p-2 bg-white rounded border">
-                                        <div className="flex-shrink-0 w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-gray-600">
-                                          {question.id + 1}
-                                        </div>
-                                        <div className="flex-1">
-                                          <div className="text-sm font-medium text-gray-700 mb-1">
-                                            {question.text}
+                                      <div key={question.id} className={`p-3 bg-white rounded border-2 ${isCompatible ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+                                        <div className="flex gap-3 mb-2">
+                                          <div className="flex-shrink-0 w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-gray-600">
+                                            {question.id + 1}
                                           </div>
-                                          <Badge variant="outline" className="text-xs">
-                                            {answer}
-                                          </Badge>
+                                          <div className="flex-1">
+                                            <div className="text-sm font-medium text-gray-700">
+                                              {question.text}
+                                            </div>
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                          <div className="space-y-1">
+                                            <div className="flex items-center gap-2">
+                                              <div className="w-5 h-5 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                                {(selectedPerson?.personalInfo?.nombre || 'U').charAt(0)}
+                                              </div>
+                                              <span className="text-xs font-medium text-gray-600">
+                                                {selectedPerson?.personalInfo?.nombre || 'Usuario'}
+                                              </span>
+                                            </div>
+                                            <Badge variant="outline" className="text-xs">
+                                              {answer1}
+                                            </Badge>
+                                          </div>
+                                          
+                                          <div className="space-y-1">
+                                            <div className="flex items-center gap-2">
+                                              <div className="w-5 h-5 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                                                {(match.person.personalInfo?.nombre || 'U').charAt(0)}
+                                              </div>
+                                              <span className="text-xs font-medium text-gray-600">
+                                                {match.person.personalInfo?.nombre || 'Usuario'}
+                                              </span>
+                                            </div>
+                                            <Badge variant="outline" className="text-xs">
+                                              {answer2}
+                                            </Badge>
+                                          </div>
+                                        </div>
+                                        
+                                        <div className="mt-2 flex items-center gap-2">
+                                          {isCompatible ? (
+                                            <>
+                                              <TrendingUp className="h-3 w-3 text-green-500" />
+                                              <span className="text-xs text-green-600">Respuestas idénticas</span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <TrendingDown className="h-3 w-3 text-red-500" />
+                                              <span className="text-xs text-red-600">Respuestas diferentes</span>
+                                            </>
+                                          )}
                                         </div>
                                       </div>
                                     );
@@ -652,21 +704,9 @@ const CompatibilityAnalysisPage: React.FC = () => {
                                 </div>
                                 
                                 <div className="mt-3 pt-3 border-t">
-                                  <Button 
-                                    variant="default" 
-                                    size="sm"
-                                    onClick={() => {
-                                      setComparisonModal({
-                                        isOpen: true,
-                                        person1: selectedPerson,
-                                        compatibilityPercentage: match.compatibility.compatibilityPercentage
-                                      });
-                                    }}
-                                    className="w-full"
-                                  >
-                                    <GitCompare className="h-4 w-4 mr-2" />
-                                    Comparar con {selectedPerson?.personalInfo?.nombre || 'Usuario'}
-                                  </Button>
+                                  <div className="text-center text-sm text-gray-600 mb-2">
+                                    Compatibilidad: <span className="font-bold text-lg">{match.compatibility.compatibilityPercentage}%</span>
+                                  </div>
                                 </div>
                               </div>
                             )}
