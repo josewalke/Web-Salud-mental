@@ -127,6 +127,204 @@ router.get('/profile', authenticateToken, requireAdmin, async (req, res) => {
 });
 
 // ========================================
+// ENDPOINT TEMPORAL PARA FORZAR CORRECCIÓN DE DATOS
+// ========================================
+router.get('/questionnaires-fixed', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    console.log('🔧 EJECUTANDO CORRECCIÓN FORZADA DE DATOS...');
+    
+    const database = require('../config/database');
+    
+    // Obtener todos los cuestionarios
+    const result = await database.query(`
+      SELECT id, personal_info, answers, type, created_at
+      FROM questionnaires
+      ORDER BY created_at DESC
+    `);
+
+    console.log(`📊 Encontrados ${result.rows.length} cuestionarios`);
+
+    let fixedCount = 0;
+
+    for (const row of result.rows) {
+      console.log(`\n🔍 Procesando cuestionario ID ${row.id}:`);
+
+      let needsUpdate = false;
+      let newPersonalInfo = {};
+      let newAnswers = {};
+
+      // Procesar personal_info
+      try {
+        if (row.personal_info && typeof row.personal_info === 'string') {
+          newPersonalInfo = JSON.parse(row.personal_info);
+        } else if (row.personal_info && typeof row.personal_info === 'object') {
+          newPersonalInfo = row.personal_info;
+        } else {
+          newPersonalInfo = {};
+        }
+      } catch (e) {
+        console.log(`   ❌ Error parseando personal_info: ${e.message}`);
+        newPersonalInfo = {};
+        needsUpdate = true;
+      }
+
+      // Verificar si personalInfo tiene todos los campos necesarios
+      const requiredFields = ['nombre', 'apellidos', 'edad', 'genero', 'correo', 'orientacionSexual'];
+      for (const field of requiredFields) {
+        if (!newPersonalInfo[field] || newPersonalInfo[field] === '') {
+          console.log(`   ⚠️ Campo faltante: ${field}`);
+          newPersonalInfo[field] = field === 'nombre' ? 'Usuario' : 
+                                  field === 'apellidos' ? 'Desconocido' : 'N/A';
+          needsUpdate = true;
+        }
+      }
+
+      // Procesar answers
+      try {
+        if (row.answers && typeof row.answers === 'string') {
+          newAnswers = JSON.parse(row.answers);
+        } else if (row.answers && typeof row.answers === 'object') {
+          newAnswers = row.answers;
+        } else {
+          newAnswers = {};
+        }
+        
+        // Verificar si answers tiene error
+        if (newAnswers.error === 'Error parseando respuestas') {
+          console.log(`   ⚠️ answers tiene error, estableciendo respuestas vacías`);
+          newAnswers = {};
+          needsUpdate = true;
+        }
+      } catch (e) {
+        console.log(`   ❌ Error parseando answers: ${e.message}`);
+        newAnswers = {};
+        needsUpdate = true;
+      }
+
+      // Actualizar si es necesario
+      if (needsUpdate) {
+        console.log(`   🔄 Actualizando cuestionario ID ${row.id}...`);
+        
+        await database.query(`
+          UPDATE questionnaires 
+          SET 
+            personal_info = $1,
+            answers = $2,
+            updated_at = NOW()
+          WHERE id = $3
+        `, [
+          JSON.stringify(newPersonalInfo),
+          JSON.stringify(newAnswers),
+          row.id
+        ]);
+        
+        console.log(`   ✅ Cuestionario ID ${row.id} actualizado`);
+        fixedCount++;
+      }
+    }
+
+    console.log(`\n🎉 Corrección completada! ${fixedCount} cuestionarios corregidos`);
+
+    // Ahora obtener los cuestionarios corregidos
+    const correctedResult = await database.query(`
+      SELECT 
+        q.id,
+        q.type,
+        q.personal_info as personal_info,
+        q.answers as answers,
+        q.status,
+        q.created_at,
+        u.email as user_email,
+        u.name as user_name
+      FROM questionnaires q
+      LEFT JOIN users u ON q.user_id = u.id
+      ORDER BY q.created_at DESC
+    `);
+    
+    const questionnaires = correctedResult.rows || [];
+    
+    // Procesar cada cuestionario con la nueva lógica
+    const processedQuestionnaires = questionnaires.map(q => {
+      let personalInfo = {};
+      let answers = {};
+      
+      // Procesar personal_info
+      if (q.personal_info) {
+        if (typeof q.personal_info === 'string') {
+          try {
+            personalInfo = JSON.parse(q.personal_info);
+          } catch (e) {
+            personalInfo = { nombre: 'Usuario', apellidos: 'Desconocido', edad: 'N/A', genero: 'N/A', correo: 'N/A', orientacionSexual: 'N/A' };
+          }
+        } else if (typeof q.personal_info === 'object') {
+          personalInfo = q.personal_info;
+        } else {
+          personalInfo = { nombre: 'Usuario', apellidos: 'Desconocido', edad: 'N/A', genero: 'N/A', correo: 'N/A', orientacionSexual: 'N/A' };
+        }
+      } else {
+        personalInfo = { nombre: 'Usuario', apellidos: 'Desconocido', edad: 'N/A', genero: 'N/A', correo: 'N/A', orientacionSexual: 'N/A' };
+      }
+      
+      // Procesar answers
+      if (q.answers) {
+        if (typeof q.answers === 'string') {
+          try {
+            answers = JSON.parse(q.answers);
+          } catch (e) {
+            answers = {};
+          }
+        } else if (typeof q.answers === 'object') {
+          answers = q.answers;
+        } else {
+          answers = {};
+        }
+      } else {
+        answers = {};
+      }
+      
+      return {
+        id: q.id,
+        type: q.type,
+        status: q.status,
+        personalInfo: personalInfo,
+        answers: answers,
+        userEmail: q.user_email,
+        userName: q.user_name,
+        createdAt: q.created_at
+      };
+    });
+    
+    // Separar por tipo
+    const parejaQuestionnaires = processedQuestionnaires.filter(q => q.type === 'pareja');
+    const personalidadQuestionnaires = processedQuestionnaires.filter(q => q.type === 'personalidad');
+    
+    const response = {
+      success: true,
+      total: questionnaires.length,
+      fixedCount: fixedCount,
+      pareja: {
+        count: parejaQuestionnaires.length,
+        questionnaires: parejaQuestionnaires
+      },
+      personalidad: {
+        count: personalidadQuestionnaires.length,
+        questionnaires: personalidadQuestionnaires
+      }
+    };
+    
+    res.json(response);
+    
+  } catch (error) {
+    console.error('❌ Error en endpoint temporal:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+// ========================================
 // OBTENER TODOS LOS CUESTIONARIOS (SIN FILTRO DE USUARIO)
 // ========================================
 router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) => {
