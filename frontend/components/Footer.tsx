@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, Mail, Phone } from 'lucide-react';
+import { Heart, Mail, Phone, Code, Linkedin } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -69,6 +69,19 @@ export default function Footer() {
         <div className="border-t border-blue-500 mt-8 pt-8 text-center">
           <p className="text-blue-100">
             © 2024 Love on the Brain. Todos los derechos reservados.
+          </p>
+          <p className="text-blue-200 text-sm mt-2 flex items-center justify-center">
+            <Code className="w-4 h-4 mr-1" />
+            Desarrollado con ❤️ por{' '}
+            <a 
+              href="https://www.linkedin.com/in/jose-juan-perez-gonzalez/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors underline ml-1 flex items-center"
+            >
+              <Linkedin className="w-4 h-4 mr-1" />
+              José Juan Pérez González
+            </a>
           </p>
         </div>
       </div>
