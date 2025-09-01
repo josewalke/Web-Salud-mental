@@ -6,7 +6,7 @@
   command = "npm run build"
   
   # Directorio de publicación (donde se genera el build)
-  publish = "frontend/dist"
+  publish = "dist"
 
 [build.environment]
   # Versión de Node.js
