@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://loveonthebrain.com/sitemap.xml
+Sitemap: https://loveonthebrain.es/sitemap.xml
 
 # Crawl-delay para ser respetuoso con el servidor
 Crawl-delay: 1

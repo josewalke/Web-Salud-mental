@@ -49,6 +49,12 @@ const CompatibilityAnalysisPage = lazy(() => import('./src/pages/CompatibilityAn
 /** Página de análisis de compatibilidad de personalidad */
 const PersonalityCompatibilityAnalysisPage = lazy(() => import('./src/pages/PersonalityCompatibilityAnalysisPage'));
 
+/** Página del blog */
+const BlogPage = lazy(() => import('./src/pages/BlogPage'));
+
+/** Página individual de artículo del blog */
+const BlogPostPage = lazy(() => import('./src/pages/BlogPostPage'));
+
 /** Sección de preguntas frecuentes */
 const FAQSection = lazy(() => import('./components/FAQSection'));
 
@@ -64,7 +70,7 @@ const SplineBackground = lazy(() => import('./components/SplineBackground'));
 // ===== TIPOS DE LA APLICACIÓN =====
 
 /** Tipos de páginas disponibles en la aplicación */
-type Page = 'home' | 'questionnaire-pareja' | 'questionnaire-personalidad' | 'admin-login' | 'admin-dashboard' | 'compatibility-analysis' | 'personality-compatibility-analysis';
+type Page = 'home' | 'questionnaire-pareja' | 'questionnaire-personalidad' | 'admin-login' | 'admin-dashboard' | 'compatibility-analysis' | 'personality-compatibility-analysis' | 'blog' | 'blog-post';
 
 /** Tipos de cuestionarios disponibles */
 type QuestionnaireType = 'pareja' | 'personalidad';
@@ -141,6 +147,17 @@ export default function App() {
     
     if (hash === '/personality-compatibility-analysis') {
       setCurrentPage('personality-compatibility-analysis');
+      return;
+    }
+    
+    // Rutas del blog
+    if (hash === '/blog') {
+      setCurrentPage('blog');
+      return;
+    }
+    
+    if (hash.startsWith('/blog/')) {
+      setCurrentPage('blog-post');
       return;
     }
     
@@ -370,6 +387,27 @@ export default function App() {
       <div className="min-h-screen bg-transparent">
         <Suspense fallback={LoadingFallback}>
           <PersonalityCompatibilityAnalysisPage />
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Render de páginas del blog
+  if (currentPage === 'blog') {
+    return (
+      <div className="min-h-screen bg-white">
+        <Suspense fallback={LoadingFallback}>
+          <BlogPage />
+        </Suspense>
+      </div>
+    );
+  }
+
+  if (currentPage === 'blog-post') {
+    return (
+      <div className="min-h-screen bg-white">
+        <Suspense fallback={LoadingFallback}>
+          <BlogPostPage />
         </Suspense>
       </div>
     );

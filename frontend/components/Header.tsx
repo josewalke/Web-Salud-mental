@@ -79,6 +79,12 @@ export default function Header() {
             >
               Contacto
             </button>
+            <button
+              onClick={() => window.location.hash = '#/blog'}
+              className="text-gray-700 hover:text-blue-600 transition-colors duration-300"
+            >
+              Blog
+            </button>
             
             {/* Botón Admin discreto en escritorio */}
             <button
@@ -132,6 +138,12 @@ export default function Header() {
                 className="text-left text-gray-700 hover:text-blue-600 transition-colors py-2"
               >
                 Contacto
+              </button>
+              <button
+                onClick={() => window.location.hash = '#/blog'}
+                className="text-left text-gray-700 hover:text-blue-600 transition-colors py-2"
+              >
+                Blog
               </button>
             </nav>
           </div>
