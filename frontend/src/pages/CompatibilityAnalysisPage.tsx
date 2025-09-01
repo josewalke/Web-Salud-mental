@@ -553,44 +553,25 @@ const CompatibilityAnalysisPage: React.FC = () => {
                                   className="h-3"
                                 />
                               </div>
-                              <div className="flex flex-col gap-2">
-                                <Badge 
-                                  variant={match.compatibility.canShowPhotos ? "default" : "destructive"}
-                                  className="text-xs"
-                                >
-                                  {match.compatibility.canShowPhotos ? (
-                                    <>
-                                      <Camera className="h-3 w-3 mr-1" />
-                                      Puede ver fotos
-                                    </>
-                                  ) : (
-                                    <>
-                                      <AlertTriangle className="h-3 w-3 mr-1" />
-                                      No puede ver fotos
-                                    </>
-                                  )}
-                                </Badge>
-                                {match.compatibility.shouldStopAnalysis && (
+                              {match.compatibility.shouldStopAnalysis && (
+                                <div className="flex flex-col gap-2">
                                   <Badge variant="destructive" className="text-xs">
                                     ⚠️ Requiere atención
                                   </Badge>
-                                )}
-                              </div>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
 
                         {/* Detalles adicionales */}
                         <div className="mt-4 pt-4 border-t border-gray-200">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                             <div>
                               <strong>Email:</strong> {match.person.personalInfo?.correo || 'N/A'}
                             </div>
                             <div>
                               <strong>Puntuación:</strong> {match.compatibility.totalScore}/{match.compatibility.maxScore} puntos
-                            </div>
-                            <div>
-                              <strong>Completado:</strong> {formatDate(match.person.completedAt)}
                             </div>
                           </div>
                           
