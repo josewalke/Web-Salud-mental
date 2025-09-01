@@ -132,9 +132,13 @@ router.get('/profile', authenticateToken, requireAdmin, async (req, res) => {
 router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) => {
   try {
     console.log('📊 OBTENIENDO TODOS LOS CUESTIONARIOS (ADMIN)');
+    console.log('🔍 DEBUG: Headers recibidos:', req.headers);
+    console.log('🔍 DEBUG: User ID del token:', req.user?.userId);
+    console.log('🔍 DEBUG: User role del token:', req.user?.userRole);
     
     // Usar la base de datos configurada (PostgreSQL en producción)
     const database = require('../config/database');
+    console.log('🔍 DEBUG: Base de datos configurada:', database ? 'OK' : 'ERROR');
     
     // Obtener TODOS los cuestionarios sin filtrar por usuario
     const query = `
@@ -152,10 +156,17 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
       ORDER BY q.created_at DESC
     `;
     
+    console.log('🔍 DEBUG: Ejecutando consulta SQL...');
     const result = await database.query(query);
     const questionnaires = result.rows || [];
     
     console.log(`📊 Total de cuestionarios encontrados: ${questionnaires.length}`);
+    console.log(`🔍 DEBUG: Resultado de la consulta:`, {
+      rowCount: result.rowCount,
+      rowsLength: questionnaires.length,
+      hasRows: questionnaires.length > 0
+    });
+    console.log(`🔍 DEBUG: Primer cuestionario raw:`, questionnaires[0]);
     
     // Procesar cada cuestionario
     const processedQuestionnaires = questionnaires.map(q => {
@@ -164,9 +175,13 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
       
       // 🔍 DEBUG: Log detallado de lo que viene de la BD
       console.log(`🔍 DEBUG Cuestionario ID ${q.id}:`);
+      console.log(`   - personal_info (raw):`, q.personal_info);
+      console.log(`   - personal_info type:`, typeof q.personal_info);
       console.log(`   - answers (raw):`, q.answers);
       console.log(`   - answers type:`, typeof q.answers);
       console.log(`   - answers length:`, q.answers ? q.answers.length : 'N/A');
+      console.log(`   - user_email:`, q.user_email);
+      console.log(`   - user_name:`, q.user_name);
       
       try {
         personalInfo = JSON.parse(q.personal_info || '{}');
@@ -175,8 +190,13 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
         // 🔍 DEBUG: Log después del parse
         console.log(`   ✅ Parse exitoso:`);
         console.log(`      - personalInfo:`, personalInfo);
+        console.log(`      - personalInfo.nombre:`, personalInfo.nombre);
+        console.log(`      - personalInfo.apellidos:`, personalInfo.apellidos);
+        console.log(`      - personalInfo.edad:`, personalInfo.edad);
+        console.log(`      - personalInfo.correo:`, personalInfo.correo);
         console.log(`      - answers:`, answers);
         console.log(`      - answers keys:`, Object.keys(answers));
+        console.log(`      - answers count:`, Object.keys(answers).length);
         
       } catch (e) {
         console.warn('⚠️ Error parseando JSON para ID', q.id, ':', e.message);
@@ -205,6 +225,12 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
     const parejaQuestionnaires = processedQuestionnaires.filter(q => q.type === 'pareja');
     const personalidadQuestionnaires = processedQuestionnaires.filter(q => q.type === 'personalidad');
     
+    console.log(`📊 Procesamiento completado:`);
+    console.log(`   - Total procesados: ${processedQuestionnaires.length}`);
+    console.log(`   - Pareja: ${parejaQuestionnaires.length}`);
+    console.log(`   - Personalidad: ${personalidadQuestionnaires.length}`);
+    console.log(`🔍 DEBUG: Primer cuestionario procesado:`, processedQuestionnaires[0]);
+    
     const response = {
       success: true,
       total: questionnaires.length,
@@ -217,6 +243,13 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
         questionnaires: personalidadQuestionnaires
       }
     };
+    
+    console.log(`📤 Enviando respuesta al frontend:`, {
+      success: response.success,
+      total: response.total,
+      pareja_count: response.pareja.count,
+      personalidad_count: response.personalidad.count
+    });
     
     console.log('✅ Cuestionarios obtenidos exitosamente:', {
       total: response.total,
@@ -675,6 +708,126 @@ router.get('/contact-stats', authenticateToken, requireAdmin, async (req, res) =
 });
 
 /**
+ * POST /api/admin/fix-corrupted-data
+ * Corregir datos corruptos en la base de datos
+ */
+router.post('/fix-corrupted-data', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    console.log('🔧 EJECUTANDO CORRECCIÓN DE DATOS CORRUPTOS');
+    
+    const database = require('../config/database');
+    
+    // Obtener todos los cuestionarios
+    const result = await database.query(`
+      SELECT id, personal_info, answers, type, created_at
+      FROM questionnaires
+      ORDER BY created_at DESC
+    `);
+
+    console.log(`📊 Encontrados ${result.rows.length} cuestionarios`);
+
+    let fixedCount = 0;
+
+    for (const row of result.rows) {
+      console.log(`\n🔍 Procesando cuestionario ID ${row.id}:`);
+      console.log(`   - Tipo: ${row.type}`);
+      console.log(`   - personal_info (raw): ${row.personal_info}`);
+      console.log(`   - answers (raw): ${row.answers}`);
+
+      let needsUpdate = false;
+      let newPersonalInfo = {};
+      let newAnswers = {};
+
+      // Procesar personal_info
+      try {
+        newPersonalInfo = JSON.parse(row.personal_info || '{}');
+        console.log(`   ✅ personal_info parseado correctamente`);
+      } catch (e) {
+        console.log(`   ❌ Error parseando personal_info: ${e.message}`);
+        newPersonalInfo = {
+          nombre: 'Usuario',
+          apellidos: 'Desconocido',
+          edad: 'N/A',
+          genero: 'N/A',
+          correo: 'N/A',
+          orientacionSexual: 'N/A'
+        };
+        needsUpdate = true;
+      }
+
+      // Verificar si personalInfo tiene todos los campos necesarios
+      const requiredFields = ['nombre', 'apellidos', 'edad', 'genero', 'correo', 'orientacionSexual'];
+      for (const field of requiredFields) {
+        if (!newPersonalInfo[field] || newPersonalInfo[field] === '') {
+          console.log(`   ⚠️ Campo faltante: ${field}`);
+          newPersonalInfo[field] = field === 'nombre' ? 'Usuario' : 
+                                  field === 'apellidos' ? 'Desconocido' : 'N/A';
+          needsUpdate = true;
+        }
+      }
+
+      // Procesar answers
+      try {
+        newAnswers = JSON.parse(row.answers || '{}');
+        console.log(`   ✅ answers parseado correctamente`);
+        
+        // Verificar si answers tiene error
+        if (newAnswers.error === 'Error parseando respuestas') {
+          console.log(`   ⚠️ answers tiene error, estableciendo respuestas vacías`);
+          newAnswers = {};
+          needsUpdate = true;
+        }
+      } catch (e) {
+        console.log(`   ❌ Error parseando answers: ${e.message}`);
+        newAnswers = {};
+        needsUpdate = true;
+      }
+
+      // Actualizar si es necesario
+      if (needsUpdate) {
+        console.log(`   🔄 Actualizando cuestionario ID ${row.id}...`);
+        
+        await database.query(`
+          UPDATE questionnaires 
+          SET 
+            personal_info = $1,
+            answers = $2,
+            updated_at = NOW()
+          WHERE id = $3
+        `, [
+          JSON.stringify(newPersonalInfo),
+          JSON.stringify(newAnswers),
+          row.id
+        ]);
+        
+        console.log(`   ✅ Cuestionario ID ${row.id} actualizado`);
+        fixedCount++;
+      } else {
+        console.log(`   ✅ Cuestionario ID ${row.id} no necesita actualización`);
+      }
+    }
+
+    console.log(`\n🎉 Corrección completada! ${fixedCount} cuestionarios corregidos`);
+
+    res.json({
+      success: true,
+      message: `Corrección de datos completada exitosamente`,
+      totalQuestionnaires: result.rows.length,
+      fixedCount: fixedCount,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('❌ Error durante la corrección de datos:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor durante la corrección',
+      error: error.message
+    });
+  }
+});
+
+/**
  * POST /api/admin/migrate-contact-table
  * Crear tabla contact_messages si no existe (migración temporal)
  */
@@ -716,14 +869,111 @@ router.post('/migrate-contact-table', authenticateToken, requireAdmin, async (re
     if (result.rows.length > 0) {
       console.log('✅ Tabla contact_messages creada exitosamente');
       
+      // 🔧 CORRECCIÓN DE DATOS CORRUPTOS
+      console.log('🔧 EJECUTANDO CORRECCIÓN DE DATOS CORRUPTOS...');
+      
+      // Obtener todos los cuestionarios
+      const questionnairesResult = await pool.query(`
+        SELECT id, personal_info, answers, type, created_at
+        FROM questionnaires
+        ORDER BY created_at DESC
+      `);
+
+      console.log(`📊 Encontrados ${questionnairesResult.rows.length} cuestionarios`);
+
+      let fixedCount = 0;
+
+      for (const row of questionnairesResult.rows) {
+        console.log(`\n🔍 Procesando cuestionario ID ${row.id}:`);
+        console.log(`   - Tipo: ${row.type}`);
+        console.log(`   - personal_info (raw): ${row.personal_info}`);
+        console.log(`   - answers (raw): ${row.answers}`);
+
+        let needsUpdate = false;
+        let newPersonalInfo = {};
+        let newAnswers = {};
+
+        // Procesar personal_info
+        try {
+          newPersonalInfo = JSON.parse(row.personal_info || '{}');
+          console.log(`   ✅ personal_info parseado correctamente`);
+        } catch (e) {
+          console.log(`   ❌ Error parseando personal_info: ${e.message}`);
+          newPersonalInfo = {
+            nombre: 'Usuario',
+            apellidos: 'Desconocido',
+            edad: 'N/A',
+            genero: 'N/A',
+            correo: 'N/A',
+            orientacionSexual: 'N/A'
+          };
+          needsUpdate = true;
+        }
+
+        // Verificar si personalInfo tiene todos los campos necesarios
+        const requiredFields = ['nombre', 'apellidos', 'edad', 'genero', 'correo', 'orientacionSexual'];
+        for (const field of requiredFields) {
+          if (!newPersonalInfo[field] || newPersonalInfo[field] === '') {
+            console.log(`   ⚠️ Campo faltante: ${field}`);
+            newPersonalInfo[field] = field === 'nombre' ? 'Usuario' : 
+                                    field === 'apellidos' ? 'Desconocido' : 'N/A';
+            needsUpdate = true;
+          }
+        }
+
+        // Procesar answers
+        try {
+          newAnswers = JSON.parse(row.answers || '{}');
+          console.log(`   ✅ answers parseado correctamente`);
+          
+          // Verificar si answers tiene error
+          if (newAnswers.error === 'Error parseando respuestas') {
+            console.log(`   ⚠️ answers tiene error, estableciendo respuestas vacías`);
+            newAnswers = {};
+            needsUpdate = true;
+          }
+        } catch (e) {
+          console.log(`   ❌ Error parseando answers: ${e.message}`);
+          newAnswers = {};
+          needsUpdate = true;
+        }
+
+        // Actualizar si es necesario
+        if (needsUpdate) {
+          console.log(`   🔄 Actualizando cuestionario ID ${row.id}...`);
+          
+          await pool.query(`
+            UPDATE questionnaires 
+            SET 
+              personal_info = $1,
+              answers = $2,
+              updated_at = NOW()
+            WHERE id = $3
+          `, [
+            JSON.stringify(newPersonalInfo),
+            JSON.stringify(newAnswers),
+            row.id
+          ]);
+          
+          console.log(`   ✅ Cuestionario ID ${row.id} actualizado`);
+          fixedCount++;
+        } else {
+          console.log(`   ✅ Cuestionario ID ${row.id} no necesita actualización`);
+        }
+      }
+
+      console.log(`\n🎉 Corrección completada! ${fixedCount} cuestionarios corregidos`);
+      
       // Mostrar estadísticas
       const countResult = await pool.query('SELECT COUNT(*) FROM contact_messages');
       
       res.json({
         success: true,
-        message: 'Migración de tabla contact_messages completada exitosamente',
+        message: 'Migración de tabla contact_messages y corrección de datos completada exitosamente',
         data: {
           tableCreated: true,
+          questionnairesFixed: fixedCount,
+          totalQuestionnaires: questionnairesResult.rows.length,
           messageCount: parseInt(countResult.rows[0].count)
         }
       });
