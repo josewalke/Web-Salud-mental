@@ -331,6 +331,7 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
   try {
     console.log(`\n🚀 ===== INICIO ENDPOINT /api/admin/questionnaires =====`);
     console.log(`⏰ Timestamp: ${new Date().toISOString()}`);
+    console.log(`🔄 Versión del código: 2025-09-01-v2.1 (CON CAMPOS COMPLETOS)`);
     console.log(`📊 OBTENIENDO TODOS LOS CUESTIONARIOS (ADMIN)`);
     console.log(`🔍 DEBUG: Headers recibidos:`, req.headers);
     console.log(`🔍 DEBUG: User ID del token:`, req.user?.userId);
@@ -412,6 +413,7 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
         }
         
         // 🔧 GARANTIZAR CAMPOS COMPLETOS EN PERSONAL_INFO
+        console.log(`   🔧 ANTES de garantizar campos - personalInfo:`, JSON.stringify(personalInfo, null, 2));
         personalInfo = {
           nombre: personalInfo.nombre || 'Usuario',
           apellidos: personalInfo.apellidos || 'Desconocido',
@@ -420,6 +422,7 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
           correo: personalInfo.correo || 'N/A',
           orientacionSexual: personalInfo.orientacionSexual || 'N/A'
         };
+        console.log(`   ✅ DESPUÉS de garantizar campos - personalInfo:`, JSON.stringify(personalInfo, null, 2));
         
         // Procesar answers
         if (q.answers) {
@@ -708,6 +711,36 @@ router.get('/debug/questionnaires-raw', authenticateToken, requireAdmin, async (
     
   } catch (error) {
     console.error('❌ Error obteniendo datos RAW:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+// ========================================
+// ENDPOINT DE PRUEBA - VERIFICAR VERSIÓN
+// ========================================
+router.get('/debug/version', async (req, res) => {
+  try {
+    console.log('🔍 VERIFICANDO VERSIÓN DEL SERVIDOR...');
+    
+    res.json({
+      success: true,
+      message: 'Servidor actualizado correctamente',
+      version: '2025-09-01-v2.1',
+      timestamp: new Date().toISOString(),
+      features: [
+        'Campos completos en personalInfo',
+        'Limpieza de errores en answers',
+        'Logs detallados',
+        'Procesamiento robusto de datos'
+      ]
+    });
+    
+  } catch (error) {
+    console.error('❌ Error en endpoint de versión:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor',
