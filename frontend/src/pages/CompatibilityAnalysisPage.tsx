@@ -56,7 +56,6 @@ const CompatibilityAnalysisPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [showOnlyPhotosAllowed, setShowOnlyPhotosAllowed] = useState(false);
   const [minCompatibility, setMinCompatibility] = useState(0);
   const [comparisonModal, setComparisonModal] = useState<{
     isOpen: boolean;
@@ -177,12 +176,10 @@ const CompatibilityAnalysisPage: React.FC = () => {
         `${match.person.personalInfo.nombre} ${match.person.personalInfo.apellidos}`
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
-
-      const matchesPhotos = !showOnlyPhotosAllowed || match.compatibility.canShowPhotos;
       
       const matchesMinCompatibility = match.compatibility.compatibilityPercentage >= minCompatibility;
 
-      return matchesSearch && matchesPhotos && matchesMinCompatibility;
+      return matchesSearch && matchesMinCompatibility;
     });
   };
 
@@ -444,19 +441,7 @@ const CompatibilityAnalysisPage: React.FC = () => {
                         </select>
                       </div>
 
-                      <div className="flex items-end">
-                        <label className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            checked={showOnlyPhotosAllowed}
-                            onChange={(e) => setShowOnlyPhotosAllowed(e.target.checked)}
-                            className="rounded border-gray-300 text-pink-600 focus:ring-pink-500"
-                          />
-                          <span className="text-sm font-medium text-gray-700">
-                            📸 Solo pueden ver fotos (60%+)
-                          </span>
-                        </label>
-                      </div>
+
 
                       <div className="text-right">
                         <div className="text-sm text-gray-600">
