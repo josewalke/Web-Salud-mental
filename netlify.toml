@@ -3,7 +3,7 @@
   base = "frontend"
   
   # Comando de construcción
-  command = "npm run build"
+  command = "npm install && npm run build"
   
   # Directorio de publicación (donde se genera el build)
   publish = "dist"
