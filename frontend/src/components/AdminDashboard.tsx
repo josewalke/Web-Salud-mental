@@ -101,6 +101,14 @@ const AdminDashboard: React.FC = () => {
 
       const data = await response.json();
       
+      // 🔍 LOGS ANTES DEL PROCESAMIENTO
+      console.log('🔍 FRONTEND: Datos RAW del backend (ANTES de procesar):', data);
+      if (data.pareja?.questionnaires?.[0]) {
+        console.log('🔍 FRONTEND: Primer cuestionario RAW:', data.pareja.questionnaires[0]);
+        console.log('🔍 FRONTEND: personalInfo RAW:', data.pareja.questionnaires[0].personalInfo);
+        console.log('🔍 FRONTEND: answers RAW:', data.pareja.questionnaires[0].answers);
+      }
+      
       // 🔧 PROCESAR DATOS PARA MEJORAR LA EXPERIENCIA
       if (data.pareja?.questionnaires) {
         data.pareja.questionnaires = data.pareja.questionnaires.map((q: any) => ({
@@ -128,6 +136,13 @@ const AdminDashboard: React.FC = () => {
             orientacionSexual: q.personalInfo?.orientacionSexual || 'N/A'
           }
         }));
+      }
+      
+      // 🔍 LOGS DESPUÉS DEL PROCESAMIENTO
+      console.log('🔍 FRONTEND: Datos DESPUÉS de procesar:', data);
+      if (data.pareja?.questionnaires?.[0]) {
+        console.log('🔍 FRONTEND: Primer cuestionario PROCESADO:', data.pareja.questionnaires[0]);
+        console.log('🔍 FRONTEND: personalInfo PROCESADO:', data.pareja.questionnaires[0].personalInfo);
       }
       
       setDashboardData(data);
