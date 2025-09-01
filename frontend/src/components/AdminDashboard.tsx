@@ -100,6 +100,36 @@ const AdminDashboard: React.FC = () => {
       }
 
       const data = await response.json();
+      
+      // 🔧 PROCESAR DATOS PARA MEJORAR LA EXPERIENCIA
+      if (data.pareja?.questionnaires) {
+        data.pareja.questionnaires = data.pareja.questionnaires.map((q: any) => ({
+          ...q,
+          personalInfo: {
+            nombre: q.personalInfo?.nombre || 'Usuario',
+            apellidos: q.personalInfo?.apellidos || 'Desconocido',
+            edad: q.personalInfo?.edad || 'N/A',
+            genero: q.personalInfo?.genero || 'N/A',
+            correo: q.personalInfo?.correo || 'N/A',
+            orientacionSexual: q.personalInfo?.orientacionSexual || 'N/A'
+          }
+        }));
+      }
+      
+      if (data.personalidad?.questionnaires) {
+        data.personalidad.questionnaires = data.personalidad.questionnaires.map((q: any) => ({
+          ...q,
+          personalInfo: {
+            nombre: q.personalInfo?.nombre || 'Usuario',
+            apellidos: q.personalInfo?.apellidos || 'Desconocido',
+            edad: q.personalInfo?.edad || 'N/A',
+            genero: q.personalInfo?.genero || 'N/A',
+            correo: q.personalInfo?.correo || 'N/A',
+            orientacionSexual: q.personalInfo?.orientacionSexual || 'N/A'
+          }
+        }));
+      }
+      
       setDashboardData(data);
       
       // 🔍 LOGS DETALLADOS PARA DEBUGGING FRONTEND
