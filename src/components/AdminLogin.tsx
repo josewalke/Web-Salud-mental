@@ -4,8 +4,8 @@ import { Eye, EyeOff, Shield, User, Lock } from 'lucide-react';
 import { buildApiUrl } from '../config/api';
 
 const AdminLogin: React.FC = () => {
-  const [email, setEmail] = useState('admin@saludmental.com');
-  const [password, setPassword] = useState('Admin123!');
+  const [email, setEmail] = useState('admin@websaludmental.com');
+  const [password, setPassword] = useState('admin123');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);

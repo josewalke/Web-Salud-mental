@@ -80,6 +80,17 @@ export default function ContactSection() {
           subject: '',
           message: ''
         });
+      } else if (response.status === 404) {
+        // Si el endpoint no existe, mostrar mensaje alternativo
+        toast.info('El formulario de contacto está temporalmente en mantenimiento. Por favor, contáctanos directamente por email: elcerebrotambienseacaricia@gmail.com');
+        
+        // Limpiar formulario
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
       } else {
         const errorData = await response.json();
         toast.error(`Error: ${errorData.message || 'Hubo un error al enviar el mensaje'}`);

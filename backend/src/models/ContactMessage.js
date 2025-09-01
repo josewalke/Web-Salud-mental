@@ -143,3 +143,4 @@ class ContactMessage {
 }
 
 module.exports = ContactMessage;
+

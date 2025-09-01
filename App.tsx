@@ -32,7 +32,16 @@ export default function App() {
 
   // Router mínimo basado en hash para persistir ruta tras recargar
   const applyRouteFromHash = () => {
-    const hash = window.location.hash.replace(/^#/, ''); // ej: /cuestionario/pareja
+    // Manejar tanto hash routing como pathname routing
+    let hash = window.location.hash.replace(/^#/, '');
+    
+    // Si no hay hash pero hay pathname, convertir pathname a hash
+    if (!hash && window.location.pathname !== '/') {
+      hash = window.location.pathname;
+      // Actualizar la URL para usar hash routing
+      window.location.replace(`#${hash}`);
+      return;
+    }
     if (hash.startsWith('/cuestionario/')) {
       const type = hash.split('/')[2] as QuestionnaireType | undefined;
       if (type === 'pareja' || type === 'personalidad') {
