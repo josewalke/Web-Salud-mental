@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Shield, Linkedin } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -96,11 +95,8 @@ export default function Header() {
 
             {/* Marca de agua del desarrollador */}
             <a
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-600 transition-colors duration-300 opacity-60 hover:opacity-100 flex items-center"
             >
-              <Linkedin className="w-4 h-4 mr-1" />
             </a>
 
           </nav>
@@ -152,11 +148,8 @@ export default function Header() {
               {/* Marca de agua del desarrollador en móvil */}
               <div className="border-t border-gray-200 pt-4 mt-4">
                 <a
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-gray-500 hover:text-blue-600 transition-colors flex items-center text-sm"
                 >
-                  <Linkedin className="w-4 h-4 mr-2" />
                 </a>
               </div>
 
