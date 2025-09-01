@@ -329,10 +329,14 @@ router.get('/questionnaires-fixed', authenticateToken, requireAdmin, async (req,
 // ========================================
 router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) => {
   try {
-    console.log('📊 OBTENIENDO TODOS LOS CUESTIONARIOS (ADMIN)');
-    console.log('🔍 DEBUG: Headers recibidos:', req.headers);
-    console.log('🔍 DEBUG: User ID del token:', req.user?.userId);
-    console.log('🔍 DEBUG: User role del token:', req.user?.userRole);
+    console.log(`\n🚀 ===== INICIO ENDPOINT /api/admin/questionnaires =====`);
+    console.log(`⏰ Timestamp: ${new Date().toISOString()}`);
+    console.log(`📊 OBTENIENDO TODOS LOS CUESTIONARIOS (ADMIN)`);
+    console.log(`🔍 DEBUG: Headers recibidos:`, req.headers);
+    console.log(`🔍 DEBUG: User ID del token:`, req.user?.userId);
+    console.log(`🔍 DEBUG: User role del token:`, req.user?.userRole);
+    console.log(`🔍 DEBUG: IP del cliente:`, req.ip || req.connection.remoteAddress);
+    console.log(`🔍 DEBUG: User-Agent:`, req.get('User-Agent'));
     
     // Usar la base de datos configurada (PostgreSQL en producción)
     const database = require('../config/database');
@@ -372,14 +376,25 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
       let answers = {};
       
       // 🔍 DEBUG: Log detallado de lo que viene de la BD
-      console.log(`🔍 DEBUG Cuestionario ID ${q.id}:`);
+      console.log(`\n🔍 ===== DEBUG CUESTIONARIO ID ${q.id} =====`);
+      console.log(`📋 Tipo: ${q.type}`);
+      console.log(`📅 Creado: ${q.created_at}`);
+      console.log(`👤 Usuario: ${q.user_name} (${q.user_email})`);
+      console.log(`📊 Status: ${q.status}`);
+      console.log(`\n🔍 DATOS RAW DE LA BASE DE DATOS:`);
       console.log(`   - personal_info (raw):`, q.personal_info);
       console.log(`   - personal_info type:`, typeof q.personal_info);
+      console.log(`   - personal_info length:`, q.personal_info ? q.personal_info.length : 'N/A');
       console.log(`   - answers (raw):`, q.answers);
       console.log(`   - answers type:`, typeof q.answers);
       console.log(`   - answers length:`, q.answers ? q.answers.length : 'N/A');
-      console.log(`   - user_email:`, q.user_email);
-      console.log(`   - user_name:`, q.user_name);
+      console.log(`\n🔍 CONTENIDO DETALLADO:`);
+      if (q.personal_info) {
+        console.log(`   📝 personal_info content:`, JSON.stringify(q.personal_info, null, 2));
+      }
+      if (q.answers) {
+        console.log(`   📝 answers content:`, JSON.stringify(q.answers, null, 2));
+      }
       
       // 🔧 LÓGICA DE PARSING MEJORADA
       try {
@@ -410,15 +425,17 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
         }
         
         // 🔍 DEBUG: Log después del parse
-        console.log(`   ✅ Parse exitoso:`);
-        console.log(`      - personalInfo:`, personalInfo);
-        console.log(`      - personalInfo.nombre:`, personalInfo.nombre);
-        console.log(`      - personalInfo.apellidos:`, personalInfo.apellidos);
-        console.log(`      - personalInfo.edad:`, personalInfo.edad);
-        console.log(`      - personalInfo.correo:`, personalInfo.correo);
-        console.log(`      - answers:`, answers);
-        console.log(`      - answers keys:`, Object.keys(answers));
-        console.log(`      - answers count:`, Object.keys(answers).length);
+        console.log(`\n✅ PARSE EXITOSO PARA ID ${q.id}:`);
+        console.log(`   📋 personalInfo procesado:`, JSON.stringify(personalInfo, null, 2));
+        console.log(`   📋 personalInfo.nombre:`, personalInfo.nombre);
+        console.log(`   📋 personalInfo.apellidos:`, personalInfo.apellidos);
+        console.log(`   📋 personalInfo.edad:`, personalInfo.edad);
+        console.log(`   📋 personalInfo.genero:`, personalInfo.genero);
+        console.log(`   📋 personalInfo.correo:`, personalInfo.correo);
+        console.log(`   📋 personalInfo.orientacionSexual:`, personalInfo.orientacionSexual);
+        console.log(`   📋 answers procesado:`, JSON.stringify(answers, null, 2));
+        console.log(`   📋 answers keys:`, Object.keys(answers));
+        console.log(`   📋 answers count:`, Object.keys(answers).length);
         
       } catch (e) {
         console.warn('⚠️ Error parseando JSON para ID', q.id, ':', e.message);
@@ -440,7 +457,7 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
         answers = {};
       }
       
-      return {
+      const result = {
         id: q.id,
         type: q.type,
         status: q.status,
@@ -450,6 +467,12 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
         userName: q.user_name,
         createdAt: q.created_at
       };
+      
+      console.log(`\n📤 RESULTADO FINAL PARA ID ${q.id}:`);
+      console.log(`   📋 Resultado completo:`, JSON.stringify(result, null, 2));
+      console.log(`🔍 ===== FIN DEBUG CUESTIONARIO ID ${q.id} =====\n`);
+      
+      return result;
     });
     
     // Separar por tipo
@@ -475,18 +498,23 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
       }
     };
     
-    console.log(`📤 Enviando respuesta al frontend:`, {
+    console.log(`\n📤 ===== ENVIANDO RESPUESTA AL FRONTEND =====`);
+    console.log(`📊 Resumen de la respuesta:`, {
       success: response.success,
       total: response.total,
       pareja_count: response.pareja.count,
       personalidad_count: response.personalidad.count
     });
     
-    console.log('✅ Cuestionarios obtenidos exitosamente:', {
+    console.log(`\n📋 RESPUESTA COMPLETA:`);
+    console.log(JSON.stringify(response, null, 2));
+    
+    console.log(`\n✅ Cuestionarios obtenidos exitosamente:`, {
       total: response.total,
       pareja: response.pareja.count,
       personalidad: response.personalidad.count
     });
+    console.log(`📤 ===== FIN ENVÍO RESPUESTA =====\n`);
     
     res.json(response);
     
