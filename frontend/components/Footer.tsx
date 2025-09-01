@@ -72,7 +72,7 @@ export default function Footer() {
           </p>
           <p className="text-blue-200 text-sm mt-2 flex items-center justify-center">
             <Code className="w-4 h-4 mr-1" />
-            Desarrollado con ❤️ por{' '}
+            Desarrollado por{' '}
             <a 
               href="https://www.linkedin.com/in/jose-juan-perez-gonzalez/" 
               target="_blank" 
