@@ -44,8 +44,8 @@ const ResponseComparisonModal: React.FC<ResponseComparisonModalProps> = ({
   const [selectedPersonId, setSelectedPersonId] = useState<string>('');
   const questions = getQuestions('pareja');
   
-  // Filtrar personas disponibles (excluir person1)
-  const availablePersons = allPersons.filter(p => p.id !== person1.id);
+  // Filtrar personas disponibles (excluir person1) - solo si person1 existe
+  const availablePersons = person1 ? allPersons.filter(p => p.id !== person1.id) : [];
   
   // Obtener la persona seleccionada
   const person2 = availablePersons.find(p => p.id.toString() === selectedPersonId);
@@ -132,7 +132,7 @@ const ResponseComparisonModal: React.FC<ResponseComparisonModalProps> = ({
     return "bg-red-50 border-red-200";
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !person1) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
