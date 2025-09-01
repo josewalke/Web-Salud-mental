@@ -57,12 +57,10 @@ const CompatibilityAnalysisPage: React.FC = () => {
   const [comparisonModal, setComparisonModal] = useState<{
     isOpen: boolean;
     person1: Questionnaire | null;
-    person2: Questionnaire | null;
     compatibilityPercentage: number;
   }>({
     isOpen: false,
     person1: null,
-    person2: null,
     compatibilityPercentage: 0
   });
 
@@ -610,7 +608,6 @@ const CompatibilityAnalysisPage: React.FC = () => {
                                 setComparisonModal({
                                   isOpen: true,
                                   person1: selectedPerson,
-                                  person2: match.person,
                                   compatibilityPercentage: match.compatibility.compatibilityPercentage
                                 });
                               }}
@@ -635,7 +632,7 @@ const CompatibilityAnalysisPage: React.FC = () => {
         isOpen={comparisonModal.isOpen}
         onClose={() => setComparisonModal(prev => ({ ...prev, isOpen: false }))}
         person1={comparisonModal.person1!}
-        person2={comparisonModal.person2!}
+        allPersons={questionnaires}
         compatibilityPercentage={comparisonModal.compatibilityPercentage}
       />
     </div>
