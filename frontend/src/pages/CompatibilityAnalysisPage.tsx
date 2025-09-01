@@ -575,16 +575,7 @@ const CompatibilityAnalysisPage: React.FC = () => {
                             </div>
                           </div>
                           
-                          {match.compatibility.recommendations.length > 0 && (
-                            <div className="mt-3">
-                              <strong className="text-sm">Recomendaciones:</strong>
-                              <ul className="text-sm text-gray-600 mt-1">
-                                {match.compatibility.recommendations.slice(0, 2).map((rec, idx) => (
-                                  <li key={idx} className="truncate">• {rec}</li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
+
 
                           {/* Botón para expandir/contraer respuestas */}
                           <div className="mt-4">
