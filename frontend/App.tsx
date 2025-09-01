@@ -55,6 +55,10 @@ const BlogPage = lazy(() => import('./src/pages/BlogPage'));
 /** Página individual de artículo del blog */
 const BlogPostPage = lazy(() => import('./src/pages/BlogPostPage'));
 
+/** Landing pages específicas para SEO */
+const TerapiaOnlinePage = lazy(() => import('./src/pages/TerapiaOnlinePage'));
+const CuestionariosPsicologicosPage = lazy(() => import('./src/pages/CuestionariosPsicologicosPage'));
+
 /** Sección de preguntas frecuentes */
 const FAQSection = lazy(() => import('./components/FAQSection'));
 
@@ -70,7 +74,7 @@ const SplineBackground = lazy(() => import('./components/SplineBackground'));
 // ===== TIPOS DE LA APLICACIÓN =====
 
 /** Tipos de páginas disponibles en la aplicación */
-type Page = 'home' | 'questionnaire-pareja' | 'questionnaire-personalidad' | 'admin-login' | 'admin-dashboard' | 'compatibility-analysis' | 'personality-compatibility-analysis' | 'blog' | 'blog-post';
+type Page = 'home' | 'questionnaire-pareja' | 'questionnaire-personalidad' | 'admin-login' | 'admin-dashboard' | 'compatibility-analysis' | 'personality-compatibility-analysis' | 'blog' | 'blog-post' | 'terapia-online' | 'cuestionarios-psicologicos';
 
 /** Tipos de cuestionarios disponibles */
 type QuestionnaireType = 'pareja' | 'personalidad';
@@ -158,6 +162,17 @@ export default function App() {
     
     if (hash.startsWith('/blog/')) {
       setCurrentPage('blog-post');
+      return;
+    }
+    
+    // Landing pages específicas para SEO
+    if (hash === '/terapia-online') {
+      setCurrentPage('terapia-online');
+      return;
+    }
+    
+    if (hash === '/cuestionarios-psicologicos') {
+      setCurrentPage('cuestionarios-psicologicos');
       return;
     }
     
@@ -408,6 +423,27 @@ export default function App() {
       <div className="min-h-screen bg-white">
         <Suspense fallback={LoadingFallback}>
           <BlogPostPage />
+        </Suspense>
+      </div>
+    );
+  }
+
+  // Render de landing pages específicas para SEO
+  if (currentPage === 'terapia-online') {
+    return (
+      <div className="min-h-screen bg-white">
+        <Suspense fallback={LoadingFallback}>
+          <TerapiaOnlinePage />
+        </Suspense>
+      </div>
+    );
+  }
+
+  if (currentPage === 'cuestionarios-psicologicos') {
+    return (
+      <div className="min-h-screen bg-white">
+        <Suspense fallback={LoadingFallback}>
+          <CuestionariosPsicologicosPage />
         </Suspense>
       </div>
     );
