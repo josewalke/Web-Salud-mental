@@ -183,9 +183,33 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
       console.log(`   - user_email:`, q.user_email);
       console.log(`   - user_name:`, q.user_name);
       
+      // 🔧 LÓGICA DE PARSING MEJORADA
       try {
-        personalInfo = JSON.parse(q.personal_info || '{}');
-        answers = JSON.parse(q.answers || '{}');
+        // Procesar personal_info
+        if (q.personal_info) {
+          if (typeof q.personal_info === 'string') {
+            personalInfo = JSON.parse(q.personal_info);
+          } else if (typeof q.personal_info === 'object') {
+            personalInfo = q.personal_info;
+          } else {
+            personalInfo = {};
+          }
+        } else {
+          personalInfo = {};
+        }
+        
+        // Procesar answers
+        if (q.answers) {
+          if (typeof q.answers === 'string') {
+            answers = JSON.parse(q.answers);
+          } else if (typeof q.answers === 'object') {
+            answers = q.answers;
+          } else {
+            answers = {};
+          }
+        } else {
+          answers = {};
+        }
         
         // 🔍 DEBUG: Log después del parse
         console.log(`   ✅ Parse exitoso:`);
@@ -205,8 +229,17 @@ router.get('/questionnaires', authenticateToken, requireAdmin, async (req, res) 
           answers: q.answers,
           error: e.message
         });
-        personalInfo = { nombre: 'Usuario', apellidos: 'Desconocido' };
-        answers = { error: 'Error parseando respuestas' };
+        
+        // 🔧 FALLBACK MEJORADO
+        personalInfo = { 
+          nombre: 'Usuario', 
+          apellidos: 'Desconocido',
+          edad: 'N/A',
+          genero: 'N/A',
+          correo: 'N/A',
+          orientacionSexual: 'N/A'
+        };
+        answers = {};
       }
       
       return {
