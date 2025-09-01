@@ -80,12 +80,20 @@ const AdminDashboard: React.FC = () => {
         return;
       }
 
-      const response = await fetch(buildApiUrl('/api/admin/questionnaires'), {
+      const url = buildApiUrl('/api/admin/questionnaires');
+      console.log('🔍 DEBUG FRONTEND: URL de la petición:', url);
+      console.log('🔍 DEBUG FRONTEND: Token encontrado:', token ? 'SÍ' : 'NO');
+      console.log('🔍 DEBUG FRONTEND: Token (primeros 20 chars):', token.substring(0, 20) + '...');
+
+      const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
+      
+      console.log('🔍 DEBUG FRONTEND: Response status:', response.status);
+      console.log('🔍 DEBUG FRONTEND: Response ok:', response.ok);
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -93,8 +101,41 @@ const AdminDashboard: React.FC = () => {
 
       const data = await response.json();
       setDashboardData(data);
-      console.log('📊 Datos del dashboard cargados:', data);
-      console.log('🔍 Primer cuestionario de pareja:', data.pareja?.questionnaires?.[0]);
+      
+      // 🔍 LOGS DETALLADOS PARA DEBUGGING FRONTEND
+      console.log('📊 FRONTEND: Datos del dashboard cargados:', data);
+      console.log('🔍 FRONTEND: Estructura de datos:', {
+        success: data.success,
+        total: data.total,
+        pareja_count: data.pareja?.count,
+        personalidad_count: data.personalidad?.count
+      });
+      
+      console.log('🔍 FRONTEND: Primer cuestionario de pareja:', data.pareja?.questionnaires?.[0]);
+      console.log('🔍 FRONTEND: Primer cuestionario de personalidad:', data.personalidad?.questionnaires?.[0]);
+      
+      // Logs detallados de personalInfo
+      if (data.pareja?.questionnaires?.[0]) {
+        const firstPareja = data.pareja.questionnaires[0];
+        console.log('🔍 FRONTEND DEBUG Primer cuestionario pareja:');
+        console.log('   - ID:', firstPareja.id);
+        console.log('   - Type:', firstPareja.type);
+        console.log('   - personalInfo:', firstPareja.personalInfo);
+        console.log('   - personalInfo.nombre:', firstPareja.personalInfo?.nombre);
+        console.log('   - personalInfo.apellidos:', firstPareja.personalInfo?.apellidos);
+        console.log('   - personalInfo.edad:', firstPareja.personalInfo?.edad);
+        console.log('   - personalInfo.correo:', firstPareja.personalInfo?.correo);
+        console.log('   - personalInfo.genero:', firstPareja.personalInfo?.genero);
+        console.log('   - personalInfo.orientacionSexual:', firstPareja.personalInfo?.orientacionSexual);
+        console.log('   - answers:', firstPareja.answers);
+        console.log('   - answers keys:', Object.keys(firstPareja.answers || {}));
+        console.log('   - userEmail:', firstPareja.userEmail);
+        console.log('   - userName:', firstPareja.userName);
+      }
+      
+      // Logs para todos los cuestionarios
+      console.log('🔍 FRONTEND: Todos los cuestionarios de pareja:', data.pareja?.questionnaires);
+      console.log('🔍 FRONTEND: Todos los cuestionarios de personalidad:', data.personalidad?.questionnaires);
       } catch (err) {
         // console.error('❌ Error cargando dashboard:', err);
       setError(err instanceof Error ? err.message : 'Error desconocido');
