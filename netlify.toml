@@ -13,8 +13,8 @@
   NODE_VERSION = "18"
   
   # Variables de entorno para producción
-  VITE_API_BASE_URL = "https://tu-backend-en-render.onrender.com"
-  VITE_BACKEND_URL = "https://tu-backend-en-render.onrender.com"
+  VITE_API_BASE_URL = "https://back-websaludmental-1.onrender.com"
+  VITE_BACKEND_URL = "https://back-websaludmental-1.onrender.com"
   NODE_ENV = "production"
   VITE_NODE_ENV = "production"
   VITE_DEBUG_MODE = "false"
