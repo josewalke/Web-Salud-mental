@@ -221,6 +221,50 @@ const AdminDashboard: React.FC = () => {
     window.location.hash = '#/admin-login';
   };
 
+  // Función para corregir datos corruptos
+  const fixCorruptedData = async () => {
+    if (!confirm('¿Estás seguro de que quieres corregir los datos corruptos? Esta acción actualizará la base de datos.')) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        alert('No hay token de acceso');
+        return;
+      }
+
+      console.log('🔧 FRONTEND: Iniciando corrección de datos corruptos...');
+
+      const response = await fetch(buildApiUrl('/api/admin/fix-corrupted-data'), {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('🔧 FRONTEND: Resultado de la corrección:', result);
+
+      if (result.success) {
+        alert(`✅ Corrección completada exitosamente!\n\nTotal cuestionarios: ${result.totalQuestionnaires}\nCorregidos: ${result.fixedCount}`);
+        // Recargar los datos
+        loadDashboardData();
+      } else {
+        alert(`❌ Error en la corrección: ${result.message}`);
+      }
+
+    } catch (error) {
+      console.error('❌ FRONTEND: Error durante la corrección:', error);
+      alert(`❌ Error durante la corrección: ${error.message}`);
+    }
+  };
+
 
 
   // Función para descargar cuestionario como PDF
@@ -877,6 +921,15 @@ const AdminDashboard: React.FC = () => {
                   <Brain className="h-4 w-4 mr-2" />
                   Análisis de Personalidad
                 </Button>
+
+              <Button 
+                onClick={fixCorruptedData} 
+                variant="outline" 
+                size="sm"
+                className="bg-yellow-50 border-yellow-200 text-yellow-800 hover:bg-yellow-100"
+              >
+                🔧 Corregir Datos
+              </Button>
 
               <Button onClick={handleLogout} variant="destructive" size="sm">
                 <LogOut className="h-4 w-4 mr-2" />
