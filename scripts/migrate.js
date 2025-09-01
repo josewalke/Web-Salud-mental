@@ -142,4 +142,4 @@ if (require.main === module) {
   runMigration();
 }
 
-module.exports = { createTables, testConnection };
+module.exports = { createTables, testConnection, runMigration };

@@ -10,13 +10,13 @@ console.log('🌍 Entorno:', process.env.NODE_ENV || 'development');
 console.log('⏰ Hora:', new Date().toISOString());
 
 // Función para ejecutar migración
-const runMigration = async () => {
+const executeMigration = async () => {
   try {
     console.log('🗄️ Ejecutando migración automática en Render...');
     
     // Importar y ejecutar migración
-    const { createTables } = require('./scripts/migrate.js');
-    await createTables();
+    const { runMigration } = require('./scripts/migrate.js');
+    await runMigration();
     console.log('✅ Migración completada exitosamente en Render');
     return true;
   } catch (error) {
@@ -32,13 +32,19 @@ const main = async () => {
     console.log('🌍 Entorno de producción detectado (Render)');
     
     // Ejecutar migración
-    await runMigration();
+    await executeMigration();
     
     // Iniciar el servidor
     console.log('🚀 Iniciando servidor después de migración...');
     
     // Importar y ejecutar el servidor
-    require('./src/server.js');
+    try {
+      require('./src/server.js');
+      console.log('✅ Servidor iniciado correctamente');
+    } catch (error) {
+      console.error('❌ Error iniciando servidor:', error);
+      throw error;
+    }
     
   } catch (error) {
     console.error('💥 Error durante el inicio:', error);
