@@ -752,7 +752,27 @@ const AdminDashboard: React.FC = () => {
             </AccordionTrigger>
             <AccordionContent className="px-4 pb-4">
               <div className="space-y-3 max-h-80 overflow-y-auto">
-                {Object.entries(questionnaire.answers).map(([questionIndex, answerData]) => {
+                {/* 🔧 MANEJO ESPECIAL PARA ERRORES DE PARSING */}
+                {questionnaire.answers.error === 'Error parseando respuestas' ? (
+                  <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-6 h-6 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center text-sm">
+                        ⚠️
+                      </div>
+                      <div className="font-semibold text-yellow-800">Datos no disponibles</div>
+                    </div>
+                    <div className="text-yellow-700 text-sm">
+                      Las respuestas de este cuestionario no se pudieron procesar correctamente. 
+                      Esto puede deberse a un problema en el formato de los datos almacenados.
+                    </div>
+                    <div className="mt-3 text-xs text-yellow-600">
+                      <strong>ID del cuestionario:</strong> {questionnaire.id} | 
+                      <strong> Tipo:</strong> {questionnaire.type} | 
+                      <strong> Fecha:</strong> {new Date(questionnaire.createdAt).toLocaleDateString()}
+                    </div>
+                  </div>
+                ) : (
+                  Object.entries(questionnaire.answers).map(([questionIndex, answerData]) => {
 
 
                   // Procesamiento directo y más agresivo
@@ -838,7 +858,8 @@ const AdminDashboard: React.FC = () => {
                       </div>
                     </div>
                   );
-                })}
+                })
+                )}
               </div>
             </AccordionContent>
           </AccordionItem>
