@@ -1,3 +1,21 @@
+/**
+ * CompatibilityAnalysisPage.tsx
+ * 
+ * Página principal para el análisis de compatibilidad de parejas.
+ * Permite seleccionar una persona y ver sus matches de compatibilidad
+ * con otras personas que han completado el cuestionario de pareja.
+ * 
+ * Características:
+ * - Selección de persona para análisis
+ * - Cálculo de compatibilidad con otros usuarios
+ * - Visualización de matches con porcentajes
+ * - Comparación lado a lado de respuestas
+ * - Filtros por compatibilidad y género
+ * 
+ * @author Sistema de Salud Mental
+ * @version 1.0.0
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
@@ -24,6 +42,9 @@ import { CompatibilityAnalysisService, CompatibilityResult } from '../services/c
 import ResponseComparisonModal from '../components/ResponseComparisonModal';
 import { getQuestions } from '../config/questionnaireQuestions';
 
+/**
+ * Interfaz que define la información personal de un usuario
+ */
 interface PersonalInfo {
   nombre: string;
   apellidos: string;
@@ -33,6 +54,9 @@ interface PersonalInfo {
   orientacionSexual: string;
 }
 
+/**
+ * Interfaz que define un cuestionario completo
+ */
 interface Questionnaire {
   id: number;
   type: string;
@@ -43,20 +67,49 @@ interface Questionnaire {
   createdAt: string;
 }
 
+/**
+ * Interfaz que define un match de compatibilidad
+ */
 interface CompatibilityMatch {
   person: Questionnaire;
   compatibility: CompatibilityResult;
   matchRank: number;
 }
 
+/**
+ * Componente principal de análisis de compatibilidad
+ * 
+ * @returns JSX.Element - La página de análisis de compatibilidad
+ */
 const CompatibilityAnalysisPage: React.FC = () => {
+  // ===== ESTADOS PRINCIPALES =====
+  
+  /** Lista de todos los cuestionarios de pareja disponibles */
   const [questionnaires, setQuestionnaires] = useState<Questionnaire[]>([]);
+  
+  /** Persona seleccionada para el análisis de compatibilidad */
   const [selectedPerson, setSelectedPerson] = useState<Questionnaire | null>(null);
+  
+  /** Lista de matches de compatibilidad calculados */
   const [compatibilityMatches, setCompatibilityMatches] = useState<CompatibilityMatch[]>([]);
+  
+  /** Estado de carga para mostrar spinner */
   const [loading, setLoading] = useState(true);
+  
+  /** Estado de análisis para mostrar progreso */
   const [analyzing, setAnalyzing] = useState(false);
+
+  // ===== ESTADOS DE FILTROS =====
+  
+  /** Término de búsqueda para filtrar personas */
   const [searchTerm, setSearchTerm] = useState('');
+  
+  /** Compatibilidad mínima para filtrar matches */
   const [minCompatibility, setMinCompatibility] = useState(0);
+
+  // ===== ESTADOS DE MODALES Y UI =====
+  
+  /** Estado del modal de comparación de respuestas */
   const [comparisonModal, setComparisonModal] = useState<{
     isOpen: boolean;
     person1: Questionnaire | null;
@@ -66,19 +119,35 @@ const CompatibilityAnalysisPage: React.FC = () => {
     person1: null,
     compatibilityPercentage: 0
   });
+  
+  /** Set de IDs de tarjetas expandidas para mostrar comparación de respuestas */
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
 
+  // ===== EFECTOS =====
+  
+  /**
+   * Efecto que se ejecuta al montar el componente
+   * Carga los cuestionarios de pareja disponibles
+   */
   useEffect(() => {
     loadQuestionnaires();
   }, []);
 
+  // ===== FUNCIONES DE CARGA DE DATOS =====
+  
+  /**
+   * Carga los cuestionarios de pareja desde el backend
+   * Utiliza el token de administrador para acceder a los datos
+   */
   const loadQuestionnaires = async () => {
     setLoading(true);
+    // DEBUG: Cargando cuestionarios para análisis de compatibilidad
     // console.log('🔄 Cargando cuestionarios...');
     
     try {
       // Verificar si hay token de admin
       const adminToken = localStorage.getItem('adminToken');
+      // DEBUG: Verificar token de administrador
       // console.log('🔑 Token admin:', adminToken ? 'Presente' : 'Ausente');
       
       if (!adminToken) {
@@ -89,6 +158,7 @@ const CompatibilityAnalysisPage: React.FC = () => {
       }
 
       // Intentar cargar desde la API (misma URL que AdminDashboard)
+      // DEBUG: Haciendo llamada a la API del backend
       // console.log('🌐 Haciendo llamada a API...');
       const response = await fetch(buildApiUrl('/api/admin/questionnaires'), {
         headers: {
@@ -97,12 +167,15 @@ const CompatibilityAnalysisPage: React.FC = () => {
         }
       });
       
+      // DEBUG: Estado de la respuesta de la API
       // console.log('📡 Respuesta API:', response.status, response.statusText);
       
       if (response.ok) {
         const data = await response.json();
+        // DEBUG: Datos recibidos del backend
         // console.log('📊 Datos recibidos:', data);
         const parejaQuestionnaires = data.pareja?.questionnaires || [];
+        // DEBUG: Cantidad de cuestionarios de pareja
         // console.log('💕 Cuestionarios de pareja:', parejaQuestionnaires.length);
         setQuestionnaires(parejaQuestionnaires);
       } else {
@@ -115,10 +188,15 @@ const CompatibilityAnalysisPage: React.FC = () => {
       setQuestionnaires([]);
     } finally {
       setLoading(false);
+      // DEBUG: Carga completada exitosamente
       // console.log('✅ Carga completada. Cuestionarios:', questionnaires.length);
     }
   };
 
+  /**
+   * Analiza la compatibilidad de una persona seleccionada con todos los demás usuarios
+   * @param selectedPerson - Persona seleccionada para el análisis
+   */
   const analyzeCompatibilityWithAll = async (selectedPerson: Questionnaire) => {
     setAnalyzing(true);
     setSelectedPerson(selectedPerson);
@@ -170,6 +248,12 @@ const CompatibilityAnalysisPage: React.FC = () => {
     setAnalyzing(false);
   };
 
+  // ===== FUNCIONES DE FILTRADO Y UTILIDAD =====
+  
+  /**
+   * Filtra los matches de compatibilidad según los criterios seleccionados
+   * @returns Array de matches filtrados
+   */
   const getFilteredMatches = () => {
     return compatibilityMatches.filter(match => {
       const matchesSearch = searchTerm === '' || 
@@ -183,6 +267,11 @@ const CompatibilityAnalysisPage: React.FC = () => {
     });
   };
 
+  /**
+   * Obtiene las clases CSS para el color de compatibilidad según el porcentaje
+   * @param percentage - Porcentaje de compatibilidad
+   * @returns String con las clases CSS correspondientes
+   */
   const getCompatibilityColor = (percentage: number) => {
     if (percentage >= 90) return "text-green-600 bg-green-50 border-green-200";
     if (percentage >= 80) return "text-blue-600 bg-blue-50 border-blue-200";
@@ -191,6 +280,11 @@ const CompatibilityAnalysisPage: React.FC = () => {
     return "text-red-600 bg-red-50 border-red-200";
   };
 
+  /**
+   * Obtiene el icono correspondiente al ranking de compatibilidad
+   * @param rank - Posición en el ranking
+   * @returns JSX.Element con el icono correspondiente
+   */
   const getRankIcon = (rank: number) => {
     if (rank === 1) return <Crown className="h-5 w-5 text-yellow-500" />;
     if (rank === 2) return <Star className="h-5 w-5 text-gray-400" />;
@@ -198,11 +292,20 @@ const CompatibilityAnalysisPage: React.FC = () => {
     return <span className="text-gray-500 font-bold">#{rank}</span>;
   };
 
+  /**
+   * Formatea una fecha string a formato legible en español
+   * @param dateString - String de fecha a formatear
+   * @returns String formateado o 'N/A' si no hay fecha
+   */
   const formatDate = (dateString: string) => {
     if (!dateString) return 'N/A';
     return new Date(dateString).toLocaleDateString('es-ES');
   };
 
+  /**
+   * Alterna el estado de expansión de una tarjeta de match
+   * @param personId - ID de la persona para expandir/contraer
+   */
   const toggleCardExpansion = (personId: number) => {
     setExpandedCards(prev => {
       const newSet = new Set(prev);
@@ -215,10 +318,20 @@ const CompatibilityAnalysisPage: React.FC = () => {
     });
   };
 
+  /**
+   * Verifica si una tarjeta está expandida
+   * @param personId - ID de la persona a verificar
+   * @returns Boolean indicando si la tarjeta está expandida
+   */
   const isCardExpanded = (personId: number) => {
     return expandedCards.has(personId);
   };
 
+  // ===== RENDERIZADO CONDICIONAL =====
+  
+  /**
+   * Estado de carga - muestra spinner mientras se cargan los cuestionarios
+   */
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center">
@@ -230,9 +343,15 @@ const CompatibilityAnalysisPage: React.FC = () => {
     );
   }
 
+  // ===== RENDERIZADO PRINCIPAL =====
+  
+  /**
+   * Renderizado principal del componente CompatibilityAnalysisPage
+   * Incluye header, selección de persona, filtros y resultados
+   */
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 p-6">
-      {/* Header */}
+      {/* ===== HEADER DE LA PÁGINA ===== */}
       <div className="max-w-7xl mx-auto mb-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
@@ -692,4 +811,8 @@ const CompatibilityAnalysisPage: React.FC = () => {
   );
 };
 
+/**
+ * Exportación del componente CompatibilityAnalysisPage
+ * Página principal para el análisis de compatibilidad de parejas
+ */
 export default CompatibilityAnalysisPage;

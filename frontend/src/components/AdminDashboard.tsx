@@ -1,14 +1,30 @@
+/**
+ * AdminDashboard.tsx
+ * 
+ * Componente principal del panel de administración que permite gestionar:
+ * - Cuestionarios de pareja y personalidad
+ * - Mensajes de contacto con funcionalidad de filtrado
+ * - Descarga de cuestionarios en PDF
+ * - Gestión de favoritos
+ * 
+ * @author Sistema de Salud Mental
+ * @version 1.0.0
+ */
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
 import { Button } from '../../components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../components/ui/accordion';
-import { Users, FileText, LogOut, Heart, Brain, Download, Trash2, Mail } from 'lucide-react';
+import { Users, FileText, LogOut, Heart, Brain, Download, Trash2, Mail, Search, Filter, X } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { buildApiUrl } from '../config/api';
 
 
+/**
+ * Interfaz que define la estructura de la información personal de un usuario
+ */
 interface PersonalInfo {
   nombre: string;
   apellidos: string;
@@ -18,6 +34,9 @@ interface PersonalInfo {
   orientacionSexual: string;
 }
 
+/**
+ * Interfaz que define la estructura de un cuestionario completo
+ */
 interface Questionnaire {
   id: number;
   type: string;
@@ -29,6 +48,9 @@ interface Questionnaire {
   createdAt: string;
 }
 
+/**
+ * Interfaz que define la estructura de un mensaje de contacto
+ */
 interface ContactMessage {
   id: number;
   nombre: string;
@@ -40,6 +62,9 @@ interface ContactMessage {
   updatedAt: string;
 }
 
+/**
+ * Interfaz que define la estructura de los datos del dashboard
+ */
 interface DashboardData {
   success: boolean;
   total: number;
@@ -53,22 +78,62 @@ interface DashboardData {
   };
 }
 
+/**
+ * Componente principal del panel de administración
+ * 
+ * @returns JSX.Element - El componente del dashboard de administración
+ */
 const AdminDashboard: React.FC = () => {
+  // ===== ESTADOS PRINCIPALES =====
+  
+  /** Datos del dashboard obtenidos del backend */
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  
+  /** Lista de mensajes de contacto */
   const [contactMessages, setContactMessages] = useState<ContactMessage[]>([]);
+  
+  /** Estado de carga para mostrar spinner */
   const [loading, setLoading] = useState(true);
+  
+  /** Mensaje de error si algo falla */
   const [error, setError] = useState<string | null>(null);
+  
+  /** Pestaña activa del dashboard */
   const [activeTab, setActiveTab] = useState('pareja');
 
+  // ===== ESTADOS PARA FILTROS DE CONTACTO =====
   
-  // Estados para favoritos
+  /** Término de búsqueda para filtrar mensajes */
+  const [contactSearchTerm, setContactSearchTerm] = useState('');
+  
+  /** Filtro por estado de los mensajes */
+  const [contactStatusFilter, setContactStatusFilter] = useState<'all' | 'unread' | 'read' | 'replied'>('all');
+  
+  /** Controla si se muestran los filtros de contacto */
+  const [showContactFilters, setShowContactFilters] = useState(false);
+  
+  // ===== ESTADOS PARA FAVORITOS =====
+  
+  /** Set de IDs de cuestionarios marcados como favoritos */
   const [favorites, setFavorites] = useState<Set<number>>(new Set());
 
+  // ===== EFECTOS =====
+  
+  /**
+   * Efecto que se ejecuta al montar el componente
+   * Carga los datos del dashboard y los mensajes de contacto
+   */
   useEffect(() => {
     loadDashboardData();
     loadContactMessages();
   }, []);
 
+  // ===== FUNCIONES DE CARGA DE DATOS =====
+  
+  /**
+   * Carga los datos del dashboard desde el backend
+   * Incluye cuestionarios de pareja y personalidad
+   */
   const loadDashboardData = async () => {
     try {
       setLoading(true);
@@ -81,9 +146,10 @@ const AdminDashboard: React.FC = () => {
       }
 
       const url = buildApiUrl('/api/admin/questionnaires');
-      console.log('🔍 DEBUG FRONTEND: URL de la petición:', url);
-      console.log('🔍 DEBUG FRONTEND: Token encontrado:', token ? 'SÍ' : 'NO');
-      console.log('🔍 DEBUG FRONTEND: Token (primeros 20 chars):', token.substring(0, 20) + '...');
+      // DEBUG: Información de la petición al backend
+      // console.log('🔍 DEBUG FRONTEND: URL de la petición:', url);
+      // console.log('🔍 DEBUG FRONTEND: Token encontrado:', token ? 'SÍ' : 'NO');
+      // console.log('🔍 DEBUG FRONTEND: Token (primeros 20 chars):', token.substring(0, 20) + '...');
 
       const response = await fetch(url, {
         headers: {
@@ -92,8 +158,9 @@ const AdminDashboard: React.FC = () => {
         }
       });
       
-      console.log('🔍 DEBUG FRONTEND: Response status:', response.status);
-      console.log('🔍 DEBUG FRONTEND: Response ok:', response.ok);
+      // DEBUG: Estado de la respuesta del backend
+      // console.log('🔍 DEBUG FRONTEND: Response status:', response.status);
+      // console.log('🔍 DEBUG FRONTEND: Response ok:', response.ok);
 
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -101,13 +168,13 @@ const AdminDashboard: React.FC = () => {
 
       const data = await response.json();
       
-      // 🔍 LOGS ANTES DEL PROCESAMIENTO
-      console.log('🔍 FRONTEND: Datos RAW del backend (ANTES de procesar):', data);
-      if (data.pareja?.questionnaires?.[0]) {
-        console.log('🔍 FRONTEND: Primer cuestionario RAW:', data.pareja.questionnaires[0]);
-        console.log('🔍 FRONTEND: personalInfo RAW:', data.pareja.questionnaires[0].personalInfo);
-        console.log('🔍 FRONTEND: answers RAW:', data.pareja.questionnaires[0].answers);
-      }
+      // DEBUG: Logs antes del procesamiento de datos
+      // console.log('🔍 FRONTEND: Datos RAW del backend (ANTES de procesar):', data);
+      // if (data.pareja?.questionnaires?.[0]) {
+      //   console.log('🔍 FRONTEND: Primer cuestionario RAW:', data.pareja.questionnaires[0]);
+      //   console.log('🔍 FRONTEND: personalInfo RAW:', data.pareja.questionnaires[0].personalInfo);
+      //   console.log('🔍 FRONTEND: answers RAW:', data.pareja.questionnaires[0].answers);
+      // }
       
       // 🔧 PROCESAR DATOS PARA MEJORAR LA EXPERIENCIA
       if (data.pareja?.questionnaires) {
@@ -138,49 +205,49 @@ const AdminDashboard: React.FC = () => {
         }));
       }
       
-      // 🔍 LOGS DESPUÉS DEL PROCESAMIENTO
-      console.log('🔍 FRONTEND: Datos DESPUÉS de procesar:', data);
-      if (data.pareja?.questionnaires?.[0]) {
-        console.log('🔍 FRONTEND: Primer cuestionario PROCESADO:', data.pareja.questionnaires[0]);
-        console.log('🔍 FRONTEND: personalInfo PROCESADO:', data.pareja.questionnaires[0].personalInfo);
-      }
+      // DEBUG: Logs después del procesamiento de datos
+      // console.log('🔍 FRONTEND: Datos DESPUÉS de procesar:', data);
+      // if (data.pareja?.questionnaires?.[0]) {
+      //   console.log('🔍 FRONTEND: Primer cuestionario PROCESADO:', data.pareja.questionnaires[0]);
+      //   console.log('🔍 FRONTEND: personalInfo PROCESADO:', data.pareja.questionnaires[0].personalInfo);
+      // }
       
       setDashboardData(data);
       
-      // 🔍 LOGS DETALLADOS PARA DEBUGGING FRONTEND
-      console.log('📊 FRONTEND: Datos del dashboard cargados:', data);
-      console.log('🔍 FRONTEND: Estructura de datos:', {
-        success: data.success,
-        total: data.total,
-        pareja_count: data.pareja?.count,
-        personalidad_count: data.personalidad?.count
-      });
+      // DEBUG: Logs detallados para debugging del frontend
+      // console.log('📊 FRONTEND: Datos del dashboard cargados:', data);
+      // console.log('🔍 FRONTEND: Estructura de datos:', {
+      //   success: data.success,
+      //   total: data.total,
+      //   pareja_count: data.pareja?.count,
+      //   personalidad_count: data.personalidad?.count
+      // });
       
-      console.log('🔍 FRONTEND: Primer cuestionario de pareja:', data.pareja?.questionnaires?.[0]);
-      console.log('🔍 FRONTEND: Primer cuestionario de personalidad:', data.personalidad?.questionnaires?.[0]);
+      // console.log('🔍 FRONTEND: Primer cuestionario de pareja:', data.pareja?.questionnaires?.[0]);
+      // console.log('🔍 FRONTEND: Primer cuestionario de personalidad:', data.personalidad?.questionnaires?.[0]);
       
-      // Logs detallados de personalInfo
-      if (data.pareja?.questionnaires?.[0]) {
-        const firstPareja = data.pareja.questionnaires[0];
-        console.log('🔍 FRONTEND DEBUG Primer cuestionario pareja:');
-        console.log('   - ID:', firstPareja.id);
-        console.log('   - Type:', firstPareja.type);
-        console.log('   - personalInfo:', firstPareja.personalInfo);
-        console.log('   - personalInfo.nombre:', firstPareja.personalInfo?.nombre);
-        console.log('   - personalInfo.apellidos:', firstPareja.personalInfo?.apellidos);
-        console.log('   - personalInfo.edad:', firstPareja.personalInfo?.edad);
-        console.log('   - personalInfo.correo:', firstPareja.personalInfo?.correo);
-        console.log('   - personalInfo.genero:', firstPareja.personalInfo?.genero);
-        console.log('   - personalInfo.orientacionSexual:', firstPareja.personalInfo?.orientacionSexual);
-        console.log('   - answers:', firstPareja.answers);
-        console.log('   - answers keys:', Object.keys(firstPareja.answers || {}));
-        console.log('   - userEmail:', firstPareja.userEmail);
-        console.log('   - userName:', firstPareja.userName);
-      }
+      // DEBUG: Logs detallados de personalInfo del primer cuestionario
+      // if (data.pareja?.questionnaires?.[0]) {
+      //   const firstPareja = data.pareja.questionnaires[0];
+      //   console.log('🔍 FRONTEND DEBUG Primer cuestionario pareja:');
+      //   console.log('   - ID:', firstPareja.id);
+      //   console.log('   - Type:', firstPareja.type);
+      //   console.log('   - personalInfo:', firstPareja.personalInfo);
+      //   console.log('   - personalInfo.nombre:', firstPareja.personalInfo?.nombre);
+      //   console.log('   - personalInfo.apellidos:', firstPareja.personalInfo?.apellidos);
+      //   console.log('   - personalInfo.edad:', firstPareja.personalInfo?.edad);
+      //   console.log('   - personalInfo.correo:', firstPareja.personalInfo?.correo);
+      //   console.log('   - personalInfo.genero:', firstPareja.personalInfo?.genero);
+      //   console.log('   - personalInfo.orientacionSexual:', firstPareja.personalInfo?.orientacionSexual);
+      //   console.log('   - answers:', firstPareja.answers);
+      //   console.log('   - answers keys:', Object.keys(firstPareja.answers || {}));
+      //   console.log('   - userEmail:', firstPareja.userEmail);
+      //   console.log('   - userName:', firstPareja.userName);
+      // }
       
-      // Logs para todos los cuestionarios
-      console.log('🔍 FRONTEND: Todos los cuestionarios de pareja:', data.pareja?.questionnaires);
-      console.log('🔍 FRONTEND: Todos los cuestionarios de personalidad:', data.personalidad?.questionnaires);
+      // DEBUG: Logs para todos los cuestionarios
+      // console.log('🔍 FRONTEND: Todos los cuestionarios de pareja:', data.pareja?.questionnaires);
+      // console.log('🔍 FRONTEND: Todos los cuestionarios de personalidad:', data.personalidad?.questionnaires);
       } catch (err) {
         // console.error('❌ Error cargando dashboard:', err);
       setError(err instanceof Error ? err.message : 'Error desconocido');
@@ -189,6 +256,10 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  /**
+   * Carga los mensajes de contacto desde el backend
+   * Se ejecuta al montar el componente
+   */
   const loadContactMessages = async () => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -210,6 +281,13 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  // ===== FUNCIONES DE GESTIÓN DE MENSAJES =====
+  
+  /**
+   * Actualiza el estado de un mensaje de contacto (leído/respondido)
+   * @param messageId - ID del mensaje a actualizar
+   * @param status - Nuevo estado del mensaje
+   */
   const handleUpdateMessageStatus = async (messageId: number, status: 'read' | 'replied') => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -237,6 +315,10 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  /**
+   * Elimina un mensaje de contacto
+   * @param messageId - ID del mensaje a eliminar
+   */
   const handleDeleteMessage = async (messageId: number) => {
     if (!confirm('¿Estás seguro de que quieres eliminar este mensaje?')) return;
 
@@ -261,9 +343,52 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  // ===== FUNCIONES DE AUTENTICACIÓN =====
+  
+  /**
+   * Cierra la sesión del administrador
+   * Elimina el token y redirige al login
+   */
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     window.location.hash = '#/admin-login';
+  };
+
+  // ===== FUNCIONES DE FILTRADO =====
+  
+  /**
+   * Filtra los mensajes de contacto según los criterios seleccionados
+   * @returns Array de mensajes filtrados
+   */
+  const getFilteredContactMessages = () => {
+    let filtered = contactMessages;
+
+    // Filtrar por estado
+    if (contactStatusFilter !== 'all') {
+      filtered = filtered.filter(message => message.status === contactStatusFilter);
+    }
+
+    // Filtrar por término de búsqueda
+    if (contactSearchTerm.trim()) {
+      const searchLower = contactSearchTerm.toLowerCase();
+      filtered = filtered.filter(message => 
+        message.nombre.toLowerCase().includes(searchLower) ||
+        message.email.toLowerCase().includes(searchLower) ||
+        message.asunto.toLowerCase().includes(searchLower) ||
+        message.mensaje.toLowerCase().includes(searchLower)
+      );
+    }
+
+    return filtered;
+  };
+
+  /**
+   * Limpia todos los filtros de contacto
+   * Restaura los valores por defecto
+   */
+  const clearContactFilters = () => {
+    setContactSearchTerm('');
+    setContactStatusFilter('all');
   };
 
   // Función para corregir datos corruptos
@@ -271,7 +396,12 @@ const AdminDashboard: React.FC = () => {
 
 
 
-  // Función para descargar cuestionario como PDF
+  // ===== FUNCIONES DE GESTIÓN DE CUESTIONARIOS =====
+  
+  /**
+   * Genera y descarga un cuestionario como archivo PDF
+   * @param questionnaire - Cuestionario a convertir a PDF
+   */
   const downloadQuestionnaire = (questionnaire: Questionnaire) => {
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
@@ -340,7 +470,7 @@ const AdminDashboard: React.FC = () => {
       // Usar la función auxiliar para procesar los datos
       const { question, answer } = processAnswerDataForPDF(answerData, questionIndex, questionnaire.type);
 
-      // DEBUG: Log para identificar respuestas problemáticas
+      // DEBUG: Log para identificar respuestas problemáticas en PDF
               // console.log(`🔍 PDF - Pregunta ${questionIndex}:`, { question, answer, rawData: answerData });
 
       // Agregar pregunta
@@ -389,7 +519,10 @@ const AdminDashboard: React.FC = () => {
     pdf.save(fileName);
   };
 
-  // Función para borrar cuestionario
+  /**
+   * Elimina un cuestionario de la base de datos
+   * @param questionnaireId - ID del cuestionario a eliminar
+   */
   const deleteQuestionnaire = async (questionnaireId: number) => {
     if (!confirm('¿Estás seguro de que quieres eliminar este cuestionario? Esta acción no se puede deshacer.')) {
       return;
@@ -436,7 +569,10 @@ const AdminDashboard: React.FC = () => {
 
 
 
-  // Función para agregar/quitar favoritos
+  /**
+   * Alterna el estado de favorito de un cuestionario
+   * @param questionnaireId - ID del cuestionario a marcar/desmarcar como favorito
+   */
   const toggleFavorite = (questionnaireId: number) => {
     setFavorites(prev => {
       const newFavorites = new Set(prev);
@@ -451,6 +587,13 @@ const AdminDashboard: React.FC = () => {
 
 
 
+  // ===== FUNCIONES DE UTILIDAD =====
+  
+  /**
+   * Formatea una fecha string a formato legible en español
+   * @param dateString - String de fecha a formatear
+   * @returns String formateado o mensaje de error
+   */
   const formatDate = (dateString: string) => {
     if (!dateString || dateString === '') {
       return 'Fecha no disponible';
@@ -481,7 +624,13 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  // Función auxiliar para procesar respuestas correctamente
+  /**
+   * Procesa los datos de respuesta de un cuestionario para extraer pregunta y respuesta
+   * @param answerData - Datos de la respuesta (puede ser string u objeto)
+   * @param questionIndex - Índice de la pregunta
+   * @param questionnaireType - Tipo de cuestionario (pareja/personalidad)
+   * @returns Objeto con question y answer procesados
+   */
   const processAnswerData = (answerData: any, questionIndex: string, questionnaireType: string) => {
     let question = '';
     let answer = '';
@@ -530,7 +679,13 @@ const AdminDashboard: React.FC = () => {
     return { question, answer };
   };
 
-  // Función auxiliar para procesar respuestas correctamente (solo para PDF)
+  /**
+   * Procesa los datos de respuesta específicamente para la generación de PDF
+   * @param answerData - Datos de la respuesta
+   * @param questionIndex - Índice de la pregunta
+   * @param questionnaireType - Tipo de cuestionario
+   * @returns Objeto con question y answer procesados para PDF
+   */
   const processAnswerDataForPDF = (answerData: any, questionIndex: string, questionnaireType: string) => {
     let question = '';
     let answer = '';
@@ -579,7 +734,12 @@ const AdminDashboard: React.FC = () => {
     return { question, answer };
   };
 
-  // Definir las preguntas del cuestionario de personalidad
+  // ===== CONSTANTES DE PREGUNTAS =====
+  
+  /**
+   * Array con las 66 preguntas del cuestionario de personalidad
+   * Cada pregunta evalúa diferentes aspectos de la personalidad del usuario
+   */
   const personalityQuestions = [
     "¿Conectas fácilmente con gente nueva?",
     "¿Te resulta fácil establecer conversación con un desconocido?",
@@ -649,7 +809,10 @@ const AdminDashboard: React.FC = () => {
     "¿Tienes alguna alergia, fobia o algo que deberíamos tener en cuenta para la cita?"
   ];
 
-  // Definir las preguntas del cuestionario de pareja
+  /**
+   * Array con las 17 preguntas del cuestionario de pareja
+   * Cada pregunta evalúa aspectos relacionados con relaciones de pareja
+   */
   const coupleQuestions = [
     "¿Qué buscas principalmente en una relación?",
     "¿Cómo prefieres pasar tiempo con tu pareja?",
@@ -670,6 +833,13 @@ const AdminDashboard: React.FC = () => {
     "¿Cómo te gustaría que sea tu relación ideal?"
   ];
 
+  // ===== FUNCIONES DE RENDERIZADO =====
+  
+  /**
+   * Renderiza una tarjeta de cuestionario con toda su información
+   * @param questionnaire - Cuestionario a renderizar
+   * @returns JSX.Element - Tarjeta del cuestionario
+   */
   const renderQuestionnaireCard = (questionnaire: Questionnaire) => (
     <Card key={questionnaire.id} className={`mb-6 shadow-lg ${favorites.has(questionnaire.id) ? 'border-2 border-yellow-300' : ''}`}>
       <CardHeader className="pb-4 bg-gradient-to-r from-blue-50 to-indigo-50">
@@ -832,8 +1002,8 @@ const AdminDashboard: React.FC = () => {
                           </div>
                           <div className="text-gray-700 bg-gray-50 p-3 rounded border-l-4 border-blue-400">
                             <strong>Respuesta:</strong> {(() => {
-                              // 🔍 DEBUG: Log para ver qué viene
-                              console.log(`🔍 Respuesta para pregunta ${questionIndex}:`, answerData);
+                              // DEBUG: Log para ver qué viene en la respuesta
+                              // console.log(`🔍 Respuesta para pregunta ${questionIndex}:`, answerData);
                               
                               // ✅ Ahora que el backend está corregido, las respuestas vienen directamente como strings
                               if (typeof answerData === 'string') {
@@ -869,6 +1039,11 @@ const AdminDashboard: React.FC = () => {
 
 
 
+  // ===== RENDERIZADO CONDICIONAL =====
+  
+  /**
+   * Estado de carga - muestra spinner mientras se cargan los datos
+   */
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -880,6 +1055,9 @@ const AdminDashboard: React.FC = () => {
     );
   }
 
+  /**
+   * Estado de error - muestra mensaje de error con opción de reintentar
+   */
   if (error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -899,6 +1077,9 @@ const AdminDashboard: React.FC = () => {
     );
   }
 
+  /**
+   * Estado sin datos - muestra mensaje cuando no hay datos disponibles
+   */
   if (!dashboardData) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -909,9 +1090,15 @@ const AdminDashboard: React.FC = () => {
     );
   }
 
+  // ===== RENDERIZADO PRINCIPAL =====
+  
+  /**
+   * Renderizado principal del componente AdminDashboard
+   * Incluye header, estadísticas, tabs y contenido
+   */
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {/* ===== HEADER DEL DASHBOARD ===== */}
       <div className="border-b bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
@@ -940,7 +1127,7 @@ const AdminDashboard: React.FC = () => {
                 >
                   <Brain className="h-4 w-4 mr-2" />
                   Análisis de Personalidad
-                </Button>
+              </Button>
 
               <Button onClick={handleLogout} variant="destructive" size="sm">
                 <LogOut className="h-4 w-4 mr-2" />
@@ -951,7 +1138,7 @@ const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-              {/* Stats Cards */}
+      {/* ===== TARJETAS DE ESTADÍSTICAS ===== */}
         <div className="container mx-auto px-4 py-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
@@ -1000,7 +1187,7 @@ const AdminDashboard: React.FC = () => {
 
 
 
-        {/* Tabs */}
+        {/* ===== SISTEMA DE TABS ===== */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="pareja" className="flex items-center gap-2">
@@ -1077,7 +1264,128 @@ const AdminDashboard: React.FC = () => {
               </Card>
             ) : (
               <div className="space-y-4">
-                {contactMessages.map((message) => (
+                {/* Filtros de contacto */}
+                <Card className="border border-gray-200">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Filter className="h-5 w-5 text-gray-600" />
+                        <h3 className="text-lg font-semibold">Filtros de Mensajes</h3>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowContactFilters(!showContactFilters)}
+                        className="text-gray-600 hover:text-gray-800"
+                      >
+                        {showContactFilters ? 'Ocultar' : 'Mostrar'} Filtros
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  
+                  {showContactFilters && (
+                    <CardContent className="pt-0">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Búsqueda por texto */}
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700">
+                            Buscar en mensajes
+                          </label>
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <input
+                              type="text"
+                              placeholder="Buscar por nombre, email, asunto o mensaje..."
+                              value={contactSearchTerm}
+                              onChange={(e) => setContactSearchTerm(e.target.value)}
+                              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            />
+                            {contactSearchTerm && (
+                              <button
+                                onClick={() => setContactSearchTerm('')}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Filtro por estado */}
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700">
+                            Filtrar por estado
+                          </label>
+                          <select
+                            value={contactStatusFilter}
+                            onChange={(e) => setContactStatusFilter(e.target.value as any)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          >
+                            <option value="all">Todos los mensajes</option>
+                            <option value="unread">No leídos</option>
+                            <option value="read">Leídos</option>
+                            <option value="replied">Respondidos</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Botón para limpiar filtros */}
+                      {(contactSearchTerm || contactStatusFilter !== 'all') && (
+                        <div className="mt-4 flex justify-end">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={clearContactFilters}
+                            className="text-gray-600 hover:text-gray-800"
+                          >
+                            <X className="h-4 w-4 mr-2" />
+                            Limpiar Filtros
+                          </Button>
+                        </div>
+                      )}
+
+                      {/* Resumen de resultados */}
+                      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600">
+                            Mostrando {getFilteredContactMessages().length} de {contactMessages.length} mensajes
+                          </span>
+                          {(contactSearchTerm || contactStatusFilter !== 'all') && (
+                            <span className="text-blue-600 font-medium">
+                              Filtros activos
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  )}
+                </Card>
+
+                {/* Lista de mensajes filtrados */}
+                {getFilteredContactMessages().length === 0 ? (
+                  <Card className="border-2 border-dashed border-gray-300">
+                    <CardContent className="pt-8 pb-8 text-center">
+                      <div className="mx-auto w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                        <Search className="w-6 h-6 text-gray-400" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                        No se encontraron mensajes
+                      </h3>
+                      <p className="text-gray-500 mb-4">
+                        No hay mensajes que coincidan con los filtros aplicados.
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={clearContactFilters}
+                        className="text-gray-600 hover:text-gray-800"
+                      >
+                        Limpiar Filtros
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  getFilteredContactMessages().map((message) => (
                   <Card key={message.id} className="border-l-4 border-l-blue-500">
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
@@ -1143,7 +1451,8 @@ const AdminDashboard: React.FC = () => {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  ))
+                )}
               </div>
             )}
           </TabsContent>
@@ -1155,4 +1464,8 @@ const AdminDashboard: React.FC = () => {
   );
 };
 
+/**
+ * Exportación del componente AdminDashboard
+ * Componente principal del panel de administración
+ */
 export default AdminDashboard;
