@@ -396,6 +396,53 @@ router.delete('/questionnaires/:id', authenticateToken, requireAdmin, async (req
 });
 
 // ========================================
+// DEBUG ESPECÍFICO - VER DATOS RAW DE CUESTIONARIOS
+// ========================================
+router.get('/debug/questionnaires-raw', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    console.log('🔍 DEBUG: Obteniendo datos RAW de cuestionarios...');
+    
+    const database = require('../config/database');
+    
+    const result = await database.query(`
+      SELECT id, type, personal_info, answers, status, created_at
+      FROM questionnaires
+      ORDER BY id DESC
+      LIMIT 3
+    `);
+    
+    const rawData = result.rows.map(row => ({
+      id: row.id,
+      type: row.type,
+      status: row.status,
+      created_at: row.created_at,
+      personal_info_raw: row.personal_info,
+      personal_info_type: typeof row.personal_info,
+      answers_raw: row.answers,
+      answers_type: typeof row.answers,
+      personal_info_length: row.personal_info ? row.personal_info.length : 0,
+      answers_length: row.answers ? row.answers.length : 0
+    }));
+    
+    console.log('📊 Datos RAW obtenidos:', rawData);
+    
+    res.json({
+      success: true,
+      message: 'Datos RAW de cuestionarios',
+      data: rawData
+    });
+    
+  } catch (error) {
+    console.error('❌ Error obteniendo datos RAW:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+      error: error.message
+    });
+  }
+});
+
+// ========================================
 // DEBUG PÚBLICO - VER ESTADO DE LA BD
 // ========================================
 router.get('/debug/database-status', async (req, res) => {
