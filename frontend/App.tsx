@@ -18,7 +18,7 @@
 import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import { usePayment } from './src/hooks/usePayment';
+import { usePayment } from 'src/hooks/usePayment';
 import PaymentRequired from './src/components/PaymentRequired';
 
 // ===== LAZY LOADING DE COMPONENTES =====
