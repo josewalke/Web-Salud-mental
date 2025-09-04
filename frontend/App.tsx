@@ -18,6 +18,8 @@
 import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
+import { usePayment } from './src/hooks/usePayment';
+import PaymentRequired from './src/components/PaymentRequired';
 
 // ===== LAZY LOADING DE COMPONENTES =====
 // Componentes cargados bajo demanda para optimizar el first paint
@@ -114,6 +116,11 @@ export default function App() {
   
   /** Sección a la que regresar después de completar un cuestionario */
   const [returnToSection, setReturnToSection] = useState<string | null>(null);
+  
+  // ===== VERIFICACIÓN DE PAGO =====
+  
+  /** Hook para verificar el estado del pago */
+  const { paymentValid, loading: paymentLoading, paymentInfo } = usePayment();
   
   // ===== DETECCIÓN DE DISPOSITIVO =====
   
@@ -361,6 +368,32 @@ export default function App() {
   ), []);
 
   // ===== RENDERIZADO CONDICIONAL DE PÁGINAS =====
+  
+  // ===== VERIFICACIÓN DE PAGO =====
+  
+  /**
+   * Si el pago no es válido, mostrar pantalla de bloqueo
+   */
+  if (!paymentLoading && !paymentValid && paymentInfo) {
+    return <PaymentRequired paymentInfo={paymentInfo} />;
+  }
+  
+  /**
+   * Si está cargando la verificación de pago, mostrar loading
+   */
+  if (paymentLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🔒</div>
+          <h2 className="text-xl font-semibold text-gray-700">Verificando acceso...</h2>
+          <div className="mt-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   /**
    * Renderiza la página del cuestionario de pareja

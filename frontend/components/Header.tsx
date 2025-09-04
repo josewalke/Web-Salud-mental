@@ -42,6 +42,11 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <div className="flex items-center">
+            <img 
+              src="/logo192.png" 
+              alt="Love on the Brain Logo" 
+              className="h-8 lg:h-10 w-auto mr-3"
+            />
             <h1 className="text-xl lg:text-2xl font-bold text-blue-600">
               Love on the Brain
             </h1>
@@ -78,12 +83,6 @@ export default function Header() {
               className="text-gray-700 hover:text-blue-600 transition-colors duration-300"
             >
               Contacto
-            </button>
-            <button
-              onClick={() => window.location.hash = '#/blog'}
-              className="text-gray-700 hover:text-blue-600 transition-colors duration-300"
-            >
-              Blog
             </button>
             
             {/* Botón Admin discreto en escritorio */}
@@ -138,12 +137,6 @@ export default function Header() {
                 className="text-left text-gray-700 hover:text-blue-600 transition-colors py-2"
               >
                 Contacto
-              </button>
-              <button
-                onClick={() => window.location.hash = '#/blog'}
-                className="text-left text-gray-700 hover:text-blue-600 transition-colors py-2"
-              >
-                Blog
               </button>
             </nav>
           </div>
