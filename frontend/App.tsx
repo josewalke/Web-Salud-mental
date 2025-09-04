@@ -18,8 +18,8 @@
 import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
-import { usePayment } from 'src/hooks/usePayment';
-import PaymentRequired from './src/components/PaymentRequired';
+import { usePayment } from '@/hooks/usePayment';
+import PaymentRequired from '@/components/PaymentRequired';
 
 // ===== LAZY LOADING DE COMPONENTES =====
 // Componentes cargados bajo demanda para optimizar el first paint
