@@ -1,6 +1,11 @@
-# Ignorar carpetas de repositorios independientes
-frontend/
-backend/
+# Ignorar archivos específicos de repositorios independientes
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+backend/node_modules/
+backend/dist/
+backend/coverage/
 
 # Archivos del sistema
 .DS_Store
